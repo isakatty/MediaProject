@@ -16,10 +16,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         
+        let tabBar: UITabBarController = {
+            let tabBar = UITabBarController()
+            tabBar.tabBar.backgroundColor = .clear
+            tabBar.tabBar.tintColor = .white
+            return tabBar
+        }()
+        
         let vc = ViewController()
-        let navi = UINavigationController(rootViewController: vc)
-
-        window?.rootViewController = navi
+        let firstVC = UINavigationController(rootViewController: vc)
+        firstVC.tabBarItem = UITabBarItem(
+            title: "홈",
+            image: UIImage(systemName: "house"),
+            selectedImage: UIImage(systemName: "house.fill")
+        )
+        
+        tabBar.viewControllers = [firstVC]
+        
+        window?.rootViewController = tabBar
         window?.makeKeyAndVisible()
     }
 

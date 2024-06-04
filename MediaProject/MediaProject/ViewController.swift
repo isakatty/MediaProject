@@ -115,7 +115,7 @@ class ViewController: UIViewController {
         let safeArea = view.safeAreaLayoutGuide
         
         mainPosterImageView.snp.makeConstraints { poster in
-            poster.top.equalTo(safeArea).inset(15)
+            poster.top.equalTo(safeArea)
             poster.leading.trailing.equalTo(safeArea).inset(30)
             poster.height.equalTo(450)
             poster.centerX.equalTo(safeArea)
@@ -134,13 +134,14 @@ class ViewController: UIViewController {
         boomImageStackView.snp.makeConstraints { stack in
             stack.top.equalTo(boomLabel.snp.bottom).offset(10)
             stack.leading.trailing.equalTo(safeArea).inset(30)
-            stack.bottom.equalTo(safeArea).inset(80)
+            stack.bottom.equalTo(safeArea).inset(10)
         }
         
     }
     
     func configureUI() {
         view.backgroundColor = .darkGray
+        navigationItem.title = "ISAK님"
         
         [mainPosterImageView, boomFImageview,
          boomSImageview, boomTImageview]
