@@ -13,6 +13,8 @@
 		C9BD157F2C0EFEB30049787E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9BD157E2C0EFEB30049787E /* Assets.xcassets */; };
 		C9BD15822C0EFEB30049787E /* Base in Resources */ = {isa = PBXBuildFile; fileRef = C9BD15812C0EFEB30049787E /* Base */; };
 		C9BD158B2C0F06850049787E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C9BD158A2C0F06850049787E /* SnapKit */; };
+		C9BD15912C0F18AF0049787E /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD15902C0F18AF0049787E /* JoinViewController.swift */; };
+		C9BD15952C0F20E20049787E /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD15942C0F20E20049787E /* UITextField+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +25,8 @@
 		C9BD157E2C0EFEB30049787E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C9BD15812C0EFEB30049787E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C9BD15832C0EFEB30049787E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C9BD15902C0F18AF0049787E /* JoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewController.swift; sourceTree = "<group>"; };
+		C9BD15942C0F20E20049787E /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,14 +60,24 @@
 		C9BD15742C0EFEB20049787E /* MediaProject */ = {
 			isa = PBXGroup;
 			children = (
+				C9BD15962C0F21140049787E /* extension */,
 				C9BD15752C0EFEB20049787E /* AppDelegate.swift */,
 				C9BD15772C0EFEB20049787E /* SceneDelegate.swift */,
 				C9BD15792C0EFEB20049787E /* ViewController.swift */,
 				C9BD157E2C0EFEB30049787E /* Assets.xcassets */,
 				C9BD15802C0EFEB30049787E /* LaunchScreen.storyboard */,
 				C9BD15832C0EFEB30049787E /* Info.plist */,
+				C9BD15902C0F18AF0049787E /* JoinViewController.swift */,
 			);
 			path = MediaProject;
+			sourceTree = "<group>";
+		};
+		C9BD15962C0F21140049787E /* extension */ = {
+			isa = PBXGroup;
+			children = (
+				C9BD15942C0F20E20049787E /* UITextField+.swift */,
+			);
+			path = extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,6 +156,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9BD15912C0F18AF0049787E /* JoinViewController.swift in Sources */,
+				C9BD15952C0F20E20049787E /* UITextField+.swift in Sources */,
 				C9BD157A2C0EFEB20049787E /* ViewController.swift in Sources */,
 				C9BD15762C0EFEB20049787E /* AppDelegate.swift in Sources */,
 				C9BD15782C0EFEB20049787E /* SceneDelegate.swift in Sources */,
