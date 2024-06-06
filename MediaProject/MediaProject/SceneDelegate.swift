@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBar: UITabBarController = {
             let tabBar = UITabBarController()
             tabBar.tabBar.backgroundColor = .clear
-            tabBar.tabBar.tintColor = .white
+            tabBar.tabBar.tintColor = .black
             return tabBar
         }()
         
@@ -30,8 +30,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             image: UIImage(systemName: "house"),
             selectedImage: UIImage(systemName: "house.fill")
         )
+        let secondVC = UINavigationController(rootViewController: MovieSearchViewController())
+        secondVC.tabBarItem = UITabBarItem(
+            title: "검색",
+            image: UIImage(systemName: "magnifyingglass"),
+            selectedImage: UIImage(systemName: "magnifyingglass")
+        )
         
-        tabBar.viewControllers = [firstVC]
+        tabBar.viewControllers = [firstVC, secondVC]
         
         window?.rootViewController = tabBar
         window?.makeKeyAndVisible()
