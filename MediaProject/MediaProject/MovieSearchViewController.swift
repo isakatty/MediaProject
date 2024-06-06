@@ -125,7 +125,6 @@ class MovieSearchViewController: UIViewController {
     }
     
     @objc func searchBtnTapped() {
-        print(#function)
         if searchTextField.text != nil {
             networking(date: searchTextField.text ?? "")
         }
@@ -140,10 +139,8 @@ class MovieSearchViewController: UIViewController {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyyMMdd"
             let yesterdayString = dateFormatter.string(from: yesterdayDate)
-            
             return yesterdayString
         } else {
-            
             return "20240605"
         }
     }
