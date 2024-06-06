@@ -50,11 +50,12 @@ class MovieSearchViewController: UIViewController {
             WrongDataTableViewCell.self,
             forCellReuseIdentifier: WrongDataTableViewCell.identifier
         )
-        table.backgroundColor = .black
+        table.backgroundColor = .darkGray
         return table
     }()
     private var searchMovieList = [DailyBoxOfficeList]() {
         didSet {
+            print(searchMovieList)
             movieListTableView.reloadData()
         }
     }
@@ -63,6 +64,8 @@ class MovieSearchViewController: UIViewController {
     // MARK: - VC LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        networking(date: yesterdayDate())
         
         hideKeyboard()
         configureHierarchy()
@@ -100,7 +103,7 @@ class MovieSearchViewController: UIViewController {
         }
     }
     private func configureUI() {
-        view.backgroundColor = .black
+        view.backgroundColor = .darkGray
     }
     private func networking(date: String) {
         let movieURL = PrivateKey.url + date
@@ -111,24 +114,48 @@ class MovieSearchViewController: UIViewController {
             guard let self = self else { return }
             switch response.result {
             case .success(let movie):
-                isNetwork = !isNetwork
+                isNetwork = true
                 self.searchMovieList = movie.boxOfficeResult.dailyBoxOfficeList
+                self.searchTextField.text = movie.boxOfficeResult.showRange
             case .failure(_):
                 isNetwork = false
+                self.movieListTableView.reloadData()
             }
         }
     }
     
     @objc func searchBtnTapped() {
+        print(#function)
         if searchTextField.text != nil {
             networking(date: searchTextField.text ?? "")
         }
         view.endEditing(true)
     }
     
+    private func yesterdayDate() -> String {
+        let calendar = Calendar.current
+        let todayDate = Date()
+        
+        if let yesterdayDate = calendar.date(byAdding: .day, value: -1, to: todayDate) {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyyMMdd"
+            let yesterdayString = dateFormatter.string(from: yesterdayDate)
+            
+            return yesterdayString
+        } else {
+            
+            return "20240605"
+        }
+    }
+    
 }
 
 extension MovieSearchViewController: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        textField.text = ""
+        return true
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.text != nil {
             networking(date: textField.text ?? "")
