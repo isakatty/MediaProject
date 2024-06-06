@@ -52,7 +52,7 @@ class SearchMovieListTableViewCell: UITableViewCell {
     }
     func configureHierarchy() {
         [numberLabel, movieTitleLabel, dateLabel]
-            .forEach { addSubview($0) }
+            .forEach { contentView.addSubview($0) }
     }
     func configureLayout() {
         numberLabel.snp.makeConstraints { make in

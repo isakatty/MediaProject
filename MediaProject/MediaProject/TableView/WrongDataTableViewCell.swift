@@ -36,7 +36,7 @@ class WrongDataTableViewCell: UITableViewCell {
     }
     
     func configureHierarchy() {
-        addSubview(errorLabel)
+        contentView.addSubview(errorLabel)
     }
     func configureLayout() {
         backgroundColor = .clear
