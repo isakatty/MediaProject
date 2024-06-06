@@ -7,30 +7,37 @@
 
 import UIKit
 
+import Alamofire
 import SnapKit
 
 class MovieSearchViewController: UIViewController {
     
-    let searchTextField: UITextField = {
+    // MARK: - Properties
+    private lazy var searchTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "날짜를 입력하세요"
         tf.textColor = .white
+        tf.delegate = self
         return tf
     }()
-    let seperateBar: UIView = {
+    private let seperateBar: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         return view
     }()
-    let searchButton: UIButton = {
+    private lazy var searchButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("검색", for: .normal)
         btn.backgroundColor = .white
         btn.setTitleColor(.black, for: .normal)
+        btn.addTarget(
+            self,
+            action: #selector(searchBtnTapped)
+            , for: .touchUpInside
+        )
         return btn
     }()
-    
-    lazy var movieListTableView: UITableView = {
+    private lazy var movieListTableView: UITableView = {
         let table = UITableView()
         table.delegate = self
         table.dataSource = self
@@ -39,23 +46,35 @@ class MovieSearchViewController: UIViewController {
             SearchMovieListTableViewCell.self,
             forCellReuseIdentifier: SearchMovieListTableViewCell.identifier
         )
+        table.register(
+            WrongDataTableViewCell.self,
+            forCellReuseIdentifier: WrongDataTableViewCell.identifier
+        )
         table.backgroundColor = .black
         return table
     }()
+    private var searchMovieList = [DailyBoxOfficeList]() {
+        didSet {
+            movieListTableView.reloadData()
+        }
+    }
+    private var isNetwork: Bool = false
     
+    // MARK: - VC LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        hideKeyboard()
         configureHierarchy()
         configureLayout()
         configureUI()
     }
     
-    func configureHierarchy() {
+    private func configureHierarchy() {
         [searchTextField, seperateBar, searchButton, movieListTableView]
             .forEach { view.addSubview($0) }
     }
-    func configureLayout() {
+    private func configureLayout() {
         let safeArea = view.safeAreaLayoutGuide
         
         searchTextField.snp.makeConstraints { make in
@@ -80,33 +99,79 @@ class MovieSearchViewController: UIViewController {
             make.leading.trailing.bottom.equalTo(safeArea)
         }
     }
-    func configureUI() {
+    private func configureUI() {
         view.backgroundColor = .black
+    }
+    private func networking(date: String) {
+        let movieURL = PrivateKey.url + date
         
+        AF.request(movieURL).responseDecodable(
+            of: Movie.self
+        ) { [weak self] response in
+            guard let self = self else { return }
+            switch response.result {
+            case .success(let movie):
+                isNetwork = !isNetwork
+                self.searchMovieList = movie.boxOfficeResult.dailyBoxOfficeList
+            case .failure(_):
+                isNetwork = false
+            }
+        }
+    }
+    
+    @objc func searchBtnTapped() {
+        if searchTextField.text != nil {
+            networking(date: searchTextField.text ?? "")
+        }
+        view.endEditing(true)
+    }
+    
+}
+
+extension MovieSearchViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.text != nil {
+            networking(date: textField.text ?? "")
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField.text != nil {
+            networking(date: textField.text ?? "")
+            view.endEditing(true)
+        }
+        return false
     }
 }
 
 extension MovieSearchViewController
 : UITableViewDelegate, UITableViewDataSource {
-    
     func tableView(
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        1
+        return isNetwork ? searchMovieList.count : 1
     }
-    
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        guard let cell = movieListTableView.dequeueReusableCell(
-            withIdentifier: SearchMovieListTableViewCell.identifier,
-            for: indexPath
-        ) as? SearchMovieListTableViewCell else { return UITableViewCell() }
         
-        cell.configureUI(number: "1", movieName: "얌얌이", openDt: "2024-06-02")
-        
-        return cell
+        if isNetwork {
+            guard let cell = movieListTableView.dequeueReusableCell(
+                withIdentifier: SearchMovieListTableViewCell.identifier,
+                for: indexPath
+            ) as? SearchMovieListTableViewCell else { return UITableViewCell() }
+            let movie = searchMovieList[indexPath.row]
+            cell.configureUI(with: movie)
+            return cell
+        } else {
+            guard let cell = movieListTableView.dequeueReusableCell(
+                withIdentifier: WrongDataTableViewCell.identifier,
+                for: indexPath
+            ) as? WrongDataTableViewCell else { return UITableViewCell() }
+            
+            return cell
+        }
     }
 }

@@ -75,14 +75,10 @@ class SearchMovieListTableViewCell: UITableViewCell {
         }
     }
     /// 외부 호출, label에 데이터 넣어줄 함수
-    func configureUI(
-        number: String,
-        movieName: String,
-        openDt: String
-    ) {
-        numberLabel.text = number
-        movieTitleLabel.text = movieName
-        dateLabel.text = openDt
+    func configureUI(with movie: DailyBoxOfficeList) {
+        numberLabel.text = movie.rank
+        movieTitleLabel.text = movie.movieNm
+        dateLabel.text = movie.openDt
     }
     
 }
