@@ -13,7 +13,6 @@ import SnapKit
 public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
     private let actorImageView: UIImageView = {
         let view = UIImageView()
-        view.backgroundColor = .cyan
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
         view.layer.cornerRadius = 3
@@ -50,6 +49,10 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
     
     public override func prepareForReuse() {
         super.prepareForReuse()
+        
+        actorImageView.image = nil
+        [actorNameLabel, actorMovieNameLabel]
+            .forEach { $0.text = nil}
     }
     
     private func configureHierarchy() {
@@ -57,24 +60,24 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
             .forEach { contentView.addSubview($0) }
     }
     private func configureLayout() {
-        
         actorImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(30)
             make.top.bottom.equalToSuperview().inset(16)
-            make.width.equalTo(self.snp.height).multipliedBy(0.45 / 1.0)
+            make.height.greaterThanOrEqualTo(80)
+            make.width.equalToSuperview().multipliedBy(0.2 / 1.0)
             make.centerY.equalToSuperview()
         }
         actorNameLabel.snp.makeConstraints { make in
             make.leading.equalTo(actorImageView.snp.trailing).offset(30)
             make.centerY.equalToSuperview().offset(-10)
             make.trailing.equalToSuperview()
-            make.top.equalToSuperview().offset(20)
+            make.top.equalToSuperview().offset(40)
         }
         actorMovieNameLabel.snp.makeConstraints { make in
             make.leading.equalTo(actorImageView.snp.trailing).offset(30)
             make.centerY.equalToSuperview().offset(10)
             make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(40)
         }
     }
     public func configureUI(

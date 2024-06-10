@@ -12,8 +12,6 @@ import Kingfisher
 import SnapKit
 
 // MARK: ScrollView의 height 제약 모호함 -> 스크롤 안됨
-// MARK: TableView cell 제약에서 계속 오류남 !
-// 둘 다 시도중..
 
 public class TrendMovieDetailViewController: UIViewController {
     public var movieInfo: MovieInfo?
@@ -40,7 +38,7 @@ public class TrendMovieDetailViewController: UIViewController {
     private let movieInfoView = TrendMovieDetailHeaderView()
     private lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
-        scroll.backgroundColor = .yellow
+        scroll.isScrollEnabled = true
         return scroll
     }()
     private lazy var movieInfoTableView: UITableView = {
@@ -85,8 +83,10 @@ public class TrendMovieDetailViewController: UIViewController {
             make.edges.equalTo(safeArea)
         }
         contentView.snp.makeConstraints { make in
-            make.width.equalTo(scrollView)
-            make.center.verticalEdges.top.equalToSuperview()
+            make.width.equalToSuperview()
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.center.equalToSuperview()
         }
         movieInfoView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(contentView)

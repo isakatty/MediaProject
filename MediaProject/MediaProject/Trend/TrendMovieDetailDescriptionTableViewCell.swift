@@ -37,6 +37,8 @@ public class TrendMovieDetailDescriptionTableViewCell: UITableViewCell {
     
     public override func prepareForReuse() {
         super.prepareForReuse()
+        
+        descriptionLabel.text = nil
     }
     
     private func configureHierarchy() {
