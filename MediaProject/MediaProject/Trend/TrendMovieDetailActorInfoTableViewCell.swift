@@ -14,7 +14,7 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
     private let actorImageView: UIImageView = {
         let view = UIImageView()
         view.backgroundColor = .cyan
-        view.contentMode = .scaleAspectFit
+        view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
         view.layer.cornerRadius = 10
         return view
@@ -30,7 +30,7 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
         label.textColor = .lightGray
         return label
     }()
-
+    
     public override init(
         style: UITableViewCell.CellStyle,
         reuseIdentifier: String?
@@ -57,6 +57,7 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
             .forEach { contentView.addSubview($0) }
     }
     private func configureLayout() {
+        
         actorImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.top.bottom.equalToSuperview().inset(16)
@@ -77,8 +78,15 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
         }
     }
     public func configureUI(
-        
+        cast: Cast?
     ) {
+        guard let cast,
+              let profile_path = cast.profile_path,
+              let url = URL(string: PrivateKey.imageURL + profile_path)
+        else { return }
         
+        actorImageView.kf.setImage(with: url)
+        actorNameLabel.text = cast.name
+        actorMovieNameLabel.text = cast.character
     }
 }

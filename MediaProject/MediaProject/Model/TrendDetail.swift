@@ -14,10 +14,6 @@ enum Sections: String {
 
 struct TrendDetail {
     let section: Sections
-    let descriptionText: String?
-    let actorInfo: ActorInfo
-}
-
-struct ActorInfo {
-    
+    var descriptionText: String?
+    var actorInfo: [Cast]?
 }

@@ -34,12 +34,14 @@ public class TrendMovieDetailSectionView: UITableViewHeaderFooterView {
     }
     private func configureLayout() {
         sectionLabel.snp.makeConstraints { make in
-            make.verticalEdges.bottom.equalToSuperview()
+            make.verticalEdges.bottom.equalToSuperview().inset(30)
             make.top.equalToSuperview().offset(10)
         }
     }
-    public func configureUI() {
-        
+    public func configureUI(
+        with sectionText: String
+    ) {
+        sectionLabel.text = sectionText
     }
     
 }
