@@ -16,7 +16,7 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
         view.backgroundColor = .cyan
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = 3
         return view
     }()
     private let actorNameLabel: UILabel = {
@@ -59,7 +59,7 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
     private func configureLayout() {
         
         actorImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().inset(30)
             make.top.bottom.equalToSuperview().inset(16)
             make.width.equalTo(self.snp.height).multipliedBy(0.45 / 1.0)
             make.centerY.equalToSuperview()
@@ -68,13 +68,13 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
             make.leading.equalTo(actorImageView.snp.trailing).offset(30)
             make.centerY.equalToSuperview().offset(-10)
             make.trailing.equalToSuperview()
-            make.top.lessThanOrEqualToSuperview()
+            make.top.equalToSuperview().offset(20)
         }
         actorMovieNameLabel.snp.makeConstraints { make in
             make.leading.equalTo(actorImageView.snp.trailing).offset(30)
             make.centerY.equalToSuperview().offset(10)
             make.trailing.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview()
+            make.bottom.equalToSuperview().inset(20)
         }
     }
     public func configureUI(

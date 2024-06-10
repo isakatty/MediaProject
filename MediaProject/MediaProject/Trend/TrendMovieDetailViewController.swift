@@ -86,14 +86,14 @@ public class TrendMovieDetailViewController: UIViewController {
         }
         contentView.snp.makeConstraints { make in
             make.width.equalTo(scrollView)
-            make.center.verticalEdges.equalToSuperview()
+            make.center.verticalEdges.top.equalToSuperview()
         }
         movieInfoView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(contentView)
             make.height.equalTo(contentView.snp.width).multipliedBy( 0.55 / 1.0 )
         }
         movieInfoTableView.snp.makeConstraints { make in
-            make.horizontalEdges.bottom.equalToSuperview()
+            make.bottom.equalToSuperview()
             make.top.equalTo(movieInfoView.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.centerX.equalToSuperview()

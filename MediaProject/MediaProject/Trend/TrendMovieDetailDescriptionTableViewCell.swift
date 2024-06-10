@@ -44,15 +44,9 @@ public class TrendMovieDetailDescriptionTableViewCell: UITableViewCell {
             .forEach { contentView.addSubview($0) }
     }
     private func configureLayout() {
-        contentView.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview().inset(30)
-            make.horizontalEdges.equalToSuperview()
-        }
-        
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(10)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(-10)
+            make.top.bottom.equalToSuperview().inset(10)
+            make.leading.trailing.equalToSuperview().inset(30)
         }
     }
     public func configureUI(
