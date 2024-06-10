@@ -18,6 +18,8 @@
 		C968A1F22C11B591004947C7 /* WrongDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C968A1F12C11B591004947C7 /* WrongDataTableViewCell.swift */; };
 		C999FDD82C17465300855246 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = C999FDD72C17465300855246 /* Kingfisher */; };
 		C999FDDB2C1746AB00855246 /* TrendMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C999FDDA2C1746AB00855246 /* TrendMovieViewController.swift */; };
+		C999FDDD2C17480C00855246 /* Trend.swift in Sources */ = {isa = PBXBuildFile; fileRef = C999FDDC2C17480C00855246 /* Trend.swift */; };
+		C999FDDF2C17483100855246 /* TrendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C999FDDE2C17483100855246 /* TrendTableViewCell.swift */; };
 		C9BD15762C0EFEB20049787E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD15752C0EFEB20049787E /* AppDelegate.swift */; };
 		C9BD15782C0EFEB20049787E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD15772C0EFEB20049787E /* SceneDelegate.swift */; };
 		C9BD157A2C0EFEB20049787E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD15792C0EFEB20049787E /* ViewController.swift */; };
@@ -37,6 +39,8 @@
 		C968A1EF2C11B534004947C7 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		C968A1F12C11B591004947C7 /* WrongDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrongDataTableViewCell.swift; sourceTree = "<group>"; };
 		C999FDDA2C1746AB00855246 /* TrendMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendMovieViewController.swift; sourceTree = "<group>"; };
+		C999FDDC2C17480C00855246 /* Trend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trend.swift; sourceTree = "<group>"; };
+		C999FDDE2C17483100855246 /* TrendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendTableViewCell.swift; sourceTree = "<group>"; };
 		C9BD15722C0EFEB20049787E /* MediaProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediaProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9BD15752C0EFEB20049787E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9BD15772C0EFEB20049787E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				C968A1EA2C11AA50004947C7 /* Movie.swift */,
+				C999FDDC2C17480C00855246 /* Trend.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -83,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				C999FDDA2C1746AB00855246 /* TrendMovieViewController.swift */,
+				C999FDDE2C17483100855246 /* TrendTableViewCell.swift */,
 			);
 			path = Trend;
 			sourceTree = "<group>";
@@ -217,6 +223,7 @@
 				C968A1D82C118EE1004947C7 /* UITableViewCell+.swift in Sources */,
 				C9BD15912C0F18AF0049787E /* JoinViewController.swift in Sources */,
 				C999FDDB2C1746AB00855246 /* TrendMovieViewController.swift in Sources */,
+				C999FDDD2C17480C00855246 /* Trend.swift in Sources */,
 				C968A1DB2C118F92004947C7 /* SearchMovieListTableViewCell.swift in Sources */,
 				C9BD15952C0F20E20049787E /* UITextField+.swift in Sources */,
 				C968A1EB2C11AA50004947C7 /* Movie.swift in Sources */,
@@ -224,6 +231,7 @@
 				C968A1E72C11A933004947C7 /* PrivateKey.swift in Sources */,
 				C9BD15762C0EFEB20049787E /* AppDelegate.swift in Sources */,
 				C968A1F02C11B534004947C7 /* UIViewController+.swift in Sources */,
+				C999FDDF2C17483100855246 /* TrendTableViewCell.swift in Sources */,
 				C968A1F22C11B591004947C7 /* WrongDataTableViewCell.swift in Sources */,
 				C9BD15782C0EFEB20049787E /* SceneDelegate.swift in Sources */,
 				C968A1D42C118252004947C7 /* MovieSearchViewController.swift in Sources */,
