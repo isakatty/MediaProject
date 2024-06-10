@@ -37,7 +37,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             selectedImage: UIImage(systemName: "magnifyingglass")
         )
         
-        tabBar.viewControllers = [firstVC, secondVC]
+        let thirdVC = UINavigationController(rootViewController: TrendMovieViewController())
+        thirdVC.tabBarItem = UITabBarItem(
+            title: "인기영화",
+            image: UIImage(systemName: "movieclapper"),
+            selectedImage: UIImage(systemName: "movieclapper.fill")
+        )
+        
+        tabBar.viewControllers = [firstVC, secondVC, thirdVC]
         
         window?.rootViewController = tabBar
         window?.makeKeyAndVisible()
