@@ -102,20 +102,20 @@ extension TrendMovieViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-//    public func tableView(
-//        _ tableView: UITableView,
-//        didSelectRowAt indexPath: IndexPath
-//    ) {
-//        tableView.reloadData()
-//        
-//        let vc = TrendMovieDetailViewController()
-//        vc.movieInfo = trendMovie[indexPath.row]
-//        
-//        navigationController?.pushViewController(
-//            vc,
-//            animated: true
-//        )
-//    }
+    public func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
+        tableView.reloadData()
+        
+        let vc = TrendMovieDetailViewController()
+        vc.movieInfo = trendMovie[indexPath.row]
+        
+        navigationController?.pushViewController(
+            vc,
+            animated: true
+        )
+    }
     public func tableView(
         _ tableView: UITableView,
         estimatedHeightForRowAt indexPath: IndexPath
