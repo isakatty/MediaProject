@@ -10,14 +10,17 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-public class TrendMovieDetailHeaderView: UIView {
+public class TrendMovieDetailHeaderView: UITableViewHeaderFooterView {
     private let backPosterView: UIImageView = {
         let view = UIImageView()
+        view.clipsToBounds = true
+        view.backgroundColor = .black
         view.contentMode = .scaleAspectFill
         return view
     }()
     private let posterView: UIImageView = {
         let view = UIImageView()
+        view.clipsToBounds = true
         view.contentMode = .scaleAspectFit
         return view
     }()
@@ -27,10 +30,15 @@ public class TrendMovieDetailHeaderView: UIView {
         label.textColor = .white
         return label
     }()
-
-    public override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .yellow
+    private let sectionLabel: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 20)
+        label.textColor = .lightGray
+        return label
+    }()
+    
+    public override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
         
         configureHierarchy()
         configureLayout()
@@ -41,12 +49,22 @@ public class TrendMovieDetailHeaderView: UIView {
     }
     
     private func configureHierarchy() {
-        [backPosterView, posterView, movieTitleLabel]
-            .forEach { addSubview($0) }
+        [backPosterView, sectionLabel]
+            .forEach { contentView.addSubview($0) }
+        [posterView, movieTitleLabel]
+            .forEach { backPosterView.addSubview($0) }
+        
     }
     private func configureLayout() {
+        contentView.snp.makeConstraints { make in
+            make.height.equalTo(240)
+            make.width.equalToSuperview()
+            make.center.equalToSuperview()
+        }
+        
         backPosterView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.leading.trailing.centerX.equalToSuperview()
+            make.height.equalTo(self.snp.width).multipliedBy(0.55)
         }
         movieTitleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(20)
@@ -54,14 +72,21 @@ public class TrendMovieDetailHeaderView: UIView {
             make.height.equalTo(24)
         }
         posterView.snp.makeConstraints { make in
-            make.top.equalTo(movieTitleLabel.snp.bottom).offset(10)
+            make.top.equalTo(movieTitleLabel.snp.bottom)
             make.leading.equalToSuperview().inset(30)
-            make.width.equalTo(self.snp.height).multipliedBy(0.45 / 1.0)
-            make.bottom.equalToSuperview().inset(10)
+            make.width.equalTo(contentView.snp.height).multipliedBy(0.45 / 1.0)
+            make.height.equalTo(contentView.snp.height).multipliedBy(0.8)
+        }
+        sectionLabel.snp.makeConstraints { make in
+            make.top.equalTo(backPosterView.snp.bottom)
+            make.leading.trailing.equalToSuperview().inset(30)
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(contentView.snp.bottom)
         }
     }
     public func configureUI(
-        with movieInfo: MovieInfo
+        with movieInfo: MovieInfo,
+        with sectionText: String
     ) {
         guard let backPosterImage = URL(string: PrivateKey.imageURL + movieInfo.backdrop_path),
         let posterImage = URL(string: PrivateKey.imageURL + movieInfo.poster_path)
@@ -69,5 +94,6 @@ public class TrendMovieDetailHeaderView: UIView {
         backPosterView.kf.setImage(with: backPosterImage)
         posterView.kf.setImage(with: posterImage)
         movieTitleLabel.text = movieInfo.title
+        sectionLabel.text = sectionText
     }
 }

@@ -29,12 +29,19 @@ public class TrendMovieDetailSectionView: UITableViewHeaderFooterView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        sectionLabel.text = nil
+    }
+    
     private func configureHierarchy() {
-        addSubview(sectionLabel)
+        contentView.addSubview(sectionLabel)
     }
     private func configureLayout() {
         sectionLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(30)
+            make.centerY.equalToSuperview()
         }
     }
     public func configureUI(

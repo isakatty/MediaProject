@@ -63,21 +63,21 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
         actorImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(30)
             make.top.bottom.equalToSuperview().inset(16)
-            make.height.greaterThanOrEqualTo(80)
-            make.width.equalToSuperview().multipliedBy(0.2 / 1.0)
+            make.height.equalTo(80)
+            make.width.equalTo(self.snp.height).multipliedBy(0.5)
             make.centerY.equalToSuperview()
         }
         actorNameLabel.snp.makeConstraints { make in
             make.leading.equalTo(actorImageView.snp.trailing).offset(30)
             make.centerY.equalToSuperview().offset(-10)
             make.trailing.equalToSuperview()
-            make.top.equalToSuperview().offset(40)
+            make.top.lessThanOrEqualToSuperview()
         }
         actorMovieNameLabel.snp.makeConstraints { make in
             make.leading.equalTo(actorImageView.snp.trailing).offset(30)
             make.centerY.equalToSuperview().offset(10)
             make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(40)
+            make.bottom.lessThanOrEqualToSuperview()
         }
     }
     public func configureUI(

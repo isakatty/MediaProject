@@ -12,6 +12,10 @@ import Kingfisher
 import SnapKit
 
 // MARK: ScrollView의 height 제약 모호함 -> 스크롤 안됨
+// MARK: TableView는 ScrollView를 상속받은 것. 그래서 ScrollView 안에 TableView를 넣는 것은 약간 어색함.
+// Tableview의 재사용 mechanism에도 문제가 있을 수 있음.
+// scroll이 되면서 cell 재사용.
+// TableView header / section 으로 구성한다면 ?
 
 public class TrendMovieDetailViewController: UIViewController {
     public var movieInfo: MovieInfo?
@@ -31,12 +35,6 @@ public class TrendMovieDetailViewController: UIViewController {
             movieInfoTableView.reloadData()
         }
     }
-    private lazy var contentView: UIView = {
-      let view = UIView()
-      return view
-    }()
-    private let movieInfoView = TrendMovieDetailHeaderView()
-    private lazy var scrollView = UIScrollView()
     private lazy var movieInfoTableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
@@ -54,7 +52,10 @@ public class TrendMovieDetailViewController: UIViewController {
             TrendMovieDetailSectionView.self, 
             forHeaderFooterViewReuseIdentifier: TrendMovieDetailSectionView.identifier
         )
-        tableView.isScrollEnabled = false
+        tableView.register(
+            TrendMovieDetailHeaderView.self,
+            forHeaderFooterViewReuseIdentifier: TrendMovieDetailHeaderView.identifier
+        )
         return tableView
     }()
     
@@ -68,41 +69,20 @@ public class TrendMovieDetailViewController: UIViewController {
     }
 
     private func configureHierarchy() {
-      [scrollView]
+      [movieInfoTableView]
         .forEach { view.addSubview($0) }
-      [movieInfoView, movieInfoTableView]
-            .forEach { contentView.addSubview($0) }
-      scrollView.addSubview(contentView)
     }
     private func configureLayout() {
         let safeArea = view.safeAreaLayoutGuide
-        let contentLayoutGuide = scrollView.contentLayoutGuide
-        let frameLayoutGuide = scrollView.frameLayoutGuide
         
-        movieInfoView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(contentView.snp.width).multipliedBy(0.45 / 1.0)
-        }
         movieInfoTableView.snp.makeConstraints { make in
-            make.top.equalTo(movieInfoView.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.centerX.equalToSuperview()
-        }
-        contentView.snp.makeConstraints { make in
-            // MARK: contentView의 높이가 지정되지 않아서 ?
-            make.top.bottom.equalTo(contentLayoutGuide)
-            make.leading.trailing.equalTo(frameLayoutGuide)
-        }
-        scrollView.snp.makeConstraints { make in
             make.edges.equalTo(safeArea)
+            make.centerX.equalTo(safeArea)
         }
     }
     private func configureView() {
         view.backgroundColor = .systemBackground
         navigationItem.title = "출연"
-        scrollView.backgroundColor = .systemPink
-        movieInfoTableView.backgroundColor = .systemYellow
-        contentView.backgroundColor = .systemPurple
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "chevron.left"),
@@ -114,7 +94,6 @@ public class TrendMovieDetailViewController: UIViewController {
     }
     private func configureUI(movieInfo: MovieInfo?) {
         guard let movieInfo else { return }
-        movieInfoView.configureUI(with: movieInfo)
         networking(with: movieInfo)
     }
     private func networking(
@@ -147,6 +126,7 @@ public class TrendMovieDetailViewController: UIViewController {
         }
         
     }
+    
     @objc private func naviBackButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
@@ -154,6 +134,7 @@ public class TrendMovieDetailViewController: UIViewController {
 
 extension TrendMovieDetailViewController
 : UITableViewDelegate, UITableViewDataSource {
+    
     public func numberOfSections(in tableView: UITableView) -> Int {
         return trendDetailData.count
     }
@@ -203,14 +184,30 @@ extension TrendMovieDetailViewController
         _ tableView: UITableView,
         viewForHeaderInSection section: Int
     ) -> UIView? {
-        guard let view = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: TrendMovieDetailSectionView.identifier
-        ) as? TrendMovieDetailSectionView
-        else { return UIView() }
-        
-        view.configureUI(with: trendDetailData[section].section.rawValue)
-        
-        return view
+        switch trendDetailData[section].section {
+        case .overView:
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: TrendMovieDetailHeaderView.identifier
+            ) as? TrendMovieDetailHeaderView,
+                  let movieInfo
+            else { return UIView() }
+            
+            headerView.configureUI(
+                with: movieInfo,
+                with: trendDetailData[section].section.rawValue
+            )
+            return headerView
+            
+        case .cast:
+            guard let sectionView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: TrendMovieDetailSectionView.identifier
+            ) as? TrendMovieDetailSectionView
+            else { return UIView() }
+            
+            sectionView.configureUI(with: trendDetailData[section].section.rawValue)
+            
+            return sectionView
+        }
     }
     public func tableView(
         _ tableView: UITableView,
