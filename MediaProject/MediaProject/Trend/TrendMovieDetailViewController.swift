@@ -36,15 +36,12 @@ public class TrendMovieDetailViewController: UIViewController {
       return view
     }()
     private let movieInfoView = TrendMovieDetailHeaderView()
-    private lazy var scrollView: UIScrollView = {
-        let scroll = UIScrollView()
-        scroll.isScrollEnabled = true
-        return scroll
-    }()
+    private lazy var scrollView = UIScrollView()
     private lazy var movieInfoTableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
         tableView.register(
             TrendMovieDetailDescriptionTableViewCell.self,
             forCellReuseIdentifier: TrendMovieDetailDescriptionTableViewCell.identifier
@@ -79,29 +76,41 @@ public class TrendMovieDetailViewController: UIViewController {
     }
     private func configureLayout() {
         let safeArea = view.safeAreaLayoutGuide
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalTo(safeArea)
-        }
-        contentView.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.top.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-            make.center.equalToSuperview()
-        }
+        let contentLayoutGuide = scrollView.contentLayoutGuide
+        let frameLayoutGuide = scrollView.frameLayoutGuide
+        
         movieInfoView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(contentView)
-            make.height.equalTo(contentView.snp.width).multipliedBy( 0.55 / 1.0 )
+            make.top.leading.trailing.equalToSuperview()
+            make.height.equalTo(contentView.snp.width).multipliedBy(0.45 / 1.0)
         }
         movieInfoTableView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
             make.top.equalTo(movieInfoView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.centerX.equalToSuperview()
+            make.bottom.centerX.equalToSuperview()
+        }
+        contentView.snp.makeConstraints { make in
+            // MARK: contentView의 높이가 지정되지 않아서 ?
+            make.top.bottom.equalTo(contentLayoutGuide)
+            make.leading.trailing.equalTo(frameLayoutGuide)
+        }
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(safeArea)
         }
     }
     private func configureView() {
         view.backgroundColor = .systemBackground
         navigationItem.title = "출연"
+        scrollView.backgroundColor = .systemPink
+        movieInfoTableView.backgroundColor = .systemYellow
+        contentView.backgroundColor = .systemPurple
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.left"),
+            style: .plain,
+            target: self,
+            action: #selector(naviBackButtonTapped)
+        )
+        navigationItem.leftBarButtonItem?.tintColor = .black
     }
     private func configureUI(movieInfo: MovieInfo?) {
         guard let movieInfo else { return }
@@ -137,6 +146,9 @@ public class TrendMovieDetailViewController: UIViewController {
             }
         }
         
+    }
+    @objc private func naviBackButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
