@@ -30,7 +30,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             image: UIImage(systemName: "house"),
             selectedImage: UIImage(systemName: "house.fill")
         )
-        let secondVC = UINavigationController(rootViewController: MovieSearchViewController())
+        let secondVC = UINavigationController(rootViewController: SearchViewController())
         secondVC.tabBarItem = UITabBarItem(
             title: "검색",
             image: UIImage(systemName: "magnifyingglass"),

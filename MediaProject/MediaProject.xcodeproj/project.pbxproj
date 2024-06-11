@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C95381C62C189A65000A054D /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C52C189A65000A054D /* SearchViewController.swift */; };
+		C95381C82C189A84000A054D /* SearchMovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C72C189A84000A054D /* SearchMovieCollectionViewCell.swift */; };
+		C95381CA2C189B77000A054D /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C92C189B77000A054D /* UICollectionViewCell+.swift */; };
+		C95381CC2C18A12B000A054D /* SearchedMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381CB2C18A12B000A054D /* SearchedMovie.swift */; };
 		C968A1D42C118252004947C7 /* MovieSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C968A1D32C118252004947C7 /* MovieSearchViewController.swift */; };
 		C968A1D82C118EE1004947C7 /* UITableViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C968A1D72C118EE1004947C7 /* UITableViewCell+.swift */; };
 		C968A1DB2C118F92004947C7 /* SearchMovieListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C968A1DA2C118F92004947C7 /* SearchMovieListTableViewCell.swift */; };
@@ -37,6 +41,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C95381C52C189A65000A054D /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		C95381C72C189A84000A054D /* SearchMovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieCollectionViewCell.swift; sourceTree = "<group>"; };
+		C95381C92C189B77000A054D /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
+		C95381CB2C18A12B000A054D /* SearchedMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchedMovie.swift; sourceTree = "<group>"; };
 		C968A1D32C118252004947C7 /* MovieSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSearchViewController.swift; sourceTree = "<group>"; };
 		C968A1D72C118EE1004947C7 /* UITableViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+.swift"; sourceTree = "<group>"; };
 		C968A1DA2C118F92004947C7 /* SearchMovieListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieListTableViewCell.swift; sourceTree = "<group>"; };
@@ -80,6 +88,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C95381C42C188786000A054D /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				C95381C52C189A65000A054D /* SearchViewController.swift */,
+				C95381C72C189A84000A054D /* SearchMovieCollectionViewCell.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		C968A1D92C118F74004947C7 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +113,7 @@
 				C999FDDC2C17480C00855246 /* Trend.swift */,
 				C999FDEC2C17572800855246 /* TrendDetail.swift */,
 				C999FDEE2C175ACC00855246 /* MovieCredit.swift */,
+				C95381CB2C18A12B000A054D /* SearchedMovie.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -133,6 +151,7 @@
 		C9BD15742C0EFEB20049787E /* MediaProject */ = {
 			isa = PBXGroup;
 			children = (
+				C95381C42C188786000A054D /* Search */,
 				C999FDD92C17469100855246 /* Trend */,
 				C968A1E92C11AA45004947C7 /* Model */,
 				C968A1D92C118F74004947C7 /* TableView */,
@@ -157,6 +176,7 @@
 				C9BD15942C0F20E20049787E /* UITextField+.swift */,
 				C968A1D72C118EE1004947C7 /* UITableViewCell+.swift */,
 				C968A1EF2C11B534004947C7 /* UIViewController+.swift */,
+				C95381C92C189B77000A054D /* UICollectionViewCell+.swift */,
 			);
 			path = extension;
 			sourceTree = "<group>";
@@ -250,15 +270,19 @@
 				C968A1DB2C118F92004947C7 /* SearchMovieListTableViewCell.swift in Sources */,
 				C9BD15952C0F20E20049787E /* UITextField+.swift in Sources */,
 				C968A1EB2C11AA50004947C7 /* Movie.swift in Sources */,
+				C95381CC2C18A12B000A054D /* SearchedMovie.swift in Sources */,
+				C95381CA2C189B77000A054D /* UICollectionViewCell+.swift in Sources */,
 				C9BD157A2C0EFEB20049787E /* ViewController.swift in Sources */,
 				C999FDE92C1750AF00855246 /* TrendMovieDetailActorInfoTableViewCell.swift in Sources */,
 				C968A1E72C11A933004947C7 /* PrivateKey.swift in Sources */,
 				C9BD15762C0EFEB20049787E /* AppDelegate.swift in Sources */,
+				C95381C62C189A65000A054D /* SearchViewController.swift in Sources */,
 				C999FDE32C1749D900855246 /* TrendMovieDetailHeaderView.swift in Sources */,
 				C999FDED2C17572800855246 /* TrendDetail.swift in Sources */,
 				C968A1F02C11B534004947C7 /* UIViewController+.swift in Sources */,
 				C999FDDF2C17483100855246 /* TrendTableViewCell.swift in Sources */,
 				C968A1F22C11B591004947C7 /* WrongDataTableViewCell.swift in Sources */,
+				C95381C82C189A84000A054D /* SearchMovieCollectionViewCell.swift in Sources */,
 				C9BD15782C0EFEB20049787E /* SceneDelegate.swift in Sources */,
 				C999FDE12C1749B000855246 /* TrendMovieDetailViewController.swift in Sources */,
 				C999FDE72C174FAB00855246 /* TrendMovieDetailDescriptionTableViewCell.swift in Sources */,
