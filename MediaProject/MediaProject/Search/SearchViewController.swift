@@ -13,14 +13,14 @@ import SnapKit
 
 public class SearchViewController: UIViewController {
     private var page: Int = 1
+    private var isLastData: Bool = false
     private var searchedMovieList: SearchedMovie = SearchedMovie(
         page: 1,
         results: [SearchedMovieInfo(
             adult: false, 
             backdrop_path: "",
-            original_title: "",
+            poster_path: "", original_title: "",
             overview: "",
-            poster_path: "",
             title: "",
             id: 1
         )],
@@ -34,6 +34,7 @@ public class SearchViewController: UIViewController {
         )
         collection.delegate = self
         collection.dataSource = self
+        collection.prefetchDataSource = self
         collection.register(
             SearchMovieCollectionViewCell.self,
             forCellWithReuseIdentifier: SearchMovieCollectionViewCell.identifier
@@ -75,7 +76,8 @@ public class SearchViewController: UIViewController {
         let baseURL = PrivateKey.tmdb_Search_Movie_URL
         let query = "query=\(keyword)&include_adult=true&language=ko-KR&page=\(page)"
         let headers: HTTPHeaders = [
-            "Authorization": PrivateKey.TMDB_key
+            "Authorization": PrivateKey.TMDB_key,
+            "Content-Type": "application/json"
         ]
         guard let url = URL(string: baseURL + query) else { return }
         
@@ -87,8 +89,22 @@ public class SearchViewController: UIViewController {
             
             switch response.result {
             case .success(let value):
-                self.searchedMovieList = value
+                
+                if value.page == value.total_pages {
+                    isLastData = true
+                }
+                
+                if self.page == 1 {
+                    self.searchedMovieList = value
+                } else {
+                    self.searchedMovieList.results.append(contentsOf: value.results)
+                }
                 self.movieCollectionView.reloadData()
+                
+                if self.page == 1 {
+                    self.movieCollectionView.scrollToItem(at: .init(item: 0, section: 0), at: .top, animated: false)
+                }
+                
             case .failure(let err):
                 print(err)
             }
@@ -114,6 +130,7 @@ public class SearchViewController: UIViewController {
 
 extension SearchViewController: UISearchBarDelegate {
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        page = 1
         guard let text = searchBar.text else { return }
         callRequest(with: text)
     }
@@ -127,7 +144,6 @@ extension SearchViewController
     ) -> Int {
         return searchedMovieList.results.count
     }
-    
     public func collectionView(
         _ collectionView: UICollectionView, 
         cellForItemAt indexPath: IndexPath
@@ -138,12 +154,33 @@ extension SearchViewController
         ) as? SearchMovieCollectionViewCell
         else { return UICollectionViewCell() }
         
-        
-        
-        cell.configureUI(with: searchedMovieList.results[indexPath.item].poster_path)
+        cell.configureUI(with: searchedMovieList.results[indexPath.item].poster_path ?? "")
         
         return cell
     }
-
+}
+extension SearchViewController: UICollectionViewDataSourcePrefetching {
+    public func collectionView(
+        _ collectionView: UICollectionView,
+        prefetchItemsAt indexPaths: [IndexPath]
+    ) {
+        print(#function, indexPaths)
+        
+        for path in indexPaths {
+            if searchedMovieList.results.count - 6 == path.item && isLastData == false {
+                page += 1
+                print(#function, page)
+                guard let text = searchBar.text else { return }
+                callRequest(with: text)
+            }
+        }
+    }
+    
+    public func collectionView(
+        _ collectionView: UICollectionView,
+        cancelPrefetchingForItemsAt indexPaths: [IndexPath]
+    ) {
+        print(#function)
+    }
     
 }

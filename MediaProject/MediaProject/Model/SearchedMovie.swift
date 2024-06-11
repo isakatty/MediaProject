@@ -8,14 +8,15 @@
 import Foundation
 
 public struct SearchedMovie: Decodable {
-    let page: Int?
-    let results: [SearchedMovieInfo]
+    let page: Int
+    var results: [SearchedMovieInfo]
     let total_pages: Int
     let total_results: Int
 }
 
 public struct SearchedMovieInfo: Decodable {
     let adult: Bool
-    let backdrop_path, original_title, overview, poster_path, title: String
+    let backdrop_path, poster_path: String?
+    let original_title, overview, title: String
     let id: Int
 }
