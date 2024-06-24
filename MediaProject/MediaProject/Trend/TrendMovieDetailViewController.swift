@@ -95,7 +95,7 @@ public class TrendMovieDetailViewController: UIViewController {
     private func configureUI(movieInfo: MovieInfo?) {
         guard let movieInfo else { return }
         
-        NetworkManager.shared.callMovieDetail(with: movieInfo) { [weak self] credit, info in
+        NetworkService.shared.callMovieDetail(with: movieInfo) { [weak self] credit, info in
             guard let self = self else { return }
             self.trendDetailData[0].descriptionText = info.overview
             self.trendDetailData[1].actorInfo = credit.cast

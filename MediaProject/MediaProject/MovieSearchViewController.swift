@@ -65,7 +65,7 @@ class MovieSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NetworkManager.shared.callSearchKofic(
+        NetworkService.shared.callSearchKofic(
             date: yesterdayDate()
         ) { [weak self] result in
             guard let self = self else { return }
@@ -113,7 +113,7 @@ class MovieSearchViewController: UIViewController {
     
     @objc func searchBtnTapped() {
         if searchTextField.text != nil {
-            NetworkManager.shared
+            NetworkService.shared
                 .callSearchKofic(date: searchTextField.text ?? ""
                 ) { [weak self] result in
                     guard let self = self else { return }
@@ -160,7 +160,7 @@ extension MovieSearchViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.text != nil {
-            NetworkManager.shared
+            NetworkService.shared
                 .callSearchKofic(date: searchTextField.text ?? ""
                 ) { [weak self] result in
                     guard let self = self else { return }
@@ -171,7 +171,7 @@ extension MovieSearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField.text != nil {
-            NetworkManager.shared
+            NetworkService.shared
                 .callSearchKofic(date: searchTextField.text ?? ""
                 ) { [weak self] result in
                     guard let self = self else { return }

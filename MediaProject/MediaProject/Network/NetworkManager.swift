@@ -9,8 +9,25 @@ import Foundation
 
 import Alamofire
 
-public final class NetworkManager {
-    static let shared = NetworkManager()
+protocol NetworkServiceProtocol {
+    func callTrendList(completionHandler: @escaping ([MovieInfo]) -> Void)
+    func callMovieDetail(
+        with movieInfo: MovieInfo,
+        completionHandler: @escaping (MovieCredit, MovieInfo) -> Void
+    )
+    func callSearchKofic(
+        date: String,
+        completionHandler: @escaping (Result<Movie, Error>) -> Void
+    )
+    func callSearchTMDB(
+        with keyword: String,
+        page: Int,
+        completionHandler: @escaping (SearchedMovie) -> Void
+    )
+}
+
+public final class NetworkService: NetworkServiceProtocol {
+    static let shared = NetworkService()
     
     private var api_key: String {
         return Bundle.main.object(
@@ -22,7 +39,6 @@ public final class NetworkManager {
             forInfoDictionaryKey: "TMDB_API_TOKEN"
         ) as? String ?? ""
     }
-    
     private let params: Parameters = ["language": "ko-KR"]
     private lazy var headers: HTTPHeaders = [
         "accept": "application/json",
@@ -84,8 +100,7 @@ public final class NetworkManager {
         
         AF.request(movieURL).responseDecodable(
             of: Movie.self
-        ) { [weak self] response in
-            guard let self = self else { return }
+        ) { response in
             switch response.result {
             case .success(let movie):
                 completionHandler(.success(movie))
@@ -106,8 +121,7 @@ public final class NetworkManager {
         AF.request(
             url,
             headers: headers
-        ).responseDecodable(of: SearchedMovie.self) { [weak self] response in
-            guard let self else { return }
+        ).responseDecodable(of: SearchedMovie.self) {response in
             switch response.result {
             case .success(let value):
                 completionHandler(value)

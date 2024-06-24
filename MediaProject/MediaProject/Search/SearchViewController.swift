@@ -110,7 +110,7 @@ extension SearchViewController: UISearchBarDelegate {
         isLastData = false
         searchedMovieList.results.removeAll()
         guard let text = searchBar.text else { return }
-        NetworkManager.shared.callSearchTMDB(
+        NetworkService.shared.callSearchTMDB(
             with: text,
             page: page
         ) { [weak self] movie in
@@ -156,7 +156,7 @@ extension SearchViewController: UICollectionViewDataSourcePrefetching {
                 page += 1
                 print("Prefetching, New Page: \(page)")
                 guard let text = searchBar.text else { return }
-                NetworkManager.shared.callSearchTMDB(
+                NetworkService.shared.callSearchTMDB(
                     with: text,
                     page: page
                 ) { [weak self] movie in

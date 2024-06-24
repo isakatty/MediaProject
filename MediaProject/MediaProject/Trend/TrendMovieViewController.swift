@@ -36,7 +36,7 @@ public class TrendMovieViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureUI()
-        NetworkManager.shared.callTrendList { [weak self] movies in
+        NetworkService.shared.callTrendList { [weak self] movies in
             guard let self = self else { return }
             
             self.trendMovie = movies
