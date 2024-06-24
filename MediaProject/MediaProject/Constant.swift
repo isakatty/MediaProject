@@ -14,9 +14,14 @@ enum Constant {
         static let tmdb_search_URL = "https://api.themoviedb.org/3/movie/"
         static let tmdb_Search_Movie_URL = "https://api.themoviedb.org/3/search/movie?"
         static let kofic_URL = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?"
+        static let tmdb_similar_URL = "https://api.themoviedb.org/3/movie/"
+        //movie_id/similar
     }
     
     enum Font {
+        static let bold23 = UIFont.boldSystemFont(ofSize: 23)
+        static let bold21 = UIFont.boldSystemFont(ofSize: 21)
+        static let bold19 = UIFont.boldSystemFont(ofSize: 19)
         static let bold17 = UIFont.boldSystemFont(ofSize: 17)
         static let bold15 = UIFont.boldSystemFont(ofSize: 15)
         static let bold13 = UIFont.boldSystemFont(ofSize: 13)
