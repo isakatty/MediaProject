@@ -16,14 +16,7 @@ public class SearchViewController: UIViewController {
     private var isLastData: Bool = false
     private var searchedMovieList: SearchedMovie = SearchedMovie(
         page: 1,
-        results: [SearchedMovieInfo(
-            adult: false, 
-            backdrop_path: "",
-            poster_path: "", original_title: "",
-            overview: "",
-            title: "",
-            id: 1
-        )],
+        results: [],
         total_pages: 1,
         total_results: 1
     )
@@ -131,6 +124,8 @@ public class SearchViewController: UIViewController {
 extension SearchViewController: UISearchBarDelegate {
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         page = 1
+        isLastData = false
+        searchedMovieList.results.removeAll()
         guard let text = searchBar.text else { return }
         callRequest(with: text)
     }
@@ -167,9 +162,10 @@ extension SearchViewController: UICollectionViewDataSourcePrefetching {
         print(#function, indexPaths)
         
         for path in indexPaths {
-            if searchedMovieList.results.count - 6 == path.item && isLastData == false {
+            let isReadyToPagenation = searchedMovieList.results.count - 6 == path.item
+            if isReadyToPagenation && isLastData == false {
                 page += 1
-                print(#function, page)
+                print("Prefetching, New Page: \(page)")
                 guard let text = searchBar.text else { return }
                 callRequest(with: text)
             }

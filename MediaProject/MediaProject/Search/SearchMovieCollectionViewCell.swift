@@ -45,7 +45,6 @@ public class SearchMovieCollectionViewCell: UICollectionViewCell {
     
     public override func prepareForReuse() {
         super.prepareForReuse()
+        movieImageView.image = nil
     }
-    
-    
 }

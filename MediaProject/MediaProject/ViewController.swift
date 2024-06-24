@@ -26,26 +26,41 @@ class ViewController: UIViewController {
         return stack
     }()
     let playButton: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("재생", for: .normal)
-        btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setTitleColor(UIColor.black, for: .normal)
-        btn.setImage(UIImage(systemName: "play.fill"), for: .normal)
-        btn.tintColor = UIColor.black
-        btn.backgroundColor = .white
-        btn.clipsToBounds = true
-        btn.layer.cornerRadius = 10
+        var config = UIButton.Configuration.filled()
+        var titleContainer = AttributeContainer()
+        titleContainer.font = Constant.Font.regular14
+        titleContainer.foregroundColor = UIColor.black
+        
+        config.attributedTitle = AttributedString("재생", attributes: titleContainer)
+        config.image = UIImage(systemName: "play.fill")?
+            .withTintColor(.black)
+            .withRenderingMode(.alwaysOriginal)
+        config.imagePadding = 10
+        config.imagePlacement = .leading
+        config.background.backgroundColor = UIColor.white
+        config.cornerStyle = .large
+        
+        let btn = UIButton(configuration: config)
         return btn
     }()
     let favListButton: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("내가 찜한 리스트", for: .normal)
-        btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.setImage(UIImage(systemName: "plus"), for: .normal)
-        btn.tintColor = .white
-        btn.backgroundColor = .darkGray
-        btn.clipsToBounds = true
-        btn.layer.cornerRadius = 10
+        var config = UIButton.Configuration.filled()
+        var titleContainer = AttributeContainer()
+        titleContainer.font = Constant.Font.regular13
+        titleContainer.foregroundColor = UIColor.white
+        config.attributedTitle = AttributedString(
+            "내가 찜한 리스트",
+            attributes: titleContainer
+        )
+        config.image = UIImage(systemName: "plus")?
+            .withTintColor(.white)
+            .withRenderingMode(.alwaysOriginal)
+        config.imagePadding = 5
+        config.imagePlacement = .leading
+        config.background.backgroundColor = UIColor.darkGray
+        config.cornerStyle = .large
+        
+        let btn = UIButton(configuration: config)
         return btn
     }()
     

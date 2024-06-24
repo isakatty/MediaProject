@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C912D7162C295CE100361F66 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C912D7152C295CE100361F66 /* Constant.swift */; };
 		C95381C62C189A65000A054D /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C52C189A65000A054D /* SearchViewController.swift */; };
 		C95381C82C189A84000A054D /* SearchMovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C72C189A84000A054D /* SearchMovieCollectionViewCell.swift */; };
 		C95381CA2C189B77000A054D /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C92C189B77000A054D /* UICollectionViewCell+.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C912D7152C295CE100361F66 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		C95381C52C189A65000A054D /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C95381C72C189A84000A054D /* SearchMovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		C95381C92C189B77000A054D /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				C9BD15832C0EFEB30049787E /* Info.plist */,
 				C968A1E52C11A684004947C7 /* Config.xcconfig */,
 				C968A1E62C11A933004947C7 /* PrivateKey.swift */,
+				C912D7152C295CE100361F66 /* Constant.swift */,
 			);
 			path = MediaProject;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				C999FDED2C17572800855246 /* TrendDetail.swift in Sources */,
 				C968A1F02C11B534004947C7 /* UIViewController+.swift in Sources */,
 				C999FDDF2C17483100855246 /* TrendTableViewCell.swift in Sources */,
+				C912D7162C295CE100361F66 /* Constant.swift in Sources */,
 				C968A1F22C11B591004947C7 /* WrongDataTableViewCell.swift in Sources */,
 				C95381C82C189A84000A054D /* SearchMovieCollectionViewCell.swift in Sources */,
 				C9BD15782C0EFEB20049787E /* SceneDelegate.swift in Sources */,
