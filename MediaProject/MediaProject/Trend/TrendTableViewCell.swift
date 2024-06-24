@@ -142,7 +142,7 @@ public class TrendTableViewCell: UITableViewCell {
     public func configureUI(
         movieInfo: MovieInfo
     ) {
-        guard let imageUrl = URL(string: PrivateKey.imageURL + movieInfo.backdrop_path) else { return }
+        guard let imageUrl = URL(string: Constant.Endpoint.imageURL + movieInfo.backdrop_path) else { return }
         imagePosterImage.kf.setImage(with: imageUrl)
         movieTitleLabel.text = movieInfo.title
         releaseDateLabel.text = movieInfo.release_date

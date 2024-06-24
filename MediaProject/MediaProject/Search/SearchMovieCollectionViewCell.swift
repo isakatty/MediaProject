@@ -37,7 +37,7 @@ public class SearchMovieCollectionViewCell: UICollectionViewCell {
     public func configureUI(
         with imageString: String
     ) {
-        let baseURL = PrivateKey.imageURL
+        let baseURL = Constant.Endpoint.imageURL
         guard let url = URL(string: baseURL + imageString) else { return }
         
         movieImageView.kf.setImage(with: url)

@@ -24,6 +24,10 @@ protocol NetworkServiceProtocol {
         page: Int,
         completionHandler: @escaping (SearchedMovie) -> Void
     )
+    func callSimilarTMDB(
+        movieID: Int,
+        completionHanlder: @escaping (SimilarMovies) -> Void
+    )
 }
 
 public final class NetworkService: NetworkServiceProtocol {
@@ -72,7 +76,7 @@ public final class NetworkService: NetworkServiceProtocol {
         completionHandler: @escaping (MovieCredit, MovieInfo) -> Void
     ) {
         let pathParams: String = String(movieInfo.id) + "/credits"
-        let url = PrivateKey.tmdb_search_URL + pathParams
+        let url = Constant.Endpoint.tmdb_search_URL + pathParams
 
         AF.request(
             url,
@@ -129,5 +133,31 @@ public final class NetworkService: NetworkServiceProtocol {
                 print(err)
             }
         }
+    }
+    
+    func callSimilarTMDB(
+        movieID: Int,
+        completionHanlder: @escaping (SimilarMovies) -> Void
+    ) {
+        let pathParams: String = "\(movieID)/similar"
+        let baseURL = Constant.Endpoint.tmdb_similar_URL
+        
+        guard let url = URL(string: baseURL + pathParams) else { return }
+        
+        AF.request(
+            url,
+            parameters: params,
+            headers: headers
+        )
+        .validate(statusCode: 200..<300)
+        .responseDecodable(of: SimilarMovies.self) { response in
+            switch response.result {
+            case .success(let value):
+                completionHanlder(value)
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
     }
 }

@@ -11,12 +11,6 @@ import Alamofire
 import Kingfisher
 import SnapKit
 
-// MARK: ScrollView의 height 제약 모호함 -> 스크롤 안됨
-// MARK: TableView는 ScrollView를 상속받은 것. 그래서 ScrollView 안에 TableView를 넣는 것은 약간 어색함.
-// Tableview의 재사용 mechanism에도 문제가 있을 수 있음.
-// scroll이 되면서 cell 재사용.
-// TableView header / section 으로 구성한다면 ?
-
 public class TrendMovieDetailViewController: UIViewController {
     public var movieInfo: MovieInfo?
     private var trendDetailData: [TrendDetail] = [
@@ -34,6 +28,19 @@ public class TrendMovieDetailViewController: UIViewController {
         didSet {
             movieInfoTableView.reloadData()
         }
+    }
+    
+    public init(movieInfo: MovieInfo?) {
+        self.movieInfo = movieInfo
+        
+        super.init(
+            nibName: nil,
+            bundle: nil
+        )
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     private lazy var movieInfoTableView: UITableView = {
         let tableView = UITableView()

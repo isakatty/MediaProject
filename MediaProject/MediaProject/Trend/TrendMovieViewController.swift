@@ -89,9 +89,8 @@ extension TrendMovieViewController: UITableViewDelegate, UITableViewDataSource {
     ) {
         tableView.reloadData()
         
-        let vc = TrendMovieDetailViewController()
-        vc.movieInfo = trendMovie[indexPath.row]
-        
+//        let vc = TrendMovieDetailViewController(movieInfo: trendMovie[indexPath.row])
+        let vc = SimilarMovieViewController(movie: trendMovie[indexPath.row])
         navigationController?.pushViewController(
             vc,
             animated: true
