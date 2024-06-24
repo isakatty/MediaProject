@@ -36,7 +36,11 @@ public class TrendMovieViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureUI()
-        networkTrend()
+        NetworkManager.shared.callTrendList { [weak self] movies in
+            guard let self = self else { return }
+            
+            self.trendMovie = movies
+        }
     }
     
     private func configureHierarchy() {
@@ -55,33 +59,6 @@ public class TrendMovieViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationItem.title = "트렌드"
     }
-
-    private func networkTrend() {
-        let url = PrivateKey.tmdb_URL
-        let params: Parameters = ["language": "ko-KR"]
-        let headers: HTTPHeaders = [
-            "accept": "application/json",
-            "Authorization": PrivateKey.TMDB_key
-        ]
-        
-        AF.request(
-            url,
-            parameters: params,
-            headers: headers
-        )
-        .validate(statusCode: 200..<300)
-        .responseDecodable(of: Trend.self) { [weak self] response in
-            guard let self = self else { return }
-            
-            switch response.result {
-            case .success(let value):
-                self.trendMovie = value.results
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
-
 }
 
 extension TrendMovieViewController: UITableViewDelegate, UITableViewDataSource {

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C912D7162C295CE100361F66 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C912D7152C295CE100361F66 /* Constant.swift */; };
+		C912D7192C29638600361F66 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C912D7182C29638600361F66 /* NetworkManager.swift */; };
 		C95381C62C189A65000A054D /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C52C189A65000A054D /* SearchViewController.swift */; };
 		C95381C82C189A84000A054D /* SearchMovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C72C189A84000A054D /* SearchMovieCollectionViewCell.swift */; };
 		C95381CA2C189B77000A054D /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C92C189B77000A054D /* UICollectionViewCell+.swift */; };
@@ -43,6 +44,7 @@
 
 /* Begin PBXFileReference section */
 		C912D7152C295CE100361F66 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		C912D7182C29638600361F66 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		C95381C52C189A65000A054D /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C95381C72C189A84000A054D /* SearchMovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		C95381C92C189B77000A054D /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
@@ -90,6 +92,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C912D7172C29637A00361F66 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				C912D7182C29638600361F66 /* NetworkManager.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		C95381C42C188786000A054D /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +163,8 @@
 		C9BD15742C0EFEB20049787E /* MediaProject */ = {
 			isa = PBXGroup;
 			children = (
+				C912D7152C295CE100361F66 /* Constant.swift */,
+				C912D7172C29637A00361F66 /* Network */,
 				C95381C42C188786000A054D /* Search */,
 				C999FDD92C17469100855246 /* Trend */,
 				C968A1E92C11AA45004947C7 /* Model */,
@@ -168,7 +180,6 @@
 				C9BD15832C0EFEB30049787E /* Info.plist */,
 				C968A1E52C11A684004947C7 /* Config.xcconfig */,
 				C968A1E62C11A933004947C7 /* PrivateKey.swift */,
-				C912D7152C295CE100361F66 /* Constant.swift */,
 			);
 			path = MediaProject;
 			sourceTree = "<group>";
@@ -288,6 +299,7 @@
 				C968A1F22C11B591004947C7 /* WrongDataTableViewCell.swift in Sources */,
 				C95381C82C189A84000A054D /* SearchMovieCollectionViewCell.swift in Sources */,
 				C9BD15782C0EFEB20049787E /* SceneDelegate.swift in Sources */,
+				C912D7192C29638600361F66 /* NetworkManager.swift in Sources */,
 				C999FDE12C1749B000855246 /* TrendMovieDetailViewController.swift in Sources */,
 				C999FDE72C174FAB00855246 /* TrendMovieDetailDescriptionTableViewCell.swift in Sources */,
 				C968A1D42C118252004947C7 /* MovieSearchViewController.swift in Sources */,

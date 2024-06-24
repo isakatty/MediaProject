@@ -9,7 +9,11 @@ import UIKit
 
 enum Constant {
     enum Endpoint {
-        static let baseURL = "https://openapi.naver.com/v1/search/shop.json?"
+        static let imageURL = "https://image.tmdb.org/t/p/original"
+        static let tmdb_URL = "https://api.themoviedb.org/3/trending/movie/week?"
+        static let tmdb_search_URL = "https://api.themoviedb.org/3/movie/"
+        static let tmdb_Search_Movie_URL = "https://api.themoviedb.org/3/search/movie?"
+        static let kofic_URL = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?"
     }
     
     enum Font {

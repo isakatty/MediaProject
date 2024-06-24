@@ -65,7 +65,12 @@ class MovieSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        networking(date: yesterdayDate())
+        NetworkManager.shared.callSearchKofic(
+            date: yesterdayDate()
+        ) { [weak self] result in
+            guard let self = self else { return }
+            self.handleSearchResult(result)
+        }
         
         hideKeyboard()
         configureHierarchy()
@@ -105,28 +110,15 @@ class MovieSearchViewController: UIViewController {
     private func configureUI() {
         view.backgroundColor = .darkGray
     }
-    private func networking(date: String) {
-        let movieURL = PrivateKey.url + date
-        
-        AF.request(movieURL).responseDecodable(
-            of: Movie.self
-        ) { [weak self] response in
-            guard let self = self else { return }
-            switch response.result {
-            case .success(let movie):
-                isNetwork = true
-                self.searchMovieList = movie.boxOfficeResult.dailyBoxOfficeList
-                self.searchTextField.text = movie.boxOfficeResult.showRange
-            case .failure(_):
-                isNetwork = false
-                self.movieListTableView.reloadData()
-            }
-        }
-    }
     
     @objc func searchBtnTapped() {
         if searchTextField.text != nil {
-            networking(date: searchTextField.text ?? "")
+            NetworkManager.shared
+                .callSearchKofic(date: searchTextField.text ?? ""
+                ) { [weak self] result in
+                    guard let self = self else { return }
+                    self.handleSearchResult(result)
+                }
         }
         view.endEditing(true)
     }
@@ -144,6 +136,19 @@ class MovieSearchViewController: UIViewController {
             return "20240605"
         }
     }
+    private func handleSearchResult(_ result: Result<Movie, Error>) {
+        switch result {
+        case .success(let movie):
+            self.isNetwork = true
+            self.searchMovieList = movie.boxOfficeResult.dailyBoxOfficeList
+            self.searchTextField.text = movie.boxOfficeResult.showRange
+        case .failure(let error):
+            self.isNetwork = false
+            self.movieListTableView.reloadData()
+            print("Error: \(error.localizedDescription)")
+        }
+    }
+
     
 }
 
@@ -155,13 +160,23 @@ extension MovieSearchViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.text != nil {
-            networking(date: textField.text ?? "")
+            NetworkManager.shared
+                .callSearchKofic(date: searchTextField.text ?? ""
+                ) { [weak self] result in
+                    guard let self = self else { return }
+                    self.handleSearchResult(result)
+                }
         }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField.text != nil {
-            networking(date: textField.text ?? "")
+            NetworkManager.shared
+                .callSearchKofic(date: searchTextField.text ?? ""
+                ) { [weak self] result in
+                    guard let self = self else { return }
+                    self.handleSearchResult(result)
+                }
             view.endEditing(true)
         }
         return false

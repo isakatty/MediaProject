@@ -94,39 +94,13 @@ public class TrendMovieDetailViewController: UIViewController {
     }
     private func configureUI(movieInfo: MovieInfo?) {
         guard let movieInfo else { return }
-        networking(with: movieInfo)
-    }
-    private func networking(
-        with movieInfo: MovieInfo
-    ) {
-        let pathParams: String = String(movieInfo.id) + "/credits"
-        let url = PrivateKey.tmdb_search_URL + pathParams
-        let queryParams: Parameters = ["language": "ko-KR"]
-        let headers: HTTPHeaders = [
-            "accept": "application/json",
-            "Authorization": PrivateKey.TMDB_key
-        ]
         
-        AF.request(
-            url,
-            parameters: queryParams,
-            headers: headers
-        )
-        .validate(statusCode: 200..<300)
-        .responseDecodable(of: MovieCredit.self) { [weak self] response in
-            guard let self else { return }
-            switch response.result {
-            case .success(let value):
-                print("Success")
-                self.trendDetailData[0].descriptionText = movieInfo.overview
-                self.trendDetailData[1].actorInfo = value.cast
-            case .failure(let error):
-                print(error)
-            }
+        NetworkManager.shared.callMovieDetail(with: movieInfo) { [weak self] credit, info in
+            guard let self = self else { return }
+            self.trendDetailData[0].descriptionText = info.overview
+            self.trendDetailData[1].actorInfo = credit.cast
         }
-        
     }
-    
     @objc private func naviBackButtonTapped() {
         navigationController?.popViewController(animated: true)
     }

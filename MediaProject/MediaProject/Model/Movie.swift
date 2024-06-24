@@ -8,17 +8,17 @@
 import Foundation
 
 // MARK: - Movie
-struct Movie: Codable {
+public struct Movie: Codable {
     let boxOfficeResult: BoxOfficeResult
 }
 
 // MARK: - BoxOfficeResult
-struct BoxOfficeResult: Codable {
+public struct BoxOfficeResult: Codable {
     let boxofficeType, showRange: String
     let dailyBoxOfficeList: [DailyBoxOfficeList]
 }
 
 // MARK: - DailyBoxOfficeList
-struct DailyBoxOfficeList: Codable {
+public struct DailyBoxOfficeList: Codable {
     let rank, movieNm, openDt: String
 }

@@ -65,42 +65,25 @@ public class SearchViewController: UIViewController {
             make.bottom.leading.trailing.equalTo(safeArea)
         }
     }
-    private func callRequest(with keyword: String) {
-        let baseURL = PrivateKey.tmdb_Search_Movie_URL
-        let query = "query=\(keyword)&include_adult=true&language=ko-KR&page=\(page)"
-        let headers: HTTPHeaders = [
-            "Authorization": PrivateKey.TMDB_key,
-            "Content-Type": "application/json"
-        ]
-        guard let url = URL(string: baseURL + query) else { return }
-        
-        AF.request(
-            url,
-            headers: headers
-        ).responseDecodable(of: SearchedMovie.self) { [weak self] response in
-            guard let self else { return }
-            
-            switch response.result {
-            case .success(let value):
-                
-                if value.page == value.total_pages {
-                    isLastData = true
-                }
-                
-                if self.page == 1 {
-                    self.searchedMovieList = value
-                } else {
-                    self.searchedMovieList.results.append(contentsOf: value.results)
-                }
-                self.movieCollectionView.reloadData()
-                
-                if self.page == 1 {
-                    self.movieCollectionView.scrollToItem(at: .init(item: 0, section: 0), at: .top, animated: false)
-                }
-                
-            case .failure(let err):
-                print(err)
-            }
+    private func handleSearchedMovie(movie: SearchedMovie) {
+        if movie.page == movie.total_pages {
+            isLastData = true
+        }
+        if page == 1 {
+            searchedMovieList = movie
+        } else {
+            searchedMovieList.results.append(contentsOf: movie.results)
+        }
+        movieCollectionView.reloadData()
+        if page == 1 {
+            movieCollectionView.scrollToItem(
+                at: .init(
+                    item: 0,
+                    section: 0
+                ),
+                at: .top,
+                animated: false
+            )
         }
     }
     private func collectionViewLayout() -> UICollectionViewLayout {
@@ -127,7 +110,13 @@ extension SearchViewController: UISearchBarDelegate {
         isLastData = false
         searchedMovieList.results.removeAll()
         guard let text = searchBar.text else { return }
-        callRequest(with: text)
+        NetworkManager.shared.callSearchTMDB(
+            with: text,
+            page: page
+        ) { [weak self] movie in
+            guard let self = self else { return }
+            handleSearchedMovie(movie: movie)
+        }
     }
 }
 
@@ -167,7 +156,13 @@ extension SearchViewController: UICollectionViewDataSourcePrefetching {
                 page += 1
                 print("Prefetching, New Page: \(page)")
                 guard let text = searchBar.text else { return }
-                callRequest(with: text)
+                NetworkManager.shared.callSearchTMDB(
+                    with: text,
+                    page: page
+                ) { [weak self] movie in
+                    guard let self = self else { return }
+                    handleSearchedMovie(movie: movie)
+                }
             }
         }
     }
