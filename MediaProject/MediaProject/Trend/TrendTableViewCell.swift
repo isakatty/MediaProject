@@ -100,7 +100,6 @@ public class TrendTableViewCell: UITableViewCell {
             make.leading.trailing.equalToSuperview().inset(30)
             make.height.equalTo(20)
         }
-        
         squareView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(30)
             make.top.equalTo(releaseDateLabel.snp.bottom).offset(8)
@@ -112,21 +111,18 @@ public class TrendTableViewCell: UITableViewCell {
             make.center.equalToSuperview()
         }
         infoView.snp.makeConstraints { make in
+            make.top.equalTo(imagePosterImage.snp.top).offset(180)
+            make.leading.trailing.equalTo(squareView)
             make.bottom.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(180)
         }
         movieTitleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(16)
             make.leading.trailing.equalToSuperview().inset(16)
-            make.centerX.equalToSuperview()
             make.height.equalTo(20)
         }
         seperateBar.snp.makeConstraints { make in
-            make.top.equalTo(movieTitleLabel.snp.bottom).offset(20)
+            make.top.equalTo(movieTitleLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(16)
-            make.centerX.equalToSuperview()
             make.height.equalTo(1)
         }
         detailLabel.snp.makeConstraints { make in
@@ -141,7 +137,6 @@ public class TrendTableViewCell: UITableViewCell {
             make.width.equalTo(20)
             make.bottom.equalToSuperview().inset(8)
         }
-        
     }
     
     public func configureUI(
@@ -155,11 +150,11 @@ public class TrendTableViewCell: UITableViewCell {
     
     public override func prepareForReuse() {
         super.prepareForReuse()
-        
+        // Reset the cell's content and layout states
+        releaseDateLabel.text = nil
         imagePosterImage.image = nil
-        infoView.backgroundColor = .white
         movieTitleLabel.text = nil
         detailLabel.text = "자세히 보기"
-        releaseDateLabel.text = nil
+        chevronImageView.image = UIImage(systemName: "chevron.forward")?.withRenderingMode(.alwaysOriginal)
     }
 }

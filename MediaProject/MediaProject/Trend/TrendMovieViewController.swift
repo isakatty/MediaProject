@@ -26,6 +26,7 @@ public class TrendMovieViewController: UIViewController {
             forCellReuseIdentifier: TrendTableViewCell.identifier
         )
         table.separatorStyle = .none
+        table.rowHeight = 320
         return table
     }()
 
@@ -95,7 +96,10 @@ extension TrendMovieViewController: UITableViewDelegate, UITableViewDataSource {
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TrendTableViewCell.identifier, for: indexPath) as? TrendTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: TrendTableViewCell.identifier,
+            for: indexPath
+        ) as? TrendTableViewCell else { return UITableViewCell() }
         
         cell.configureUI(movieInfo: trendMovie[indexPath.row])
         
