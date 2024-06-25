@@ -1,0 +1,62 @@
+//
+//  Endpoint.swift
+//  MediaProject
+//
+//  Created by Jisoo HAM on 6/25/24.
+//
+
+import Foundation
+
+public enum Scheme: String {
+    case http, https
+}
+
+public protocol Endpoint {
+    var scheme: Scheme { get }
+    var host: String { get }
+    var port: String { get }
+    var path: String { get }
+    var query: [String: String] { get }
+    var header: [String: String] { get }
+    var body: [String: Any] { get }
+    var method: HTTPMethod { get }
+}
+
+extension Endpoint {
+    public var toURL: String {
+        var urlComponent = URLComponents()
+        urlComponent.scheme = scheme.rawValue
+        urlComponent.host = host
+        urlComponent.port = Int(port)
+        urlComponent.path = path
+        if !query.isEmpty {
+            urlComponent.queryItems = query.map {
+                URLQueryItem(name: $0.key, value: $0.value)
+            }
+        }
+        return urlComponent.url?.absoluteString.replacingOccurrences(
+            of: "%25",
+            with: "%"
+        ) ?? ""
+    }
+    public var url: URL? {
+        var components = URLComponents()
+        components.scheme = scheme.rawValue
+        components.host = host
+        components.port = Int(port)
+        components.path = path
+        components.queryItems = query.map {
+            URLQueryItem(
+                name: $0.key,
+                value: $0.value
+            )
+        }
+        
+        guard let urlStr = components.url?.absoluteString.replacingOccurrences(
+            of: "%25",
+            with: "%"
+        ) else { return nil}
+        
+        return URL(string: urlStr)
+    }
+}

@@ -16,6 +16,11 @@ enum Constant {
         static let kofic_URL = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?"
         static let tmdb_similar_URL = "https://api.themoviedb.org/3/movie/"
         //movie_id/similar
+        
+        static var TMDB_key: String = Bundle.main.object(
+            forInfoDictionaryKey: "TMDB_API_TOKEN"
+        ) as? String ?? ""
+        
     }
     
     enum Font {

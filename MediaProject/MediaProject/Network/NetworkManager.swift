@@ -70,7 +70,6 @@ public final class NetworkService: NetworkServiceProtocol {
             }
         }
     }
-    
     public func callMovieDetail(
         with movieInfo: MovieInfo,
         completionHandler: @escaping (MovieCredit, MovieInfo) -> Void
@@ -94,7 +93,6 @@ public final class NetworkService: NetworkServiceProtocol {
             }
         }
     }
-    
     public func callSearchKofic(
         date: String,
         completionHandler: @escaping (Result<Movie, Error>) -> Void
@@ -135,7 +133,7 @@ public final class NetworkService: NetworkServiceProtocol {
         }
     }
     
-    func callSimilarTMDB(
+    public func callSimilarTMDB(
         movieID: Int,
         completionHanlder: @escaping (SimilarMovies) -> Void
     ) {
@@ -159,5 +157,23 @@ public final class NetworkService: NetworkServiceProtocol {
             }
         }
         
+    }
+    public func callRecommendTMDB(
+        endPoint: Endpoint
+    ) {
+        guard let url = URL(string: endPoint.toURL) else { return }
+        AF.request(
+            url,
+            headers: HTTPHeaders(endPoint.header)
+        )
+            .validate(statusCode: 200..<300)
+            .responseString { response in
+                switch response.result {
+                case .success(let value):
+                    print(value)
+                case.failure(let error):
+                    print(error)
+                }
+            }
     }
 }

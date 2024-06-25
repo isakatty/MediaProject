@@ -43,6 +43,9 @@
 		C9BD15822C0EFEB30049787E /* Base in Resources */ = {isa = PBXBuildFile; fileRef = C9BD15812C0EFEB30049787E /* Base */; };
 		C9BD15912C0F18AF0049787E /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD15902C0F18AF0049787E /* JoinViewController.swift */; };
 		C9BD15952C0F20E20049787E /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD15942C0F20E20049787E /* UITextField+.swift */; };
+		C9FA01AB2C2B00E700E5C100 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FA01AA2C2B00E700E5C100 /* Endpoint.swift */; };
+		C9FA01AD2C2B021700E5C100 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FA01AC2C2B021700E5C100 /* HTTPMethod.swift */; };
+		C9FA01AF2C2B067400E5C100 /* RecommendEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FA01AE2C2B067400E5C100 /* RecommendEndPoint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +85,9 @@
 		C9BD15832C0EFEB30049787E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9BD15902C0F18AF0049787E /* JoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewController.swift; sourceTree = "<group>"; };
 		C9BD15942C0F20E20049787E /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		C9FA01AA2C2B00E700E5C100 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		C9FA01AC2C2B021700E5C100 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		C9FA01AE2C2B067400E5C100 /* RecommendEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendEndPoint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +107,10 @@
 		C912D7172C29637A00361F66 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				C9FA01AC2C2B021700E5C100 /* HTTPMethod.swift */,
+				C9FA01AA2C2B00E700E5C100 /* Endpoint.swift */,
 				C912D7182C29638600361F66 /* NetworkManager.swift */,
+				C9FA01AE2C2B067400E5C100 /* RecommendEndPoint.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -302,10 +311,12 @@
 				C912D7222C29BE6100361F66 /* UILabel+.swift in Sources */,
 				C999FDEF2C175ACC00855246 /* MovieCredit.swift in Sources */,
 				C968A1DB2C118F92004947C7 /* SearchMovieListTableViewCell.swift in Sources */,
+				C9FA01AB2C2B00E700E5C100 /* Endpoint.swift in Sources */,
 				C9BD15952C0F20E20049787E /* UITextField+.swift in Sources */,
 				C968A1EB2C11AA50004947C7 /* Movie.swift in Sources */,
 				C95381CC2C18A12B000A054D /* SearchedMovie.swift in Sources */,
 				C95381CA2C189B77000A054D /* UICollectionViewCell+.swift in Sources */,
+				C9FA01AF2C2B067400E5C100 /* RecommendEndPoint.swift in Sources */,
 				C9BD157A2C0EFEB20049787E /* ViewController.swift in Sources */,
 				C999FDE92C1750AF00855246 /* TrendMovieDetailActorInfoTableViewCell.swift in Sources */,
 				C9BD15762C0EFEB20049787E /* AppDelegate.swift in Sources */,
@@ -323,6 +334,7 @@
 				C999FDE12C1749B000855246 /* TrendMovieDetailViewController.swift in Sources */,
 				C999FDE72C174FAB00855246 /* TrendMovieDetailDescriptionTableViewCell.swift in Sources */,
 				C968A1D42C118252004947C7 /* MovieSearchViewController.swift in Sources */,
+				C9FA01AD2C2B021700E5C100 /* HTTPMethod.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

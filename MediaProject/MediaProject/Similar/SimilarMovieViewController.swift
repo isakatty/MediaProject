@@ -59,6 +59,13 @@ public final class SimilarMovieViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        NetworkService.shared.callRecommendTMDB(
+            endPoint: RecommendEndPoint(
+                movieID: String(movie.id),
+                authKey: Constant.Endpoint.TMDB_key
+            )
+        )
+        
         fetchData(with: movie)
         configureHierarchy()
         configureLayout()
