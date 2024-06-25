@@ -1,5 +1,5 @@
 //
-//  NetworkManager.swift
+//  NetworkService.swift
 //  MediaProject
 //
 //  Created by Jisoo HAM on 6/24/24.
@@ -26,7 +26,11 @@ protocol NetworkServiceProtocol {
     )
     func callSimilarTMDB(
         movieID: Int,
-        completionHanlder: @escaping (SimilarMovies) -> Void
+        completionHandler: @escaping (TrendMovies) -> Void
+    )
+    func callRecommendTMDB(
+        endPoint: Endpoint,
+        completionHandler: @escaping (TrendMovies) -> Void
     )
 }
 
@@ -135,7 +139,7 @@ public final class NetworkService: NetworkServiceProtocol {
     
     public func callSimilarTMDB(
         movieID: Int,
-        completionHanlder: @escaping (SimilarMovies) -> Void
+        completionHandler: @escaping (TrendMovies) -> Void
     ) {
         let pathParams: String = "\(movieID)/similar"
         let baseURL = Constant.Endpoint.tmdb_similar_URL
@@ -148,18 +152,20 @@ public final class NetworkService: NetworkServiceProtocol {
             headers: headers
         )
         .validate(statusCode: 200..<300)
-        .responseDecodable(of: SimilarMovies.self) { response in
+        .responseDecodable(of: TrendMovies.self) { response in
             switch response.result {
             case .success(let value):
-                completionHanlder(value)
+                completionHandler(value)
             case .failure(let error):
                 print(error)
             }
         }
         
     }
+    /// Endpoint를 사용한 API 통신
     public func callRecommendTMDB(
-        endPoint: Endpoint
+        endPoint: Endpoint,
+        completionHandler: @escaping (TrendMovies) -> Void
     ) {
         guard let url = URL(string: endPoint.toURL) else { return }
         AF.request(
@@ -167,11 +173,11 @@ public final class NetworkService: NetworkServiceProtocol {
             headers: HTTPHeaders(endPoint.header)
         )
             .validate(statusCode: 200..<300)
-            .responseString { response in
+            .responseDecodable(of: TrendMovies.self) { response in
                 switch response.result {
                 case .success(let value):
-                    print(value)
-                case.failure(let error):
+                    completionHandler(value)
+                case .failure(let error):
                     print(error)
                 }
             }

@@ -26,3 +26,12 @@ public struct MovieInfo: Decodable {
     let vote_average: Double
     let vote_count: Int
 }
+
+public struct TrendMovies: Decodable {
+    let page: Int
+    let results: [TrendInfo]
+}
+
+public struct TrendInfo: Decodable {
+    let poster_path: String
+}

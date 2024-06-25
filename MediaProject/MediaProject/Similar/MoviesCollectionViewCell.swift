@@ -34,11 +34,10 @@ public final class MoviesCollectionViewCell: UICollectionViewCell {
             make.edges.equalToSuperview()
         }
     }
-    public func configureUI(movieInfo: SearchedMovieInfo) {
-        guard let poster_path = movieInfo.poster_path,
-              let imageUrl = URL(string: Constant.Endpoint.imageURL + poster_path)
-        else { return }
-        
+    public func configureUI(movieInfo: TrendInfo) {
+        guard let imageUrl = URL(
+            string: Constant.Endpoint.imageURL + movieInfo.poster_path
+        ) else { return }
         moviePosterImageView.kf.setImage(with: imageUrl)
     }
 }
