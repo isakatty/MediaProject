@@ -203,8 +203,4 @@ public final class NetworkService: NetworkServiceProtocol {
             }
         }
     }
-    
-    public func callPoster(movieID: Int) {
-        
-    }
 }

@@ -26,10 +26,10 @@ public struct RecommendEndPoint: Endpoint {
         "/3/movie/\(movieID)/recommendations"
     }
     
-    public var query: [String : String] {
+    public var query: [String : Any] {
         [
             "language": "ko-KR",
-            "page": "1"
+            "page": 1
         ]
     }
     
@@ -41,8 +41,8 @@ public struct RecommendEndPoint: Endpoint {
         [:]
     }
     
-    public var method: HTTPMethod {
-        .get
+    public var method: String {
+        _HTTPMethod.get.toString
     }
     
     public init(

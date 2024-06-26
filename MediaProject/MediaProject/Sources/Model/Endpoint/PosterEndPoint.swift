@@ -23,7 +23,7 @@ public struct PosterEndPoint: Endpoint {
     public var path: String {
         "/3/movie/\(movieId)/images"
     }
-    public var query: [String : String] {
+    public var query: [String : Any] {
         [
             "include_image_language": "en,null",
             "language": "ko-KR"
@@ -35,8 +35,8 @@ public struct PosterEndPoint: Endpoint {
     public var body: [String : Any] {
         return [:]
     }
-    public var method: HTTPMethod {
-        .get
+    public var method: String {
+        _HTTPMethod.get.toString
     }
     
     public init(

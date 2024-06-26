@@ -20,6 +20,9 @@ enum Constant {
             forInfoDictionaryKey: "TMDB_API_TOKEN"
         ) as? String ?? ""
         
+        static var api_key: String = Bundle.main.object(
+            forInfoDictionaryKey: "MOVIE_API_KEY"
+        ) as? String ?? ""
     }
     
     enum Font {

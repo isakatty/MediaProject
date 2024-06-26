@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum HTTPMethod {
+public enum _HTTPMethod {
     case get, put, post, patch, delete
     
     var toString: String {
