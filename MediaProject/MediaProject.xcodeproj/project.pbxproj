@@ -49,6 +49,7 @@
 		C9FA01B32C2B17AD00E5C100 /* RecommendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FA01B22C2B17AD00E5C100 /* RecommendTableViewCell.swift */; };
 		C9FA01B52C2B255C00E5C100 /* PosterEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FA01B42C2B255C00E5C100 /* PosterEndPoint.swift */; };
 		C9FA01B72C2B288200E5C100 /* Poster.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FA01B62C2B288200E5C100 /* Poster.swift */; };
+		C9FA01B92C2C499A00E5C100 /* TableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FA01B82C2C499A00E5C100 /* TableViewSection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +95,7 @@
 		C9FA01B22C2B17AD00E5C100 /* RecommendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendTableViewCell.swift; sourceTree = "<group>"; };
 		C9FA01B42C2B255C00E5C100 /* PosterEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterEndPoint.swift; sourceTree = "<group>"; };
 		C9FA01B62C2B288200E5C100 /* Poster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poster.swift; sourceTree = "<group>"; };
+		C9FA01B82C2C499A00E5C100 /* TableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,8 +127,8 @@
 		C912D71C2C29BACF00361F66 /* Similar */ = {
 			isa = PBXGroup;
 			children = (
-				C912D71D2C29BAFC00361F66 /* MoviesCollectionViewCell.swift */,
 				C9FA01B02C2B161700E5C100 /* RecommendMoviesViewController.swift */,
+				C912D71D2C29BAFC00361F66 /* MoviesCollectionViewCell.swift */,
 				C9FA01B22C2B17AD00E5C100 /* RecommendTableViewCell.swift */,
 			);
 			path = Similar;
@@ -160,6 +162,7 @@
 				C999FDEE2C175ACC00855246 /* MovieCredit.swift */,
 				C95381CB2C18A12B000A054D /* SearchedMovie.swift */,
 				C912D71A2C29B79100361F66 /* SimilarMovies.swift */,
+				C9FA01B82C2C499A00E5C100 /* TableViewSection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 				C9BD15952C0F20E20049787E /* UITextField+.swift in Sources */,
 				C968A1EB2C11AA50004947C7 /* Movie.swift in Sources */,
 				C95381CC2C18A12B000A054D /* SearchedMovie.swift in Sources */,
+				C9FA01B92C2C499A00E5C100 /* TableViewSection.swift in Sources */,
 				C95381CA2C189B77000A054D /* UICollectionViewCell+.swift in Sources */,
 				C9FA01AF2C2B067400E5C100 /* RecommendEndPoint.swift in Sources */,
 				C9BD157A2C0EFEB20049787E /* ViewController.swift in Sources */,

@@ -11,7 +11,6 @@ import UIKit
 
 public final class RecommendMoviesViewController: UIViewController {
     public var movie: MovieInfo
-    private let labelTitle: [String] = ["비슷한 영화", "추천 영화", "포스터"]
     private var moviePosterArrays: [[TrendInfo]] = [[],[]]
     private var posterArrays: [PosterPath] = []
     
@@ -103,7 +102,7 @@ extension RecommendMoviesViewController
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        return labelTitle.count
+        return TableViewSection.allCases.count
     }
     
     public func tableView(
@@ -120,14 +119,7 @@ extension RecommendMoviesViewController
         cell.similarCollectionView.tag = indexPath.row
         cell.configureUI(text: labelTitle[indexPath.row])
         
-        switch indexPath.row {
-        case 0,1:
-            tableView.rowHeight = 220
-        case 2:
-            tableView.rowHeight = 260
-        default:
-            tableView.rowHeight = 220
-        }
+        tableView.rowHeight = TableViewSection.allCases[indexPath.row].rowHeight
         cell.similarCollectionView.reloadData()
         return cell
     }
@@ -139,13 +131,13 @@ extension RecommendMoviesViewController
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        switch collectionView.tag {
-        case 0,1:
-            return moviePosterArrays[collectionView.tag].count
-        case 2:
+        guard let section = TableViewSection(rawValue: collectionView.tag) else { return 0}
+        
+        switch section {
+        case .similar, .recommend:
+            return moviePosterArrays[section.rawValue].count
+        case .poster:
             return posterArrays.count
-        default:
-            return moviePosterArrays[collectionView.tag].count
         }
     }
     
@@ -156,15 +148,14 @@ extension RecommendMoviesViewController
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: MoviesCollectionViewCell.identifier,
             for: indexPath
-        ) as? MoviesCollectionViewCell else { return UICollectionViewCell() }
+        ) as? MoviesCollectionViewCell,
+              let section = TableViewSection(rawValue: collectionView.tag) else { return UICollectionViewCell() }
         
-        switch collectionView.tag {
-        case 0,1:
-            cell.configureUI(path: moviePosterArrays[collectionView.tag][indexPath.item].poster_path)
-        case 2:
+        switch section {
+        case .similar, .recommend:
+            cell.configureUI(path: moviePosterArrays[section.rawValue][indexPath.item].poster_path)
+        case .poster:
             cell.configureUI(path: posterArrays[indexPath.item].file_path)
-        default:
-            cell.configureUI(path: moviePosterArrays[collectionView.tag][indexPath.item].poster_path)
         }
         return cell
     }
