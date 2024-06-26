@@ -117,7 +117,8 @@ extension RecommendMoviesViewController
         cell.similarCollectionView.dataSource = self
         cell.similarCollectionView.delegate = self
         cell.similarCollectionView.tag = indexPath.row
-        cell.configureUI(text: labelTitle[indexPath.row])
+        cell.configureUI(text: TableViewSection.allCases[indexPath.row].title)
+        cell.configureCollectionViewDimension(width: TableViewSection.allCases[indexPath.row].itemWidth)
         
         tableView.rowHeight = TableViewSection.allCases[indexPath.row].rowHeight
         cell.similarCollectionView.reloadData()
@@ -131,7 +132,7 @@ extension RecommendMoviesViewController
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        guard let section = TableViewSection(rawValue: collectionView.tag) else { return 0}
+        guard let section = TableViewSection(rawValue: collectionView.tag) else { return 0 }
         
         switch section {
         case .similar, .recommend:
@@ -149,7 +150,8 @@ extension RecommendMoviesViewController
             withReuseIdentifier: MoviesCollectionViewCell.identifier,
             for: indexPath
         ) as? MoviesCollectionViewCell,
-              let section = TableViewSection(rawValue: collectionView.tag) else { return UICollectionViewCell() }
+              let section = TableViewSection(rawValue: collectionView.tag) 
+        else { return UICollectionViewCell() }
         
         switch section {
         case .similar, .recommend:

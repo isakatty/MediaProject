@@ -28,4 +28,12 @@ enum TableViewSection: Int, CaseIterable {
             return 260
         }
     }
+    var itemWidth: CGFloat {
+        switch self {
+        case .similar, .recommend:
+            return 0.28
+        case .poster:
+            return 0.34
+        }
+    }
 }

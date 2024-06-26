@@ -63,6 +63,15 @@ public final class RecommendTableViewCell: UITableViewCell {
     public func configureUI(text: String?) {
         titleLabel.text = text
     }
+    public func configureCollectionViewDimension(width: CGFloat) {
+        let newLayout = collectionViewLayout(
+            cellWidthRatio: width,
+            cellHeightRatio: 1.0
+        )
+        if similarCollectionView.collectionViewLayout != newLayout {
+            similarCollectionView.collectionViewLayout = newLayout
+        }
+    }
     private func collectionViewLayout(
         cellWidthRatio: CGFloat,
         cellHeightRatio: CGFloat
@@ -100,6 +109,4 @@ public final class RecommendTableViewCell: UITableViewCell {
 
         return layout
     }
-    
-    
 }
