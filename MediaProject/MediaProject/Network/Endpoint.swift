@@ -23,7 +23,7 @@ public protocol Endpoint {
 }
 
 extension Endpoint {
-    public var toURL: String {
+    public var toURLString: String {
         var urlComponent = URLComponents()
         urlComponent.scheme = scheme.rawValue
         urlComponent.host = host
@@ -34,29 +34,7 @@ extension Endpoint {
                 URLQueryItem(name: $0.key, value: $0.value)
             }
         }
-        return urlComponent.url?.absoluteString.replacingOccurrences(
-            of: "%25",
-            with: "%"
-        ) ?? ""
-    }
-    public var url: URL? {
-        var components = URLComponents()
-        components.scheme = scheme.rawValue
-        components.host = host
-        components.port = Int(port)
-        components.path = path
-        components.queryItems = query.map {
-            URLQueryItem(
-                name: $0.key,
-                value: $0.value
-            )
-        }
         
-        guard let urlStr = components.url?.absoluteString.replacingOccurrences(
-            of: "%25",
-            with: "%"
-        ) else { return nil}
-        
-        return URL(string: urlStr)
+        return urlComponent.url?.absoluteString ?? ""
     }
 }

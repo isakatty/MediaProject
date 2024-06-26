@@ -167,7 +167,7 @@ public final class NetworkService: NetworkServiceProtocol {
         endPoint: Endpoint,
         completionHandler: @escaping (TrendMovies) -> Void
     ) {
-        guard let url = URL(string: endPoint.toURL) else { return }
+        guard let url = URL(string: endPoint.toURLString) else { return }
         AF.request(
             url,
             headers: HTTPHeaders(endPoint.header)
@@ -181,5 +181,30 @@ public final class NetworkService: NetworkServiceProtocol {
                     print(error)
                 }
             }
+    }
+    public func callPosterImage(
+        endPoint: Endpoint,
+        completionHandler: @escaping (Poster) -> Void
+    ) {
+        guard let url = URL(
+            string: endPoint.toURLString
+        ) else { return }
+        AF.request(
+            url,
+            headers: HTTPHeaders(endPoint.header)
+        )
+        .validate(statusCode: 200..<300)
+        .responseDecodable(of: Poster.self) { response in
+            switch response.result {
+            case .success(let value):
+                completionHandler(value)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    public func callPoster(movieID: Int) {
+        
     }
 }

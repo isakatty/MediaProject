@@ -15,7 +15,6 @@ enum Constant {
         static let tmdb_Search_Movie_URL = "https://api.themoviedb.org/3/search/movie?"
         static let kofic_URL = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?"
         static let tmdb_similar_URL = "https://api.themoviedb.org/3/movie/"
-        //movie_id/similar
         
         static var TMDB_key: String = Bundle.main.object(
             forInfoDictionaryKey: "TMDB_API_TOKEN"

@@ -10,13 +10,10 @@ import UIKit
 // MARK: TableView 안에 CollectionView 좌우 스크롤
 
 public final class RecommendMoviesViewController: UIViewController {
-    // movieID 입력 받아야함
     public var movie: MovieInfo
-    // 데이터 처리
-    // tableViewCell의 label에 들어갈 데이터
-    private let labelTitle: [String] = ["비슷한 영화", "추천 영화"]
-    // tableViewCell의 CollectionView-Cell에 들어갈 데이터 -> 2중배열
+    private let labelTitle: [String] = ["비슷한 영화", "추천 영화", "포스터"]
     private var moviePosterArrays: [[TrendInfo]] = [[],[]]
+    private var posterArrays: [PosterPath] = []
     
     private lazy var multiMoviesTableView: UITableView = {
         let table = UITableView()
@@ -26,7 +23,7 @@ public final class RecommendMoviesViewController: UIViewController {
             RecommendTableViewCell.self,
             forCellReuseIdentifier: RecommendTableViewCell.id
         )
-        table.rowHeight = 200
+        table.rowHeight = 220
         return table
     }()
     
@@ -58,12 +55,8 @@ public final class RecommendMoviesViewController: UIViewController {
             make.edges.equalTo(safeArea)
         }
     }
-    public func configureUI() {
-        
-    }
     private func network() {
         let group = DispatchGroup()
-        
         group.enter()
         DispatchQueue.global().async {
             NetworkService.shared.callSimilarTMDB(movieID: self.movie.id) { [weak self] movies in
@@ -72,7 +65,6 @@ public final class RecommendMoviesViewController: UIViewController {
                 group.leave()
             }
         }
-        
         group.enter()
         DispatchQueue.global().async {
             NetworkService.shared.callRecommendTMDB(endPoint: RecommendEndPoint(
@@ -84,7 +76,21 @@ public final class RecommendMoviesViewController: UIViewController {
                 group.leave()
             }
         }
-        
+        group.enter()
+        DispatchQueue.global().async {
+            NetworkService.shared.callPosterImage(
+                endPoint: PosterEndPoint(
+                    movieId: String(
+                        self.movie.id
+                    ),
+                    authKey: Constant.Endpoint.TMDB_key
+                )
+            ){ [weak self] poster in
+                guard let self = self else { return }
+                self.posterArrays.append(contentsOf: poster.backdrops)
+                group.leave()
+            }
+        }
         group.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
             self.multiMoviesTableView.reloadData()
@@ -97,7 +103,7 @@ extension RecommendMoviesViewController
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        return moviePosterArrays.count
+        return labelTitle.count
     }
     
     public func tableView(
@@ -113,6 +119,15 @@ extension RecommendMoviesViewController
         cell.similarCollectionView.delegate = self
         cell.similarCollectionView.tag = indexPath.row
         cell.configureUI(text: labelTitle[indexPath.row])
+        
+        switch indexPath.row {
+        case 0,1:
+            tableView.rowHeight = 220
+        case 2:
+            tableView.rowHeight = 260
+        default:
+            tableView.rowHeight = 220
+        }
         cell.similarCollectionView.reloadData()
         return cell
     }
@@ -124,7 +139,14 @@ extension RecommendMoviesViewController
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return moviePosterArrays[collectionView.tag].count
+        switch collectionView.tag {
+        case 0,1:
+            return moviePosterArrays[collectionView.tag].count
+        case 2:
+            return posterArrays.count
+        default:
+            return moviePosterArrays[collectionView.tag].count
+        }
     }
     
     public func collectionView(
@@ -136,8 +158,14 @@ extension RecommendMoviesViewController
             for: indexPath
         ) as? MoviesCollectionViewCell else { return UICollectionViewCell() }
         
-        cell.configureUI(movieInfo: moviePosterArrays[collectionView.tag][indexPath.item])
-        
+        switch collectionView.tag {
+        case 0,1:
+            cell.configureUI(path: moviePosterArrays[collectionView.tag][indexPath.item].poster_path)
+        case 2:
+            cell.configureUI(path: posterArrays[indexPath.item].file_path)
+        default:
+            cell.configureUI(path: moviePosterArrays[collectionView.tag][indexPath.item].poster_path)
+        }
         return cell
     }
 }

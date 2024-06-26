@@ -12,7 +12,7 @@ import Kingfisher
 public final class MoviesCollectionViewCell: UICollectionViewCell {
     private let moviePosterImageView: UIImageView = {
         let image = UIImageView()
-        image.contentMode = .scaleToFill
+        image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         image.layer.cornerRadius = 10
         return image
@@ -34,9 +34,9 @@ public final class MoviesCollectionViewCell: UICollectionViewCell {
             make.edges.equalToSuperview()
         }
     }
-    public func configureUI(movieInfo: TrendInfo) {
+    public func configureUI(path: String) {
         guard let imageUrl = URL(
-            string: Constant.Endpoint.imageURL + movieInfo.poster_path
+            string: Constant.Endpoint.imageURL + path
         ) else { return }
         moviePosterImageView.kf.setImage(with: imageUrl)
     }

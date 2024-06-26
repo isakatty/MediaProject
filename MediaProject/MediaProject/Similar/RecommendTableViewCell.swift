@@ -28,7 +28,6 @@ public final class RecommendTableViewCell: UITableViewCell {
             MoviesCollectionViewCell.self,
             forCellWithReuseIdentifier: MoviesCollectionViewCell.identifier
         )
-        collection.backgroundColor = .systemCyan
         return collection
     }()
     
