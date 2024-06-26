@@ -42,6 +42,7 @@ public final class RecommendMoviesViewController: UIViewController {
         network()
         configureHierarchy()
         configureLayout()
+        testing()
     }
     
     private func configureHierarchy() {
@@ -93,6 +94,17 @@ public final class RecommendMoviesViewController: UIViewController {
         group.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
             self.multiMoviesTableView.reloadData()
+        }
+    }
+    private func testing() {
+        NetworkService.shared.callPosterImages(
+            endPoint: NetworkRequest.images(movieId: String(movie.id))
+        ) { (response: Poster?, error) in
+            if let error {
+                print(error)
+            } else {
+                print(response)
+            }
         }
     }
 }

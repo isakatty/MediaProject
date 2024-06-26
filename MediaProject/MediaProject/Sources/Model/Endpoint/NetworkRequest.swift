@@ -7,22 +7,22 @@
 
 import Foundation
 
-enum NetworkRequest: Endpoint {
+public enum NetworkRequest: Endpoint {
     case trendingTV
     case trendingMovie
     case search(movieName: String)
     case images(movieId: String)
     
-    var scheme: Scheme {
+    public var scheme: Scheme {
         .https
     }
-    var host: String {
+    public var host: String {
         "api.themoviedb.org"
     }
-    var port: String {
+    public var port: String {
         ""
     }
-    var path: String {
+    public var path: String {
         switch self {
         case .trendingTV:
             "/3/trending/tv/day"
@@ -31,10 +31,10 @@ enum NetworkRequest: Endpoint {
         case .search:
             "/3/search/movie"
         case .images(let movieId):
-            "/3/movie/\(movieId)/movie"
+            "/3/movie/\(movieId)/images"
         }
     }
-    var query: [String : Any] {
+    public var query: [String : Any] {
         switch self {
         case .trendingTV, .trendingMovie:
             return ["language": "ko-KR"]
@@ -44,23 +44,26 @@ enum NetworkRequest: Endpoint {
                 "query": movieName
             ]
         case .images:
-            return ["": ""]
+            return [
+                "include_image_language": "en,null",
+                "language": "ko-KR"
+            ]
         }
     }
-    var header: [String : String] {
+    public var header: [String : String] {
         return [
             "accept": "application/json",
             "Authorization": Constant.Endpoint.TMDB_key
         ]
     }
-    var body: [String : Any] {
+    public var body: [String : Any] {
         [:]
     }
-    var method: String {
+    public var method: String {
         _HTTPMethod.get.toString
     }
     
-    var toURLString: String {
+    public var toURLString: String {
         var urlComponent = URLComponents()
         urlComponent.scheme = scheme.rawValue
         urlComponent.host = host

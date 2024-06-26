@@ -32,9 +32,14 @@ protocol NetworkServiceProtocol {
         endPoint: Endpoint,
         completionHandler: @escaping (TrendMovies) -> Void
     )
+    func callPosterImages<T: Decodable>(
+        endPoint: NetworkRequest,
+        completionHandler: @escaping (T?, String?) -> Void
+    )
 }
 
 public final class NetworkService: NetworkServiceProtocol {
+    
     static let shared = NetworkService()
     
     private var api_key: String {
@@ -200,6 +205,28 @@ public final class NetworkService: NetworkServiceProtocol {
                 completionHandler(value)
             case .failure(let error):
                 print(error)
+            }
+        }
+    }
+    
+    public func callPosterImages<T: Decodable>(
+        endPoint: NetworkRequest,
+        completionHandler: @escaping (T?, String?) -> Void
+    ) {
+        guard let url = URL(string: endPoint.toURLString) else { return }
+        AF.request(
+            url,
+            method: HTTPMethod(rawValue: endPoint.method),
+            encoding: URLEncoding(destination: .queryString),
+            headers: HTTPHeaders(endPoint.header)
+        )
+        .validate(statusCode: 200..<300)
+        .responseDecodable(of: T.self) { response in
+            switch response.result {
+            case .success(let value):
+                completionHandler(value, nil)
+            case .failure(let error):
+                completionHandler(nil, error.localizedDescription)
             }
         }
     }
