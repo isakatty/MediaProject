@@ -14,14 +14,6 @@ public final class RecommendMoviesViewController: UIViewController {
     private var moviePosterArrays: [[TrendInfo]] = [[],[]]
     private var posterArrays: [PosterPath] = []
     
-    private lazy var movieLabel: UILabel = {
-        let label = UILabel()
-        label.font = Constant.Font.bold21
-        label.textColor = UIColor.black
-        label.text = movie.title
-        return label
-    }()
-    
     private lazy var multiMoviesTableView: UITableView = {
         let table = UITableView()
         table.delegate = self
@@ -30,7 +22,10 @@ public final class RecommendMoviesViewController: UIViewController {
             RecommendTableViewCell.self,
             forCellReuseIdentifier: RecommendTableViewCell.id
         )
-        table.rowHeight = 220
+        table.register(
+            RecommendTableHeaderView.self,
+            forHeaderFooterViewReuseIdentifier: RecommendTableHeaderView.identifier
+        )
         return table
     }()
     
@@ -53,21 +48,15 @@ public final class RecommendMoviesViewController: UIViewController {
     }
     
     private func configureHierarchy() {
-        [movieLabel, multiMoviesTableView]
+        [multiMoviesTableView]
             .forEach { view.addSubview($0) }
     }
     private func configureLayout() {
         view.backgroundColor = .systemBackground
         let safeArea = view.safeAreaLayoutGuide
-        movieLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(safeArea)
-            make.top.equalTo(safeArea).offset(8)
-            make.leading.equalTo(safeArea.snp.leading).inset(16)
-            make.height.equalTo(movieLabel.snp.width).multipliedBy(0.05)
-        }
+        
         multiMoviesTableView.snp.makeConstraints { make in
-            make.top.equalTo(movieLabel.snp.bottom)
-            make.horizontalEdges.bottom.equalTo(safeArea)
+            make.edges.equalTo(safeArea)
         }
     }
     private func network() {
@@ -168,6 +157,18 @@ extension RecommendMoviesViewController
         tableView.rowHeight = TableViewSection.allCases[indexPath.row].rowHeight
         cell.similarCollectionView.reloadData()
         return cell
+    }
+    public func tableView(
+        _ tableView: UITableView,
+        viewForHeaderInSection section: Int
+    ) -> UIView? {
+        guard let view = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: RecommendTableHeaderView.identifier
+        ) as? RecommendTableHeaderView else { return UITableViewHeaderFooterView() }
+        
+        view.configureUI(movieTitle: movie.title)
+        
+        return view
     }
 }
 
