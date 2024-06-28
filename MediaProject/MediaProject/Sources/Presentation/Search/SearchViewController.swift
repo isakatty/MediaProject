@@ -39,16 +39,18 @@ final class SearchViewController: BaseViewController {
         bar.placeholder = "영화를 검색하세요."
         return bar
     }()
+    private let emptyView = EmptyView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureHierarchy()
         configureLayout()
+        configureEmptyView()
     }
     
     private func configureHierarchy() {
-        [searchBar, movieCollectionView]
+        [searchBar, movieCollectionView, emptyView]
             .forEach { view.addSubview($0) }
     }
     internal override func configureLayout() {
@@ -62,6 +64,11 @@ final class SearchViewController: BaseViewController {
         movieCollectionView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom)
             make.bottom.leading.trailing.equalTo(safeArea)
+        }
+        emptyView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(60)
+            make.height.equalTo(emptyView.snp.width)
         }
     }
     private func handleSearchedMovie(movie: SearchedMovie) {
@@ -100,6 +107,11 @@ final class SearchViewController: BaseViewController {
         )
         return layout
     }
+    private func configureEmptyView() {
+        if searchedMovieList.results.isEmpty == false {
+            emptyView.isHidden = true
+        }
+    }
 }
 
 extension SearchViewController: UISearchBarDelegate {
@@ -121,6 +133,7 @@ extension SearchViewController: UISearchBarDelegate {
                 guard let self else { return }
                 guard let searchedMovie else { return }
                 handleSearchedMovie(movie: searchedMovie)
+                configureEmptyView()
             }
         }
     }
