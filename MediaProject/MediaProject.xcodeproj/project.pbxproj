@@ -36,6 +36,8 @@
 		C999FDED2C17572800855246 /* TrendDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C999FDEC2C17572800855246 /* TrendDetail.swift */; };
 		C999FDEF2C175ACC00855246 /* MovieCredit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C999FDEE2C175ACC00855246 /* MovieCredit.swift */; };
 		C9A538A92C2E93D900BA240A /* RecommendTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A538A82C2E93D900BA240A /* RecommendTableHeaderView.swift */; };
+		C9A538AC2C2E976400BA240A /* MovieTabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A538AB2C2E976400BA240A /* MovieTabbarController.swift */; };
+		C9A538AE2C2E990900BA240A /* TabbarCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A538AD2C2E990900BA240A /* TabbarCase.swift */; };
 		C9BD15762C0EFEB20049787E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD15752C0EFEB20049787E /* AppDelegate.swift */; };
 		C9BD15782C0EFEB20049787E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD15772C0EFEB20049787E /* SceneDelegate.swift */; };
 		C9BD157A2C0EFEB20049787E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD15792C0EFEB20049787E /* ViewController.swift */; };
@@ -80,6 +82,8 @@
 		C999FDEC2C17572800855246 /* TrendDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendDetail.swift; sourceTree = "<group>"; };
 		C999FDEE2C175ACC00855246 /* MovieCredit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCredit.swift; sourceTree = "<group>"; };
 		C9A538A82C2E93D900BA240A /* RecommendTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendTableHeaderView.swift; sourceTree = "<group>"; };
+		C9A538AB2C2E976400BA240A /* MovieTabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTabbarController.swift; sourceTree = "<group>"; };
+		C9A538AD2C2E990900BA240A /* TabbarCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarCase.swift; sourceTree = "<group>"; };
 		C9BD15722C0EFEB20049787E /* MediaProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediaProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9BD15752C0EFEB20049787E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9BD15772C0EFEB20049787E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -178,6 +182,15 @@
 				C999FDEA2C17548100855246 /* TrendMovieDetailSectionView.swift */,
 			);
 			path = Trend;
+			sourceTree = "<group>";
+		};
+		C9A538AA2C2E975600BA240A /* Tabbar */ = {
+			isa = PBXGroup;
+			children = (
+				C9A538AB2C2E976400BA240A /* MovieTabbarController.swift */,
+				C9A538AD2C2E990900BA240A /* TabbarCase.swift */,
+			);
+			path = Tabbar;
 			sourceTree = "<group>";
 		};
 		C9BD15692C0EFEB20049787E = {
@@ -279,6 +292,7 @@
 		C9FA01C02C2C55A100E5C100 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				C9A538AA2C2E975600BA240A /* Tabbar */,
 				C9BD15792C0EFEB20049787E /* ViewController.swift */,
 				C9BD15902C0F18AF0049787E /* JoinViewController.swift */,
 				C968A1D32C118252004947C7 /* MovieSearchViewController.swift */,
@@ -385,6 +399,7 @@
 				C9FA01AB2C2B00E700E5C100 /* Endpoint.swift in Sources */,
 				C9BD15952C0F20E20049787E /* UITextField+.swift in Sources */,
 				C9A538A92C2E93D900BA240A /* RecommendTableHeaderView.swift in Sources */,
+				C9A538AC2C2E976400BA240A /* MovieTabbarController.swift in Sources */,
 				C968A1EB2C11AA50004947C7 /* Movie.swift in Sources */,
 				C95381CC2C18A12B000A054D /* SearchedMovie.swift in Sources */,
 				C9FA01B92C2C499A00E5C100 /* TableViewSection.swift in Sources */,
@@ -403,6 +418,7 @@
 				C9BD15782C0EFEB20049787E /* SceneDelegate.swift in Sources */,
 				C912D7192C29638600361F66 /* NetworkService.swift in Sources */,
 				C999FDE12C1749B000855246 /* TrendMovieDetailViewController.swift in Sources */,
+				C9A538AE2C2E990900BA240A /* TabbarCase.swift in Sources */,
 				C9FA01B72C2B288200E5C100 /* Poster.swift in Sources */,
 				C999FDE72C174FAB00855246 /* TrendMovieDetailDescriptionTableViewCell.swift in Sources */,
 				C968A1D42C118252004947C7 /* MovieSearchViewController.swift in Sources */,
