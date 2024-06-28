@@ -14,6 +14,14 @@ public final class RecommendMoviesViewController: UIViewController {
     private var moviePosterArrays: [[TrendInfo]] = [[],[]]
     private var posterArrays: [PosterPath] = []
     
+    private lazy var movieLabel: UILabel = {
+        let label = UILabel()
+        label.font = Constant.Font.bold21
+        label.textColor = UIColor.black
+        label.text = movie.title
+        return label
+    }()
+    
     private lazy var multiMoviesTableView: UITableView = {
         let table = UITableView()
         table.delegate = self
@@ -45,13 +53,21 @@ public final class RecommendMoviesViewController: UIViewController {
     }
     
     private func configureHierarchy() {
-        view.addSubview(multiMoviesTableView)
+        [movieLabel, multiMoviesTableView]
+            .forEach { view.addSubview($0) }
     }
     private func configureLayout() {
         view.backgroundColor = .systemBackground
         let safeArea = view.safeAreaLayoutGuide
+        movieLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(safeArea)
+            make.top.equalTo(safeArea).offset(8)
+            make.leading.equalTo(safeArea.snp.leading).inset(16)
+            make.height.equalTo(movieLabel.snp.width).multipliedBy(0.05)
+        }
         multiMoviesTableView.snp.makeConstraints { make in
-            make.edges.equalTo(safeArea)
+            make.top.equalTo(movieLabel.snp.bottom)
+            make.horizontalEdges.bottom.equalTo(safeArea)
         }
     }
     private func network() {

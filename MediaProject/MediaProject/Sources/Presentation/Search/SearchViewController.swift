@@ -109,12 +109,20 @@ extension SearchViewController: UISearchBarDelegate {
         isLastData = false
         searchedMovieList.results.removeAll()
         guard let text = searchBar.text else { return }
-        NetworkService.shared.callSearchTMDB(
-            with: text,
-            page: page
-        ) { [weak self] movie in
-            guard let self = self else { return }
-            handleSearchedMovie(movie: movie)
+        NetworkService.shared.callTMDB(
+            endPoint: .search(
+                movieName: text,
+                page: page
+            ),
+            type: SearchedMovie.self
+        ) { [weak self] searchedMovie, error in
+            if let error {
+                print(#file, #function, "검색 에러", error)
+            } else {
+                guard let self else { return }
+                guard let searchedMovie else { return }
+                handleSearchedMovie(movie: searchedMovie)
+            }
         }
     }
 }
@@ -160,7 +168,7 @@ extension SearchViewController: UICollectionViewDataSourcePrefetching {
                     type: SearchedMovie.self
                 ) { [weak self] searchedMovie, error in
                     if let error {
-                        print(#file, #function, "검색 에러")
+                        print(#file, #function, "검색 에러", error)
                     } else {
                         guard let self else { return }
                         guard let searchedMovie else { return }

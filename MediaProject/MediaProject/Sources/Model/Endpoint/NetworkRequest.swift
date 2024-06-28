@@ -9,6 +9,9 @@ import Foundation
 
 public enum NetworkRequest: Endpoint {
     static let imageURL = "https://image.tmdb.org/t/p/original"
+    static var TMDB_key: String = Bundle.main.object(
+        forInfoDictionaryKey: "TMDB_API_TOKEN"
+    ) as? String ?? ""
     
     case trendingTV
     case trendingMovie
@@ -73,7 +76,7 @@ public enum NetworkRequest: Endpoint {
     public var header: [String : String] {
         return [
             "accept": "application/json",
-            "Authorization": Constant.Endpoint.TMDB_key
+            "Authorization": NetworkRequest.TMDB_key
         ]
     }
     public var body: [String : Any] {
