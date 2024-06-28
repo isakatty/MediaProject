@@ -7,7 +7,7 @@
 
 import UIKit
 
-public final class RecommendTableViewCell: UITableViewCell {
+final class RecommendTableViewCell: UITableViewCell {
     static let id = "RecommendTableViewCell"
     
     private let titleLabel: UILabel = {
@@ -16,7 +16,7 @@ public final class RecommendTableViewCell: UITableViewCell {
         label.textColor = .black
         return label
     }()
-    public lazy var similarCollectionView: UICollectionView = {
+    lazy var similarCollectionView: UICollectionView = {
         let collection = UICollectionView(
             frame: .zero,
             collectionViewLayout: collectionViewLayout(
@@ -31,7 +31,7 @@ public final class RecommendTableViewCell: UITableViewCell {
         return collection
     }()
     
-    public override init(
+    override init(
         style: UITableViewCell.CellStyle,
         reuseIdentifier: String?
     ) {
@@ -60,10 +60,10 @@ public final class RecommendTableViewCell: UITableViewCell {
             make.horizontalEdges.bottom.equalTo(contentView)
         }
     }
-    public func configureUI(text: String?) {
+    func configureUI(text: String?) {
         titleLabel.text = text
     }
-    public func configureCollectionViewDimension(width: CGFloat) {
+    func configureCollectionViewDimension(width: CGFloat) {
         let newLayout = collectionViewLayout(
             cellWidthRatio: width,
             cellHeightRatio: 1.0

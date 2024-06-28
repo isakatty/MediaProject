@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-public class TrendMovieViewController: UIViewController {
+final class TrendMovieViewController: UIViewController {
     
     private var trendMovie = [MovieInfo]() {
         didSet {
@@ -29,7 +29,7 @@ public class TrendMovieViewController: UIViewController {
         return table
     }()
 
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         configureHierarchy()
@@ -72,14 +72,14 @@ public class TrendMovieViewController: UIViewController {
 }
 
 extension TrendMovieViewController: UITableViewDelegate, UITableViewDataSource {
-    public func tableView(
+    func tableView(
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
         return trendMovie.count
     }
     
-    public func tableView(
+    func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
@@ -93,7 +93,7 @@ extension TrendMovieViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    public func tableView(
+    func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
@@ -106,7 +106,7 @@ extension TrendMovieViewController: UITableViewDelegate, UITableViewDataSource {
             animated: true
         )
     }
-    public func tableView(
+    func tableView(
         _ tableView: UITableView,
         estimatedHeightForRowAt indexPath: IndexPath
     ) -> CGFloat {

@@ -7,14 +7,14 @@
 
 import Foundation
 
-public struct SearchedMovie: Decodable {
+struct SearchedMovie: Decodable {
     let page: Int
     var results: [SearchedMovieInfo]
     let total_pages: Int
     let total_results: Int
 }
 
-public struct SearchedMovieInfo: Decodable {
+struct SearchedMovieInfo: Decodable {
     let adult: Bool
     let backdrop_path, poster_path: String?
     let original_title, overview, title: String

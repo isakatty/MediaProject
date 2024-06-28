@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-public class TrendMovieDetailSectionView: UITableViewHeaderFooterView {
+final class TrendMovieDetailSectionView: UITableViewHeaderFooterView {
 
     private let sectionLabel: UILabel = {
         let label = UILabel()
@@ -18,7 +18,7 @@ public class TrendMovieDetailSectionView: UITableViewHeaderFooterView {
         return label
     }()
     
-    public override init(reuseIdentifier: String?) {
+    override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         
         configureHierarchy()
@@ -29,7 +29,7 @@ public class TrendMovieDetailSectionView: UITableViewHeaderFooterView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func prepareForReuse() {
+    override func prepareForReuse() {
         super.prepareForReuse()
         
         sectionLabel.text = nil
@@ -44,7 +44,7 @@ public class TrendMovieDetailSectionView: UITableViewHeaderFooterView {
             make.centerY.equalToSuperview()
         }
     }
-    public func configureUI(
+    func configureUI(
         with sectionText: String
     ) {
         sectionLabel.text = sectionText

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum NetworkRequest: Endpoint {
+enum NetworkRequest: Endpoint {
     static let imageURL = "https://image.tmdb.org/t/p/original"
     static var TMDB_key: String = Bundle.main.object(
         forInfoDictionaryKey: "TMDB_API_TOKEN"
@@ -21,16 +21,16 @@ public enum NetworkRequest: Endpoint {
     case recommends(movieId: String)
     case similarMovies(movieId: String)
     
-    public var scheme: Scheme {
+    var scheme: Scheme {
         .https
     }
-    public var host: String {
+    var host: String {
         "api.themoviedb.org"
     }
-    public var port: String {
+    var port: String {
         ""
     }
-    public var path: String {
+    var path: String {
         // TODO: trend, search, movie로 나누고, 거기서 케이스 분리를 할 수 있을 것 같은데 ?
         switch self {
         case .trendingTV:
@@ -49,7 +49,7 @@ public enum NetworkRequest: Endpoint {
             "/3/movie/\(movieId)/credits"
         }
     }
-    public var query: [String : Any] {
+    var query: [String : Any] {
         // TODO: language 공통 - 공통 묶어서 처리할 수 있게 변경해보기
         switch self {
         case .trendingTV, .trendingMovie, .trendDetail, .similarMovies:
@@ -73,20 +73,19 @@ public enum NetworkRequest: Endpoint {
             ]
         }
     }
-    public var header: [String : String] {
+    var header: [String : String] {
         return [
             "accept": "application/json",
             "Authorization": NetworkRequest.TMDB_key
         ]
     }
-    public var body: [String : Any] {
+    var body: [String : Any] {
         [:]
     }
-    public var method: String {
+    var method: String {
         _HTTPMethod.get.toString
     }
-    
-    public var toURLString: String {
+    var toURLString: String {
         var urlComponent = URLComponents()
         urlComponent.scheme = scheme.rawValue
         urlComponent.host = host

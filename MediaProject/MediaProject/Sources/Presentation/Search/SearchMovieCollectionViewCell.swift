@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class SearchMovieCollectionViewCell: UICollectionViewCell {
+final class SearchMovieCollectionViewCell: UICollectionViewCell {
     private let movieImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -15,7 +15,7 @@ public class SearchMovieCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    public override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         
         configureHierarchy()
@@ -34,7 +34,7 @@ public class SearchMovieCollectionViewCell: UICollectionViewCell {
             make.edges.equalToSuperview()
         }
     }
-    public func configureUI(
+    func configureUI(
         with imageString: String
     ) {
         let baseURL = NetworkRequest.imageURL
@@ -43,7 +43,7 @@ public class SearchMovieCollectionViewCell: UICollectionViewCell {
         movieImageView.kf.setImage(with: url)
     }
     
-    public override func prepareForReuse() {
+    override func prepareForReuse() {
         super.prepareForReuse()
         movieImageView.image = nil
     }

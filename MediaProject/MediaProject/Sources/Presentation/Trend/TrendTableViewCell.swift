@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-public class TrendTableViewCell: UITableViewCell {
+final class TrendTableViewCell: UITableViewCell {
     
     // 이미지, movie title, 평점, seperate bar, 자세히 보기
     private let releaseDateLabel: UILabel = {
@@ -69,7 +69,7 @@ public class TrendTableViewCell: UITableViewCell {
         return view
     }()
     
-    public override init(
+    override init(
         style: UITableViewCell.CellStyle,
         reuseIdentifier: String?
     ) {
@@ -139,7 +139,7 @@ public class TrendTableViewCell: UITableViewCell {
         }
     }
     
-    public func configureUI(
+    func configureUI(
         movieInfo: MovieInfo
     ) {
         guard let imageUrl = URL(string: NetworkRequest.imageURL + movieInfo.backdrop_path) else { return }
@@ -148,7 +148,7 @@ public class TrendTableViewCell: UITableViewCell {
         releaseDateLabel.text = movieInfo.release_date
     }
     
-    public override func prepareForReuse() {
+    override func prepareForReuse() {
         super.prepareForReuse()
         // Reset the cell's content and layout states
         releaseDateLabel.text = nil

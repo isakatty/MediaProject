@@ -9,7 +9,7 @@ import UIKit
 
 import Kingfisher
 
-public final class MoviesCollectionViewCell: UICollectionViewCell {
+final class MoviesCollectionViewCell: UICollectionViewCell {
     private let moviePosterImageView: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
@@ -18,7 +18,7 @@ public final class MoviesCollectionViewCell: UICollectionViewCell {
         return image
     }()
     
-    public override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: .zero)
         configureHierarchy()
         configureLayout()
@@ -34,7 +34,7 @@ public final class MoviesCollectionViewCell: UICollectionViewCell {
             make.edges.equalToSuperview()
         }
     }
-    public func configureUI(path: String) {
+    func configureUI(path: String) {
         guard let imageUrl = URL(
             string: NetworkRequest.imageURL + path
         ) else { return }

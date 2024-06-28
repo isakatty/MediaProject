@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SimilarMovies: Decodable {
+struct SimilarMovies: Decodable {
     let page: Int
     var results: [SearchedMovieInfo]
     let total_pages: Int

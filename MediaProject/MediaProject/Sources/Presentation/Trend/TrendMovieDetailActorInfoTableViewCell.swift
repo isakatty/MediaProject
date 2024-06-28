@@ -10,7 +10,7 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
+final class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
     private let actorImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
@@ -30,7 +30,7 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
         return label
     }()
     
-    public override init(
+    override init(
         style: UITableViewCell.CellStyle,
         reuseIdentifier: String?
     ) {
@@ -47,7 +47,7 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func prepareForReuse() {
+    override func prepareForReuse() {
         super.prepareForReuse()
         
         actorImageView.image = nil
@@ -80,7 +80,7 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
             make.bottom.lessThanOrEqualToSuperview()
         }
     }
-    public func configureUI(
+    func configureUI(
         cast: Cast?
     ) {
         guard let cast,

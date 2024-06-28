@@ -10,7 +10,7 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-public class TrendMovieDetailHeaderView: UITableViewHeaderFooterView {
+final class TrendMovieDetailHeaderView: UITableViewHeaderFooterView {
     private let backPosterView: UIImageView = {
         let view = UIImageView()
         view.clipsToBounds = true
@@ -37,7 +37,7 @@ public class TrendMovieDetailHeaderView: UITableViewHeaderFooterView {
         return label
     }()
     
-    public override init(reuseIdentifier: String?) {
+    override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         
         configureHierarchy()
@@ -84,7 +84,7 @@ public class TrendMovieDetailHeaderView: UITableViewHeaderFooterView {
             make.bottom.equalTo(contentView.snp.bottom)
         }
     }
-    public func configureUI(
+    func configureUI(
         with movieInfo: MovieInfo,
         with sectionText: String
     ) {

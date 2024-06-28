@@ -7,10 +7,10 @@
 
 import Foundation
 
-public struct Poster: Decodable {
+struct Poster: Decodable {
     let backdrops: [PosterPath]
 }
 
-public struct PosterPath: Decodable {
+struct PosterPath: Decodable {
     var file_path: String
 }

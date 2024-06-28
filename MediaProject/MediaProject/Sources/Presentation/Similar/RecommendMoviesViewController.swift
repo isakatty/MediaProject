@@ -8,9 +8,8 @@
 import UIKit
 
 // MARK: TableView 안에 CollectionView 좌우 스크롤
-
-public final class RecommendMoviesViewController: UIViewController {
-    public var movie: MovieInfo
+final class RecommendMoviesViewController: UIViewController {
+    var movie: MovieInfo
     private var moviePosterArrays: [[TrendInfo]] = [[],[]]
     private var posterArrays: [PosterPath] = []
     
@@ -29,7 +28,7 @@ public final class RecommendMoviesViewController: UIViewController {
         return table
     }()
     
-    public init(movie: MovieInfo) {
+    init(movie: MovieInfo) {
         self.movie = movie
         
         super.init(nibName: nil, bundle: nil)
@@ -39,7 +38,7 @@ public final class RecommendMoviesViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         network()
@@ -132,14 +131,14 @@ public final class RecommendMoviesViewController: UIViewController {
 }
 extension RecommendMoviesViewController
 : UITableViewDelegate, UITableViewDataSource {
-    public func tableView(
+    func tableView(
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
         return TableViewSection.allCases.count
     }
     
-    public func tableView(
+    func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
@@ -158,7 +157,7 @@ extension RecommendMoviesViewController
         cell.similarCollectionView.reloadData()
         return cell
     }
-    public func tableView(
+    func tableView(
         _ tableView: UITableView,
         viewForHeaderInSection section: Int
     ) -> UIView? {
@@ -174,7 +173,7 @@ extension RecommendMoviesViewController
 
 extension RecommendMoviesViewController
 : UICollectionViewDelegate, UICollectionViewDataSource {
-    public func collectionView(
+    func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
@@ -188,7 +187,7 @@ extension RecommendMoviesViewController
         }
     }
     
-    public func collectionView(
+    func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-public final class RecommendTableHeaderView: UITableViewHeaderFooterView {
+final class RecommendTableHeaderView: UITableViewHeaderFooterView {
     
     private lazy var movieLabel: UILabel = {
         let label = UILabel()
@@ -16,7 +16,7 @@ public final class RecommendTableHeaderView: UITableViewHeaderFooterView {
         return label
     }()
     
-    public override init(reuseIdentifier: String?) {
+    override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         configureHierarchy()
         configureLayout()
@@ -37,7 +37,7 @@ public final class RecommendTableHeaderView: UITableViewHeaderFooterView {
         }
     }
     
-    public func configureUI(movieTitle: String) {
+    func configureUI(movieTitle: String) {
         movieLabel.text = movieTitle
     }
 }

@@ -17,7 +17,7 @@ protocol NetworkServiceProtocol {
     )
 }
 
-public final class NetworkService: NetworkServiceProtocol {
+final class NetworkService: NetworkServiceProtocol {
     
     static let shared = NetworkService()
     
@@ -28,7 +28,7 @@ public final class NetworkService: NetworkServiceProtocol {
     }
     private init() { }
     
-    public func callSearchKofic(
+    func callSearchKofic(
         date: String,
         completionHandler: @escaping (Result<Movie, Error>) -> Void
     ) {
@@ -46,7 +46,7 @@ public final class NetworkService: NetworkServiceProtocol {
             }
         }
     }
-    public func callTMDB<T: Decodable>(
+    func callTMDB<T: Decodable>(
         endPoint: NetworkRequest,
         type: T.Type,
         completionHandler: @escaping (T?, String?) -> Void

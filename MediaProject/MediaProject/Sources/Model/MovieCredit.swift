@@ -7,12 +7,12 @@
 
 import Foundation
 
-public struct MovieCredit: Decodable {
+struct MovieCredit: Decodable {
     let id: Int
     let cast: [Cast]
 }
 
-public struct Cast: Decodable {
+struct Cast: Decodable {
     let adult: Bool
     let id: Int
     let name: String
@@ -21,7 +21,7 @@ public struct Cast: Decodable {
     let character: String
 }
 
-public enum Gender: Int, Decodable {
+enum Gender: Int, Decodable {
     case xx = 1
     case xy = 2
     case unowned

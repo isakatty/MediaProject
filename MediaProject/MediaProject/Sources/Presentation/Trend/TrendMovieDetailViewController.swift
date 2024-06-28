@@ -10,8 +10,8 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-public class TrendMovieDetailViewController: UIViewController {
-    public var movieInfo: MovieInfo
+final class TrendMovieDetailViewController: UIViewController {
+    var movieInfo: MovieInfo
     private var trendDetailData: [TrendDetail] = [
         TrendDetail(
             section: .overView,
@@ -29,7 +29,7 @@ public class TrendMovieDetailViewController: UIViewController {
         }
     }
     
-    public init(movieInfo: MovieInfo) {
+    init(movieInfo: MovieInfo) {
         self.movieInfo = movieInfo
         
         super.init(
@@ -65,7 +65,7 @@ public class TrendMovieDetailViewController: UIViewController {
         return tableView
     }()
     
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         configureHierarchy()
@@ -121,10 +121,10 @@ public class TrendMovieDetailViewController: UIViewController {
 extension TrendMovieDetailViewController
 : UITableViewDelegate, UITableViewDataSource {
     
-    public func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return trendDetailData.count
     }
-    public func tableView(
+    func tableView(
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
@@ -136,7 +136,7 @@ extension TrendMovieDetailViewController
         }
     }
     
-    public func tableView(
+    func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
@@ -166,7 +166,7 @@ extension TrendMovieDetailViewController
             
         }
     }
-    public func tableView(
+    func tableView(
         _ tableView: UITableView,
         viewForHeaderInSection section: Int
     ) -> UIView? {
@@ -194,7 +194,7 @@ extension TrendMovieDetailViewController
             return sectionView
         }
     }
-    public func tableView(
+    func tableView(
         _ tableView: UITableView,
         heightForRowAt indexPath: IndexPath
     ) -> CGFloat {

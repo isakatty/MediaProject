@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-public class TrendMovieDetailDescriptionTableViewCell: UITableViewCell {
+final class TrendMovieDetailDescriptionTableViewCell: UITableViewCell {
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15)
@@ -18,7 +18,7 @@ public class TrendMovieDetailDescriptionTableViewCell: UITableViewCell {
         return label
     }()
 
-    public override init(
+    override init(
         style: UITableViewCell.CellStyle,
         reuseIdentifier: String?
     ) {
@@ -35,7 +35,7 @@ public class TrendMovieDetailDescriptionTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func prepareForReuse() {
+    override func prepareForReuse() {
         super.prepareForReuse()
         
         descriptionLabel.text = nil
@@ -51,9 +51,7 @@ public class TrendMovieDetailDescriptionTableViewCell: UITableViewCell {
             make.leading.trailing.equalToSuperview().inset(30)
         }
     }
-    public func configureUI(
-        descriptionText: String
-    ) {
+    func configureUI(descriptionText: String) {
         descriptionLabel.text = descriptionText
     }
 }

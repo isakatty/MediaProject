@@ -7,11 +7,11 @@
 
 import Foundation
 
-public enum Scheme: String {
+enum Scheme: String {
     case http, https
 }
 
-public protocol Endpoint {
+protocol Endpoint {
     var scheme: Scheme { get }
     var host: String { get }
     var port: String { get }
@@ -23,7 +23,7 @@ public protocol Endpoint {
 }
 
 extension Endpoint {
-    public var toURLString: String {
+    var toURLString: String {
         var urlComponent = URLComponents()
         urlComponent.scheme = scheme.rawValue
         urlComponent.host = host

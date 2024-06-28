@@ -10,7 +10,7 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-public class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController {
     private var page: Int = 1
     private var isLastData: Bool = false
     private var searchedMovieList: SearchedMovie = SearchedMovie(
@@ -40,7 +40,7 @@ public class SearchViewController: UIViewController {
         return bar
     }()
     
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         configureHierarchy()
@@ -103,7 +103,7 @@ public class SearchViewController: UIViewController {
 }
 
 extension SearchViewController: UISearchBarDelegate {
-    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         page = 1
         isLastData = false
         searchedMovieList.results.removeAll()
@@ -128,13 +128,13 @@ extension SearchViewController: UISearchBarDelegate {
 
 extension SearchViewController
 : UICollectionViewDelegate, UICollectionViewDataSource {
-    public func collectionView(
+    func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
         return searchedMovieList.results.count
     }
-    public func collectionView(
+    func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
@@ -150,7 +150,7 @@ extension SearchViewController
     }
 }
 extension SearchViewController: UICollectionViewDataSourcePrefetching {
-    public func collectionView(
+    func collectionView(
         _ collectionView: UICollectionView,
         prefetchItemsAt indexPaths: [IndexPath]
     ) {
@@ -178,7 +178,7 @@ extension SearchViewController: UICollectionViewDataSourcePrefetching {
         }
     }
     
-    public func collectionView(
+    func collectionView(
         _ collectionView: UICollectionView,
         cancelPrefetchingForItemsAt indexPaths: [IndexPath]
     ) {

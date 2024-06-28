@@ -7,12 +7,12 @@
 
 import Foundation
 
-public struct Trend: Decodable {
+struct Trend: Decodable {
     let page: Int
     let results: [MovieInfo]
 }
 
-public struct MovieInfo: Decodable {
+struct MovieInfo: Decodable {
     let backdrop_path: String
     let id: Int
     let original_title: String
@@ -27,11 +27,11 @@ public struct MovieInfo: Decodable {
     let vote_count: Int
 }
 
-public struct TrendMovies: Decodable {
+struct TrendMovies: Decodable {
     let page: Int
     let results: [TrendInfo]
 }
 
-public struct TrendInfo: Decodable {
+struct TrendInfo: Decodable {
     let poster_path: String
 }
