@@ -1,5 +1,5 @@
 //
-//  TrendMovieDetailDescriptionTableViewCell.swift
+//  MovieDetailDescriptionTableViewCell.swift
 //  MediaProject
 //
 //  Created by Jisoo Ham on 6/11/24.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class TrendMovieDetailDescriptionTableViewCell: UITableViewCell {
+final class MovieDetailDescriptionTableViewCell: UITableViewCell {
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 15)

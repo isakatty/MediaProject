@@ -1,5 +1,5 @@
 //
-//  TrendMovieDetailActorInfoTableViewCell.swift
+//  MovieDetailActorInfoTableViewCell.swift
 //  MediaProject
 //
 //  Created by Jisoo Ham on 6/11/24.
@@ -10,7 +10,7 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-final class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
+final class MovieDetailActorInfoTableViewCell: UITableViewCell {
     private let actorImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
@@ -83,12 +83,14 @@ final class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
     func configureUI(
         cast: Cast?
     ) {
-        guard let cast,
-              let profile_path = cast.profile_path,
-              let url = URL(string: NetworkRequest.imageURL + profile_path)
-        else { return }
-        
-        actorImageView.kf.setImage(with: url)
+        guard let cast else { return }
+        if cast.profile_path != nil {
+            guard let profile_path = cast.profile_path else { return }
+            guard let url = URL(string: NetworkRequest.imageURL + profile_path) else { return }
+            actorImageView.kf.setImage(with: url)
+        } else {
+            actorImageView.image = UIImage(named: "preparingImg")
+        }
         actorNameLabel.text = cast.name
         actorMovieNameLabel.text = cast.character
     }

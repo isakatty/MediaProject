@@ -8,7 +8,7 @@
 import UIKit
 
 // MARK: TableView 안에 CollectionView 좌우 스크롤
-final class RecommendMoviesViewController: UIViewController {
+final class RecommendMoviesViewController: BaseViewController {
     var movie: MovieInfo
     private var moviePosterArrays: [[TrendInfo]] = [[],[]]
     private var posterArrays: [PosterPath] = []
@@ -31,11 +31,7 @@ final class RecommendMoviesViewController: UIViewController {
     init(movie: MovieInfo) {
         self.movie = movie
         
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(viewTitle: ViewCase.similar.viewTitle)
     }
     
     override func viewDidLoad() {
@@ -44,14 +40,15 @@ final class RecommendMoviesViewController: UIViewController {
         network()
         configureHierarchy()
         configureLayout()
+        configureNavigationBar()
     }
     
     private func configureHierarchy() {
         [multiMoviesTableView]
             .forEach { view.addSubview($0) }
     }
-    private func configureLayout() {
-        view.backgroundColor = .systemBackground
+    internal override func configureLayout() {
+        super.configureLayout()
         let safeArea = view.safeAreaLayoutGuide
         
         multiMoviesTableView.snp.makeConstraints { make in

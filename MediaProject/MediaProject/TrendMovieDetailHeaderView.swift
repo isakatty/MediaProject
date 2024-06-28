@@ -58,24 +58,22 @@ final class TrendMovieDetailHeaderView: UITableViewHeaderFooterView {
     private func configureLayout() {
         contentView.snp.makeConstraints { make in
             make.height.equalTo(240)
-            make.width.equalToSuperview()
-            make.center.equalToSuperview()
+            make.center.width.equalToSuperview()
         }
-        
         backPosterView.snp.makeConstraints { make in
-            make.top.leading.trailing.centerX.equalToSuperview()
+            make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(self.snp.width).multipliedBy(0.55)
         }
         movieTitleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(20)
+            make.top.equalTo(backPosterView.snp.top).offset(8)
             make.leading.trailing.equalToSuperview().inset(30)
-            make.height.equalTo(24)
         }
         posterView.snp.makeConstraints { make in
             make.top.equalTo(movieTitleLabel.snp.bottom)
             make.leading.equalToSuperview().inset(30)
             make.width.equalTo(contentView.snp.height).multipliedBy(0.45 / 1.0)
             make.height.equalTo(contentView.snp.height).multipliedBy(0.8)
+            make.bottom.equalTo(backPosterView.snp.bottom)
         }
         sectionLabel.snp.makeConstraints { make in
             make.top.equalTo(backPosterView.snp.bottom)
@@ -85,11 +83,13 @@ final class TrendMovieDetailHeaderView: UITableViewHeaderFooterView {
         }
     }
     func configureUI(
-        with movieInfo: MovieInfo,
+        with movieInfo: SearchedMovieInfo,
         with sectionText: String
     ) {
-        guard let backPosterImage = URL(string: NetworkRequest.imageURL + movieInfo.backdrop_path),
-              let posterImage = URL(string: NetworkRequest.imageURL + movieInfo.poster_path)
+        guard let poster_path = movieInfo.poster_path,
+              let backdrop_path = movieInfo.backdrop_path,
+            let backPosterImage = URL(string: NetworkRequest.imageURL + backdrop_path),
+              let posterImage = URL(string: NetworkRequest.imageURL + poster_path)
         else { return }
         backPosterView.kf.setImage(with: backPosterImage)
         posterView.kf.setImage(with: posterImage)

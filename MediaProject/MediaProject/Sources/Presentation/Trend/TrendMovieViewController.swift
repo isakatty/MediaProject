@@ -9,8 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class TrendMovieViewController: UIViewController {
-    
+final class TrendMovieViewController: BaseViewController {
     private var trendMovie = [MovieInfo]() {
         didSet {
             movieTableView.reloadData()
@@ -28,13 +27,12 @@ final class TrendMovieViewController: UIViewController {
         table.rowHeight = 320
         return table
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureHierarchy()
         configureLayout()
-        configureUI()
         network()
     }
     
@@ -42,17 +40,14 @@ final class TrendMovieViewController: UIViewController {
         view.addSubview(movieTableView)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
+        super.configureLayout()
         let safeArea = view.safeAreaLayoutGuide
         
         movieTableView.snp.makeConstraints { make in
             make.edges.equalTo(safeArea)
         }
-    }
-    
-    private func configureUI() {
-        view.backgroundColor = .systemBackground
-        navigationItem.title = "트렌드"
+        configureNavi(title: viewTitle)
     }
     
     private func network() {
@@ -112,5 +107,4 @@ extension TrendMovieViewController: UITableViewDelegate, UITableViewDataSource {
     ) -> CGFloat {
         return UITableView.automaticDimension
     }
-    
 }

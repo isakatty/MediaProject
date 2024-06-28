@@ -8,6 +8,22 @@
 import UIKit
 
 extension UIViewController {
+    func configureNavi(title: String) {
+        navigationItem.title = title
+        navigationController?.navigationBar.tintColor = UIColor.black
+    }
+    
+    func configureNavigationBar() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.left"),
+            style: .plain,
+            target: self,
+            action: #selector(backBtnTapped)
+        )
+        navigationController?
+            .interactivePopGestureRecognizer?.delegate = nil
+    }
+    
     func hideKeyboard() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self,
@@ -18,5 +34,8 @@ extension UIViewController {
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
+    }
+    @objc func backBtnTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }

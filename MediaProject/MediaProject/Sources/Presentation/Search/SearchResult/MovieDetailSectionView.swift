@@ -1,5 +1,5 @@
 //
-//  TrendMovieDetailSectionView.swift
+//  MovieDetailSectionView.swift
 //  MediaProject
 //
 //  Created by Jisoo Ham on 6/11/24.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class TrendMovieDetailSectionView: UITableViewHeaderFooterView {
+final class MovieDetailSectionView: UITableViewHeaderFooterView {
 
     private let sectionLabel: UILabel = {
         let label = UILabel()
@@ -49,5 +49,4 @@ final class TrendMovieDetailSectionView: UITableViewHeaderFooterView {
     ) {
         sectionLabel.text = sectionText
     }
-    
 }

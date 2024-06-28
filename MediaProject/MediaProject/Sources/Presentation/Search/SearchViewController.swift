@@ -10,7 +10,7 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-final class SearchViewController: UIViewController {
+final class SearchViewController: BaseViewController {
     private var page: Int = 1
     private var isLastData: Bool = false
     private var searchedMovieList: SearchedMovie = SearchedMovie(
@@ -51,8 +51,8 @@ final class SearchViewController: UIViewController {
         [searchBar, movieCollectionView]
             .forEach { view.addSubview($0) }
     }
-    private func configureLayout() {
-        view.backgroundColor = .systemBackground
+    internal override func configureLayout() {
+        super.configureLayout()
         let safeArea = view.safeAreaLayoutGuide
         
         searchBar.snp.makeConstraints { make in
@@ -147,6 +147,13 @@ extension SearchViewController
         cell.configureUI(with: searchedMovieList.results[indexPath.item].poster_path ?? "")
         
         return cell
+    }
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        let vc = MovieDetailViewController(movieInfo: searchedMovieList.results[indexPath.item])
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 extension SearchViewController: UICollectionViewDataSourcePrefetching {

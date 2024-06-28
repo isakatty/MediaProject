@@ -1,5 +1,5 @@
 //
-//  TrendMovieDetailViewController.swift
+//  MovieDetailViewController.swift
 //  MediaProject
 //
 //  Created by Jisoo Ham on 6/10/24.
@@ -10,8 +10,8 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-final class TrendMovieDetailViewController: UIViewController {
-    var movieInfo: MovieInfo
+final class MovieDetailViewController: BaseViewController {
+    var movieInfo: SearchedMovieInfo
     private var trendDetailData: [TrendDetail] = [
         TrendDetail(
             section: .overView,
@@ -29,13 +29,10 @@ final class TrendMovieDetailViewController: UIViewController {
         }
     }
     
-    init(movieInfo: MovieInfo) {
+    init(movieInfo: SearchedMovieInfo) {
         self.movieInfo = movieInfo
         
-        super.init(
-            nibName: nil,
-            bundle: nil
-        )
+        super.init(viewTitle: ViewCase.movieDetail(movie: movieInfo.title).viewTitle)
     }
     
     required init?(coder: NSCoder) {
@@ -46,17 +43,18 @@ final class TrendMovieDetailViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
+        tableView.allowsSelection = false
         tableView.register(
-            TrendMovieDetailDescriptionTableViewCell.self,
-            forCellReuseIdentifier: TrendMovieDetailDescriptionTableViewCell.identifier
+            MovieDetailDescriptionTableViewCell.self,
+            forCellReuseIdentifier: MovieDetailDescriptionTableViewCell.identifier
         )
         tableView.register(
-            TrendMovieDetailActorInfoTableViewCell.self,
-            forCellReuseIdentifier: TrendMovieDetailActorInfoTableViewCell.identifier
+            MovieDetailActorInfoTableViewCell.self,
+            forCellReuseIdentifier: MovieDetailActorInfoTableViewCell.identifier
         )
         tableView.register(
-            TrendMovieDetailSectionView.self, 
-            forHeaderFooterViewReuseIdentifier: TrendMovieDetailSectionView.identifier
+            MovieDetailSectionView.self, 
+            forHeaderFooterViewReuseIdentifier: MovieDetailSectionView.identifier
         )
         tableView.register(
             TrendMovieDetailHeaderView.self,
@@ -68,9 +66,9 @@ final class TrendMovieDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configureNavigationBar()
         configureHierarchy()
         configureLayout()
-        configureView()
         configureUI(movieInfo: movieInfo)
     }
 
@@ -78,7 +76,8 @@ final class TrendMovieDetailViewController: UIViewController {
       [movieInfoTableView]
         .forEach { view.addSubview($0) }
     }
-    private func configureLayout() {
+    internal override func configureLayout() {
+        super.configureLayout()
         let safeArea = view.safeAreaLayoutGuide
         
         movieInfoTableView.snp.makeConstraints { make in
@@ -86,19 +85,7 @@ final class TrendMovieDetailViewController: UIViewController {
             make.centerX.equalTo(safeArea)
         }
     }
-    private func configureView() {
-        view.backgroundColor = .systemBackground
-        navigationItem.title = "출연"
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "chevron.left"),
-            style: .plain,
-            target: self,
-            action: #selector(naviBackButtonTapped)
-        )
-        navigationItem.leftBarButtonItem?.tintColor = .black
-    }
-    private func configureUI(movieInfo: MovieInfo) {
+    private func configureUI(movieInfo: SearchedMovieInfo) {
         NetworkService.shared.callTMDB(
             endPoint: .trendDetail(movieId: String(movieInfo.id)),
             type: MovieCredit.self
@@ -113,12 +100,9 @@ final class TrendMovieDetailViewController: UIViewController {
             }
         }
     }
-    @objc private func naviBackButtonTapped() {
-        navigationController?.popViewController(animated: true)
-    }
 }
 
-extension TrendMovieDetailViewController
+extension MovieDetailViewController
 : UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -144,9 +128,9 @@ extension TrendMovieDetailViewController
         switch trendDetailData[indexPath.section].section {
         case .overView:
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: TrendMovieDetailDescriptionTableViewCell.identifier,
+                withIdentifier: MovieDetailDescriptionTableViewCell.identifier,
                 for: indexPath
-            ) as? TrendMovieDetailDescriptionTableViewCell,
+            ) as? MovieDetailDescriptionTableViewCell,
                   let text = trendDetailData[indexPath.section].descriptionText
             else { return UITableViewCell() }
             
@@ -155,9 +139,9 @@ extension TrendMovieDetailViewController
             return cell
         case .cast:
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: TrendMovieDetailActorInfoTableViewCell.identifier,
+                withIdentifier: MovieDetailActorInfoTableViewCell.identifier,
                 for: indexPath
-            ) as? TrendMovieDetailActorInfoTableViewCell
+            ) as? MovieDetailActorInfoTableViewCell
             else { return UITableViewCell() }
             
             cell.configureUI(cast: trendDetailData[indexPath.section].actorInfo?[indexPath.row])
@@ -175,7 +159,7 @@ extension TrendMovieDetailViewController
             guard let headerView = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: TrendMovieDetailHeaderView.identifier
             ) as? TrendMovieDetailHeaderView
-            else { return UIView() }
+            else { return UITableViewHeaderFooterView() }
             
             headerView.configureUI(
                 with: movieInfo,
@@ -185,9 +169,9 @@ extension TrendMovieDetailViewController
             
         case .cast:
             guard let sectionView = tableView.dequeueReusableHeaderFooterView(
-                withIdentifier: TrendMovieDetailSectionView.identifier
-            ) as? TrendMovieDetailSectionView
-            else { return UIView() }
+                withIdentifier: MovieDetailSectionView.identifier
+            ) as? MovieDetailSectionView
+            else { return UITableViewHeaderFooterView() }
             
             sectionView.configureUI(with: trendDetailData[section].section.rawValue)
             

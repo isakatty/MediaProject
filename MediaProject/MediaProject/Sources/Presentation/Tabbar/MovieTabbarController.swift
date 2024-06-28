@@ -20,8 +20,8 @@ final class MovieTabbarController: UITabBarController {
         tabBar.tintColor = .black
         
         let vcs = [
-            TrendMovieViewController(),
-            SearchViewController()
+            TrendMovieViewController(viewTitle: ViewCase.trend.viewTitle),
+            SearchViewController(viewTitle: ViewCase.search.viewTitle)
         ]
         
         setViewControllers(
@@ -30,23 +30,16 @@ final class MovieTabbarController: UITabBarController {
         )
     }
     private func configureTabs(vcGroup: [UIViewController]) -> [UINavigationController] {
-        var tabGroup = [UINavigationController]()
-        
-        for (index, vc) in vcGroup.enumerated() {
-            for item in TabbarCase.allCases {
-                if index == item.rawValue {
-                    let tabbar = UITabBarItem(
-                        title: item.tabBarName,
-                        image: UIImage(systemName: item.nomalIconName),
-                        selectedImage: UIImage(systemName: item.tintedIconName)
-                    )
-                    let navi = UINavigationController(rootViewController: vc)
-                    navi.tabBarItem = tabbar
-                    tabGroup.insert(navi, at: item.rawValue)
-                }
-            }
+        return vcGroup.enumerated().compactMap { (index, vc) in
+            guard let tabBarItemCase = TabbarCase(rawValue: index) else { return nil }
+            let tab = UITabBarItem(
+                title: tabBarItemCase.tabBarName,
+                image: UIImage(systemName: tabBarItemCase.nomalIconName),
+                selectedImage: UIImage(systemName: tabBarItemCase.tintedIconName)
+            )
+            let navController = UINavigationController(rootViewController: vc)
+            navController.tabBarItem = tab
+            return navController
         }
-        
-        return tabGroup
     }
 }
