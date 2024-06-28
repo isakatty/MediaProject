@@ -8,7 +8,6 @@
 import UIKit
 
 final class RecommendTableViewCell: UITableViewCell {
-    static let id = "RecommendTableViewCell"
     
     private let titleLabel: UILabel = {
         let label = UILabel()

@@ -8,14 +8,11 @@
 import Foundation
 
 enum TabbarCase: Int, CaseIterable {
-    case home = 0
+    case trend = 0
     case search
-    case trend
     
     var tabBarName: String {
         switch self {
-        case .home:
-            "홈"
         case .search:
             "검색"
         case .trend:
@@ -24,8 +21,6 @@ enum TabbarCase: Int, CaseIterable {
     }
     var nomalIconName: String {
         switch self {
-        case .home:
-            "house"
         case .search:
             "magnifyingglass"
         case .trend:
@@ -34,8 +29,6 @@ enum TabbarCase: Int, CaseIterable {
     }
     var tintedIconName: String {
         switch self {
-        case .home:
-            "house.fill"
         case .search:
             "magnifyingglass"
         case .trend:

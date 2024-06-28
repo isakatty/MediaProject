@@ -20,9 +20,8 @@ final class MovieTabbarController: UITabBarController {
         tabBar.tintColor = .black
         
         let vcs = [
-            ViewController(),
-            SearchViewController(),
-            TrendMovieViewController()
+            TrendMovieViewController(),
+            SearchViewController()
         ]
         
         setViewControllers(
@@ -43,7 +42,7 @@ final class MovieTabbarController: UITabBarController {
                     )
                     let navi = UINavigationController(rootViewController: vc)
                     navi.tabBarItem = tabbar
-                    tabGroup.insert(navi, at: index)
+                    tabGroup.insert(navi, at: item.rawValue)
                 }
             }
         }

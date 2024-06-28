@@ -19,7 +19,7 @@ final class RecommendMoviesViewController: UIViewController {
         table.dataSource = self
         table.register(
             RecommendTableViewCell.self,
-            forCellReuseIdentifier: RecommendTableViewCell.id
+            forCellReuseIdentifier: RecommendTableViewCell.identifier
         )
         table.register(
             RecommendTableHeaderView.self,
@@ -143,7 +143,7 @@ extension RecommendMoviesViewController
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: RecommendTableViewCell.id,
+            withIdentifier: RecommendTableViewCell.identifier,
             for: indexPath
         ) as? RecommendTableViewCell else { return UITableViewCell() }
         
