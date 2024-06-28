@@ -85,7 +85,7 @@ public class TrendMovieDetailActorInfoTableViewCell: UITableViewCell {
     ) {
         guard let cast,
               let profile_path = cast.profile_path,
-              let url = URL(string: Constant.Endpoint.imageURL + profile_path)
+              let url = URL(string: NetworkRequest.imageURL + profile_path)
         else { return }
         
         actorImageView.kf.setImage(with: url)

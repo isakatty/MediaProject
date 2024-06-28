@@ -36,7 +36,7 @@ public final class MoviesCollectionViewCell: UICollectionViewCell {
     }
     public func configureUI(path: String) {
         guard let imageUrl = URL(
-            string: Constant.Endpoint.imageURL + path
+            string: NetworkRequest.imageURL + path
         ) else { return }
         moviePosterImageView.kf.setImage(with: imageUrl)
     }
