@@ -43,7 +43,7 @@ public class SearchViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         configureHierarchy()
         configureLayout()
     }
@@ -101,7 +101,6 @@ public class SearchViewController: UIViewController {
         )
         return layout
     }
-
 }
 
 extension SearchViewController: UISearchBarDelegate {
@@ -129,7 +128,7 @@ extension SearchViewController
         return searchedMovieList.results.count
     }
     public func collectionView(
-        _ collectionView: UICollectionView, 
+        _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
@@ -148,20 +147,25 @@ extension SearchViewController: UICollectionViewDataSourcePrefetching {
         _ collectionView: UICollectionView,
         prefetchItemsAt indexPaths: [IndexPath]
     ) {
-        print(#function, indexPaths)
-        
         for path in indexPaths {
             let isReadyToPagenation = searchedMovieList.results.count - 6 == path.item
             if isReadyToPagenation && isLastData == false {
                 page += 1
-                print("Prefetching, New Page: \(page)")
                 guard let text = searchBar.text else { return }
-                NetworkService.shared.callSearchTMDB(
-                    with: text,
-                    page: page
-                ) { [weak self] movie in
-                    guard let self = self else { return }
-                    handleSearchedMovie(movie: movie)
+                NetworkService.shared.callTMDB(
+                    endPoint: .search(
+                        movieName: text,
+                        page: page
+                    ),
+                    type: SearchedMovie.self
+                ) { [weak self] searchedMovie, error in
+                    if let error {
+                        print(#file, #function, "검색 에러")
+                    } else {
+                        guard let self else { return }
+                        guard let searchedMovie else { return }
+                        handleSearchedMovie(movie: searchedMovie)
+                    }
                 }
             }
         }
@@ -173,5 +177,4 @@ extension SearchViewController: UICollectionViewDataSourcePrefetching {
     ) {
         print(#function)
     }
-    
 }

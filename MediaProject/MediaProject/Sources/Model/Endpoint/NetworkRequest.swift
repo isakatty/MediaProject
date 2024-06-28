@@ -8,9 +8,12 @@
 import Foundation
 
 public enum NetworkRequest: Endpoint {
+    static let imageURL = "https://image.tmdb.org/t/p/original"
+    
     case trendingTV
     case trendingMovie
-    case search(movieName: String)
+    case trendDetail(movieId: String)
+    case search(movieName: String, page: Int)
     case images(movieId: String)
     case recommends(movieId: String)
     case similarMovies(movieId: String)
@@ -39,17 +42,21 @@ public enum NetworkRequest: Endpoint {
             "/3/movie/\(movieId)/recommendations"
         case .similarMovies(let movieId):
             "/3/movie/\(movieId)/similar"
+        case .trendDetail(let movieId):
+            "/3/movie/\(movieId)/credits"
         }
     }
     public var query: [String : Any] {
         // TODO: language 공통 - 공통 묶어서 처리할 수 있게 변경해보기
         switch self {
-        case .trendingTV, .trendingMovie, .similarMovies:
+        case .trendingTV, .trendingMovie, .trendDetail, .similarMovies:
             return ["language": "ko-KR"]
-        case .search(let movieName):
+        case .search(let movieName, let page):
             return [
                 "language": "ko-KR",
-                "query": movieName
+                "query": movieName,
+                "include_adult": true,
+                "page": page
             ]
         case .images:
             return [

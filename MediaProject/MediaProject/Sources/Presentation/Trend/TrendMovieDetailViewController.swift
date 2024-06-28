@@ -12,7 +12,7 @@ import Kingfisher
 import SnapKit
 
 public class TrendMovieDetailViewController: UIViewController {
-    public var movieInfo: MovieInfo?
+    public var movieInfo: MovieInfo
     private var trendDetailData: [TrendDetail] = [
         TrendDetail(
             section: .overView,
@@ -30,7 +30,7 @@ public class TrendMovieDetailViewController: UIViewController {
         }
     }
     
-    public init(movieInfo: MovieInfo?) {
+    public init(movieInfo: MovieInfo) {
         self.movieInfo = movieInfo
         
         super.init(
@@ -99,13 +99,19 @@ public class TrendMovieDetailViewController: UIViewController {
         )
         navigationItem.leftBarButtonItem?.tintColor = .black
     }
-    private func configureUI(movieInfo: MovieInfo?) {
-        guard let movieInfo else { return }
-        
-        NetworkService.shared.callMovieDetail(with: movieInfo) { [weak self] credit, info in
-            guard let self = self else { return }
-            self.trendDetailData[0].descriptionText = info.overview
-            self.trendDetailData[1].actorInfo = credit.cast
+    private func configureUI(movieInfo: MovieInfo) {
+        NetworkService.shared.callTMDB(
+            endPoint: .trendDetail(movieId: String(movieInfo.id)),
+            type: MovieCredit.self
+        ) { [weak self] details, error in
+            if let error {
+                print("NetworkService - Movie Detail 통신 에러", error)
+            } else {
+                guard let self else { return }
+                guard let details else { return }
+                self.trendDetailData[0].descriptionText = movieInfo.overview
+                self.trendDetailData[1].actorInfo = details.cast
+            }
         }
     }
     @objc private func naviBackButtonTapped() {
@@ -169,8 +175,7 @@ extension TrendMovieDetailViewController
         case .overView:
             guard let headerView = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: TrendMovieDetailHeaderView.identifier
-            ) as? TrendMovieDetailHeaderView,
-                  let movieInfo
+            ) as? TrendMovieDetailHeaderView
             else { return UIView() }
             
             headerView.configureUI(

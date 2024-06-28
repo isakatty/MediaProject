@@ -36,11 +36,7 @@ public class TrendMovieViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureUI()
-        NetworkService.shared.callTrendList { [weak self] movies in
-            guard let self = self else { return }
-            
-            self.trendMovie = movies
-        }
+        network()
     }
     
     private func configureHierarchy() {
@@ -58,6 +54,21 @@ public class TrendMovieViewController: UIViewController {
     private func configureUI() {
         view.backgroundColor = .systemBackground
         navigationItem.title = "트렌드"
+    }
+    
+    private func network() {
+        NetworkService.shared.callTMDB(
+            endPoint: .trendingMovie,
+            type: Trend.self
+        ) { [weak self] trend, error in
+            if let error {
+                print("NetworkService - Trend 통신 Error", error)
+            } else {
+                guard let self else { return }
+                guard let trend else { return }
+                self.trendMovie = trend.results
+            }
+        }
     }
 }
 
@@ -89,9 +100,8 @@ extension TrendMovieViewController: UITableViewDelegate, UITableViewDataSource {
     ) {
         tableView.reloadData()
         
-//        let vc = TrendMovieDetailViewController(movieInfo: trendMovie[indexPath.row])
-//        let vc = SimilarMovieViewController(movie: trendMovie[indexPath.row])
-        let vc = RecommendMoviesViewController(movie: trendMovie[indexPath.row])
+        let vc = TrendMovieDetailViewController(movieInfo: trendMovie[indexPath.row])
+//        let vc = RecommendMoviesViewController(movie: trendMovie[indexPath.row])
         navigationController?.pushViewController(
             vc,
             animated: true
