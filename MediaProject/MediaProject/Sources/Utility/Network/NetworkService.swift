@@ -32,8 +32,9 @@ protocol NetworkServiceProtocol {
         endPoint: Endpoint,
         completionHandler: @escaping (TrendMovies) -> Void
     )
-    func callPosterImages<T: Decodable>(
+    func callTMDB<T: Decodable>(
         endPoint: NetworkRequest,
+        type: T.Type,
         completionHandler: @escaping (T?, String?) -> Void
     )
 }
@@ -209,8 +210,9 @@ public final class NetworkService: NetworkServiceProtocol {
         }
     }
     
-    public func callPosterImages<T: Decodable>(
+    public func callTMDB<T: Decodable>(
         endPoint: NetworkRequest,
+        type: T.Type,
         completionHandler: @escaping (T?, String?) -> Void
     ) {
         guard let url = URL(string: endPoint.toURLString) else { return }
@@ -222,6 +224,7 @@ public final class NetworkService: NetworkServiceProtocol {
         )
         .validate(statusCode: 200..<300)
         .responseDecodable(of: T.self) { response in
+                        // of 뒤에 들어오는건 메타타입이 들어와야해.
             switch response.result {
             case .success(let value):
                 completionHandler(value, nil)

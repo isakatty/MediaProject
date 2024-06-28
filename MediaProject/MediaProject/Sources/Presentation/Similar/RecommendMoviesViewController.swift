@@ -42,7 +42,6 @@ public final class RecommendMoviesViewController: UIViewController {
         network()
         configureHierarchy()
         configureLayout()
-        testing()
     }
     
     private func configureHierarchy() {
@@ -59,52 +58,70 @@ public final class RecommendMoviesViewController: UIViewController {
         let group = DispatchGroup()
         group.enter()
         DispatchQueue.global().async {
-            NetworkService.shared.callSimilarTMDB(movieID: self.movie.id) { [weak self] movies in
-                guard let self = self else { return }
-                self.moviePosterArrays[0] = movies.results
+            NetworkService.shared.callTMDB(
+                endPoint: .similarMovies(movieId: String(self.movie.id)),
+                type: TrendMovies.self
+            ) { [weak self] movies, error in
+                if let error {
+                    print("similar - error가 있다 !", error)
+                } else {
+                    guard let self else { return }
+                    guard let movies else {
+                        print("NetworkService - similar movies X")
+                        return
+                    }
+                    self.moviePosterArrays[0] = movies.results
+                }
                 group.leave()
             }
+            
         }
         group.enter()
         DispatchQueue.global().async {
-            NetworkService.shared.callRecommendTMDB(endPoint: RecommendEndPoint(
-                movieID: String(self.movie.id),
-                authKey: Constant.Endpoint.TMDB_key
-            )) { [weak self] movies in
-                guard let self = self else { return }
-                self.moviePosterArrays[1] = movies.results
-                group.leave()
-            }
-        }
-        group.enter()
-        DispatchQueue.global().async {
-            NetworkService.shared.callPosterImage(
-                endPoint: PosterEndPoint(
+            NetworkService.shared.callTMDB(
+                endPoint: .recommends(
                     movieId: String(
                         self.movie.id
-                    ),
-                    authKey: Constant.Endpoint.TMDB_key
-                )
-            ){ [weak self] poster in
-                guard let self = self else { return }
-                self.posterArrays.append(contentsOf: poster.backdrops)
+                    )
+                ),
+                type: TrendMovies.self
+            ) { [weak self] movies, error in
+                if let error {
+                    print("Recommend - error가 있다 !", error)
+                } else {
+                    guard let self else { return }
+                    guard let movies else {
+                        print("NetworkService - similar movies X")
+                        return
+                    }
+                    self.moviePosterArrays[1] = movies.results
+                }
+                group.leave()
+            }
+        }
+        group.enter()
+        DispatchQueue.global().async {
+            NetworkService.shared.callTMDB(
+                endPoint: NetworkRequest.images(movieId: String(self.movie.id)),
+                type: Poster.self
+            ) { [weak self] posters, error in
+                
+                if let error {
+                    print("poster - error가 있다 !", error)
+                } else {
+                    guard let self else { return }
+                    guard let posters else {
+                        print("NetworkService - poster data X")
+                        return
+                    }
+                    self.posterArrays.append(contentsOf: posters.backdrops)
+                }
                 group.leave()
             }
         }
         group.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
             self.multiMoviesTableView.reloadData()
-        }
-    }
-    private func testing() {
-        NetworkService.shared.callPosterImages(
-            endPoint: NetworkRequest.images(movieId: String(movie.id))
-        ) { (response: Poster?, error) in
-            if let error {
-                print(error)
-            } else {
-                print(response)
-            }
         }
     }
 }
