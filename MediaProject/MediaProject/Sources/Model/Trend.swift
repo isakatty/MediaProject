@@ -33,5 +33,5 @@ struct TrendMovies: Decodable {
 }
 
 struct TrendInfo: Decodable {
-    let poster_path: String
+    let poster_path: String?
 }

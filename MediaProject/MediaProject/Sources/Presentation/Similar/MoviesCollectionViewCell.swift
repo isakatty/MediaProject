@@ -34,10 +34,17 @@ final class MoviesCollectionViewCell: UICollectionViewCell {
             make.edges.equalToSuperview()
         }
     }
-    func configureUI(path: String) {
+    func configureUI(path: String?) {
+        guard let path else {
+            moviePosterImageView.image = UIImage(named: "preparingImg")
+            return
+        }
         guard let imageUrl = URL(
             string: NetworkRequest.imageURL + path
-        ) else { return }
+        ) else { 
+            print("에?")
+            return
+        }
         moviePosterImageView.kf.setImage(with: imageUrl)
     }
 }

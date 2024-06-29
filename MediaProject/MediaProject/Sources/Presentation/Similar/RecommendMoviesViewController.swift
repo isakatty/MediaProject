@@ -25,6 +25,7 @@ final class RecommendMoviesViewController: BaseViewController {
             RecommendTableHeaderView.self,
             forHeaderFooterViewReuseIdentifier: RecommendTableHeaderView.identifier
         )
+        table.allowsSelection = false
         return table
     }()
     
@@ -178,7 +179,8 @@ extension RecommendMoviesViewController
         
         switch section {
         case .similar, .recommend:
-            return moviePosterArrays[section.rawValue].count
+            let cellCount = moviePosterArrays[section.rawValue].count
+            return cellCount != 0 ? cellCount : 1
         case .poster:
             return posterArrays.count
         }
@@ -197,7 +199,12 @@ extension RecommendMoviesViewController
         
         switch section {
         case .similar, .recommend:
-            cell.configureUI(path: moviePosterArrays[section.rawValue][indexPath.item].poster_path)
+            let cellCount = moviePosterArrays[section.rawValue].count
+            if cellCount != 0 {
+                cell.configureUI(path: moviePosterArrays[section.rawValue][indexPath.item].poster_path)
+            } else {
+                cell.configureUI(path: nil)
+            }
         case .poster:
             cell.configureUI(path: posterArrays[indexPath.item].file_path)
         }

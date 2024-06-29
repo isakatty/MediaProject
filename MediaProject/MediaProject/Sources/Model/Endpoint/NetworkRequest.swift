@@ -52,7 +52,7 @@ enum NetworkRequest: Endpoint {
     var query: [String : Any] {
         // TODO: language 공통 - 공통 묶어서 처리할 수 있게 변경해보기
         switch self {
-        case .trendingTV, .trendingMovie, .trendDetail, .similarMovies:
+        case .trendingTV, .trendingMovie, .trendDetail, .similarMovies, .recommends:
             return ["language": "ko-KR"]
         case .search(let movieName, let page):
             return [
@@ -65,11 +65,6 @@ enum NetworkRequest: Endpoint {
             return [
                 "include_image_language": "en,null",
                 "language": "ko-KR"
-            ]
-        case .recommends:
-            return [
-                "language": "ko-KR",
-                "page": 1
             ]
         }
     }
