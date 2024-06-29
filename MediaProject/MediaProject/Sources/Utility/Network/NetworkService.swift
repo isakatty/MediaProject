@@ -21,31 +21,8 @@ final class NetworkService: NetworkServiceProtocol {
     
     static let shared = NetworkService()
     
-    private var api_key: String {
-        return Bundle.main.object(
-            forInfoDictionaryKey: "MOVIE_API_KEY"
-        ) as? String ?? ""
-    }
     private init() { }
     
-    func callSearchKofic(
-        date: String,
-        completionHandler: @escaping (Result<Movie, Error>) -> Void
-    ) {
-        let pathParams = "key=\(api_key)&targetDt="
-        let movieURL = Constant.Endpoint.kofic_URL + pathParams + date
-        
-        AF.request(movieURL).responseDecodable(
-            of: Movie.self
-        ) { response in
-            switch response.result {
-            case .success(let movie):
-                completionHandler(.success(movie))
-            case .failure(let error):
-                completionHandler(.failure(error))
-            }
-        }
-    }
     func callTMDB<T: Decodable>(
         endPoint: NetworkRequest,
         type: T.Type,
