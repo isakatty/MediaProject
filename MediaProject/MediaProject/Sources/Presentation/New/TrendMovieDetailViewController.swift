@@ -10,7 +10,8 @@ import UIKit
 enum SectionKind: Int, CaseIterable {
     case movieInfo = 0
     case cast
-    case video
+    case poster
+    case similar
     
     var groupSize: [String: CGFloat] {
         switch self {
@@ -18,8 +19,10 @@ enum SectionKind: Int, CaseIterable {
             return ["wid": 1.0, "hght": 0.5]
         case .cast:
             return ["wid": 2 / 9, "hght": 0.2]
-        case .video:
+        case .poster:
             return ["wid": 1 / 3 , "hght": 0.2]
+        case .similar:
+            return ["wid": 1 / 4 , "hght": 0.25]
         }
     }
 }
@@ -43,12 +46,13 @@ final class TrendMovieDetailViewController: BaseViewController {
                 profile_path: "",
                 character: ""
             )],
-            similar: nil
+            poster: nil, similar: nil
         ),
         TrendCollection.init(
             actorInfo: nil,
-            similar: [TrendInfo(poster_path: "")]
-        )
+            poster: [PosterPath(file_path: "")], similar: nil
+        ),
+        TrendCollection.init(similar: [TrendInfo.init(poster_path: "")])
     ]
     private lazy var detailCollectionView: UICollectionView = {
         let collectionView = UICollectionView(
@@ -132,19 +136,43 @@ final class TrendMovieDetailViewController: BaseViewController {
         group.enter()
         DispatchQueue.global().async {
             NetworkService.shared.callTMDB(
-                endPoint: .similarMovies(movieId: String(self.movieInfo.id)),
+                endPoint: .images(movieId: String(self.movieInfo.id)),
+                type: Poster.self
+            ) { [weak self] files, error in
+                if let error {
+                    print("similar - error가 있다 !", error)
+                } else {
+                    guard let self else { return }
+                    guard let files else {
+                        print("NetworkService - similar movies X")
+                        return
+                    }
+                    self.sectionDetails[1].poster = files.backdrops
+                    sectionItems[2] = files.backdrops.count
+                }
+                group.leave()
+            }
+        }
+        group.enter()
+        DispatchQueue.global().async {
+            NetworkService.shared.callTMDB(
+                endPoint: .recommends(
+                    movieId: String(
+                        self.movieInfo.id
+                    )
+                ),
                 type: TrendMovies.self
             ) { [weak self] movies, error in
                 if let error {
-                    print("similar - error가 있다 !", error)
+                    print("Recommend - error가 있다 !", error)
                 } else {
                     guard let self else { return }
                     guard let movies else {
                         print("NetworkService - similar movies X")
                         return
                     }
-                    self.sectionDetails[1].similar = movies.results
-                    sectionItems[2] = movies.results.count
+                    self.sectionDetails[2].similar = movies.results
+                    sectionItems[3] = movies.results.count
                 }
                 group.leave()
             }
@@ -164,8 +192,7 @@ final class TrendMovieDetailViewController: BaseViewController {
                     widthRatio: sectionKind.groupSize["wid"]!,
                     heightRatio: sectionKind.groupSize["hght"]!
                 )
-            case .cast,
-                    .video:
+            case .cast, .poster, .similar:
                 return self.createHorizontalSection(
                     widthRatio: sectionKind.groupSize["wid"]!,
                     heightRatio: sectionKind.groupSize["hght"]!
@@ -262,11 +289,30 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
             
             cell.configureUI(cast: sectionDetails[sectionKind.rawValue - 1].actorInfo?[indexPath.item])
             return cell
-        case .video:
+        case .poster:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TrendMovieCollectionViewCell.identifier,
                 for: indexPath
             ) as? TrendMovieCollectionViewCell else { return UICollectionViewCell() }
+            
+            cell.configureUI(
+                path: sectionDetails[sectionKind.rawValue - 1].poster?[indexPath.item].file_path,
+                indexPath: indexPath.item,
+                similarTitle: "영화 포스터"
+            )
+            return cell
+        case .similar:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: TrendMovieCollectionViewCell.identifier,
+                for: indexPath
+            ) as? TrendMovieCollectionViewCell else { return UICollectionViewCell() }
+            
+            cell.configureUI(
+                path: sectionDetails[sectionKind.rawValue - 1].similar?[indexPath.item].poster_path,
+                indexPath: indexPath.item,
+                similarTitle: "비슷한 영화"
+            )
+            cell.configureLayout(isSimilar: true, heightRatio: 1.3)
             
             return cell
         }

@@ -7,25 +7,63 @@
 
 import UIKit
 
-final class TrendMovieCollectionViewCell: UICollectionViewCell {
+import Kingfisher
+
+final class TrendMovieCollectionViewCell: BaseCollectionViewCell {
+    private let sectionName: UILabel = {
+        let label = UILabel()
+        label.text = "영화 Poster"
+        label.textColor = UIColor.black
+        label.font = Constant.Font.bold17
+        return label
+    }()
     
-    private let views: UIView = {
-        let view = UIView()
-        view.backgroundColor = .blue
-        return view
+    private let posterImage: UIImageView = {
+        let image = UIImageView()
+        image.contentMode = .scaleAspectFit
+        image.clipsToBounds = true
+        return image
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        contentView.addSubview(views)
-        
-        views.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        configureHierarchy()
+        configureLayout()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    private func configureHierarchy() {
+        [sectionName, posterImage]
+            .forEach { contentView.addSubview($0) }
+    }
+    private func configureLayout() {
+        sectionName.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalToSuperview()
+            make.height.equalTo(17)
+        }
+        
+        posterImage.snp.makeConstraints { make in
+            make.bottom.horizontalEdges.equalToSuperview()
+            make.height.equalTo(posterImage.snp.width).multipliedBy(0.6)
+        }
+    }
+    func configureUI(path: String?, indexPath: Int, similarTitle: String?) {
+        guard let path = path,
+              let imagURL = URL(string: NetworkRequest.imageBaseURL + path)
+        else { return }
+        posterImage.kf.setImage(with: imagURL)
+        sectionName.text = similarTitle
+        
+        if indexPath > 0 {
+            sectionName.isHidden = true
+        }
+    }
+    func configureLayout(isSimilar: Bool, heightRatio: CGFloat) {
+        posterImage.snp.removeConstraints()
+        
+        posterImage.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.height.equalTo(posterImage.snp.width).multipliedBy(isSimilar ? heightRatio : 0.6)
+        }
     }
 }

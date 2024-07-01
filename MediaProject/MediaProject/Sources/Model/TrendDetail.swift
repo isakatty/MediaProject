@@ -20,5 +20,6 @@ struct TrendDetail {
 
 struct TrendCollection {
     var actorInfo: [Cast]?
+    var poster: [PosterPath]?
     var similar: [TrendInfo]?
 }
