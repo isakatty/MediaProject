@@ -174,8 +174,8 @@
 		C968A1E92C11AA45004947C7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C9F5F12D2C32BF5D002FAACE /* Request */,
-				C9F5F1182C329305002FAACE /* Response */,
+				C9F5F12D2C32BF5D002FAACE /* Response */,
+				C9F5F1182C329305002FAACE /* DTO */,
 				C9FA01BE2C2C551900E5C100 /* Endpoint */,
 				C968A1EA2C11AA50004947C7 /* Movie.swift */,
 				C999FDDC2C17480C00855246 /* Trend.swift */,
@@ -268,14 +268,14 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
-		C9F5F1182C329305002FAACE /* Response */ = {
+		C9F5F1182C329305002FAACE /* DTO */ = {
 			isa = PBXGroup;
 			children = (
 				C9F5F1342C32C179002FAACE /* TrendTV */,
 				C9F5F1332C32C16F002FAACE /* TrendMovie */,
 				C9F5F1322C32C165002FAACE /* Video */,
 			);
-			path = Response;
+			path = DTO;
 			sourceTree = "<group>";
 		};
 		C9F5F11D2C329D12002FAACE /* New */ = {
@@ -295,14 +295,14 @@
 			path = Error;
 			sourceTree = "<group>";
 		};
-		C9F5F12D2C32BF5D002FAACE /* Request */ = {
+		C9F5F12D2C32BF5D002FAACE /* Response */ = {
 			isa = PBXGroup;
 			children = (
 				C9F5F1152C328B21002FAACE /* MovieVideoResponse.swift */,
 				C9F5F12E2C32BF69002FAACE /* TrendMovieResponse.swift */,
 				C9F5F1302C32C037002FAACE /* TrendTVResponse.swift */,
 			);
-			path = Request;
+			path = Response;
 			sourceTree = "<group>";
 		};
 		C9F5F1322C32C165002FAACE /* Video */ = {
