@@ -40,7 +40,7 @@ final class MoviesCollectionViewCell: UICollectionViewCell {
             return
         }
         guard let imageUrl = URL(
-            string: NetworkRequest.imageURL + path
+            string: NetworkRequest.imageBaseURL + path
         ) else { 
             print("에?")
             return

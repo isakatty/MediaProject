@@ -88,8 +88,8 @@ final class TrendMovieDetailHeaderView: UITableViewHeaderFooterView {
     ) {
         guard let poster_path = movieInfo.poster_path,
               let backdrop_path = movieInfo.backdrop_path,
-            let backPosterImage = URL(string: NetworkRequest.imageURL + backdrop_path),
-              let posterImage = URL(string: NetworkRequest.imageURL + poster_path)
+            let backPosterImage = URL(string: NetworkRequest.imageBaseURL + backdrop_path),
+              let posterImage = URL(string: NetworkRequest.imageBaseURL + poster_path)
         else { return }
         backPosterView.kf.setImage(with: backPosterImage)
         posterView.kf.setImage(with: posterImage)

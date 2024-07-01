@@ -86,7 +86,7 @@ final class MovieDetailActorInfoTableViewCell: UITableViewCell {
         guard let cast else { return }
         if cast.profile_path != nil {
             guard let profile_path = cast.profile_path else { return }
-            guard let url = URL(string: NetworkRequest.imageURL + profile_path) else { return }
+            guard let url = URL(string: NetworkRequest.imageBaseURL + profile_path) else { return }
             actorImageView.kf.setImage(with: url)
         } else {
             actorImageView.image = UIImage(named: "preparingImg")

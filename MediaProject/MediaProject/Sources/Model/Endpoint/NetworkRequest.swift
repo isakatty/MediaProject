@@ -8,7 +8,8 @@
 import Foundation
 
 enum NetworkRequest: Endpoint {
-    static let imageURL = "https://image.tmdb.org/t/p/original"
+    static let videoBaseURL = "https://www.youtube.com/watch?v="
+    static let imageBaseURL = "https://image.tmdb.org/t/p/original"
     static var TMDB_key: String = Bundle.main.object(
         forInfoDictionaryKey: "TMDB_API_TOKEN"
     ) as? String ?? ""
@@ -20,6 +21,7 @@ enum NetworkRequest: Endpoint {
     case images(movieId: String)
     case recommends(movieId: String)
     case similarMovies(movieId: String)
+    case movieVideo(movieId: Int)
     
     var scheme: Scheme {
         .https
@@ -47,12 +49,15 @@ enum NetworkRequest: Endpoint {
             "/3/movie/\(movieId)/similar"
         case .trendDetail(let movieId):
             "/3/movie/\(movieId)/credits"
+        case .movieVideo(let movieId):
+            "/3/movie/\(movieId)/videos"
         }
     }
     var query: [String : Any] {
         // TODO: language 공통 - 공통 묶어서 처리할 수 있게 변경해보기
         switch self {
-        case .trendingTV, .trendingMovie, .trendDetail, .similarMovies, .recommends:
+        case .trendingTV, .trendingMovie, .trendDetail,
+                .similarMovies, .recommends, .movieVideo:
             return ["language": "ko-KR"]
         case .search(let movieName, let page):
             return [
