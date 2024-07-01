@@ -20,7 +20,8 @@ final class MovieTabbarController: UITabBarController {
         tabBar.tintColor = .black
         
         let vcs = [
-            TrendMovieViewController(viewTitle: ViewCase.trend.viewTitle),
+//            TrendMovieViewController(viewTitle: ViewCase.trend.viewTitle),
+            NewTrendViewController(viewTitle: ViewCase.trend.viewTitle),
             SearchViewController(viewTitle: ViewCase.search.viewTitle)
         ]
         

@@ -140,7 +140,7 @@ final class TrendTableViewCell: UITableViewCell {
     }
     
     func configureUI(
-        movieInfo: MovieInfo
+        movieInfo: MovieInfoResponse
     ) {
         guard let imageUrl = URL(string: NetworkRequest.imageBaseURL + movieInfo.backdrop_path) else { return }
         imagePosterImage.kf.setImage(with: imageUrl)

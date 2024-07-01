@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 final class TrendMovieViewController: BaseViewController {
-    private var trendMovie = [MovieInfo]() {
+    private var trendMovie = [MovieInfoResponse]() {
         didSet {
             movieTableView.reloadData()
         }
@@ -53,7 +53,7 @@ final class TrendMovieViewController: BaseViewController {
     private func network() {
         NetworkService.shared.callTMDB(
             endPoint: .trendingMovie,
-            type: Trend.self
+            type: TrendMovieResponse.self
         ) { [weak self] trend, error in
             if let error {
                 print("NetworkService - Trend 통신 Error", error)

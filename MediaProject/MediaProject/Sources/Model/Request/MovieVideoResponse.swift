@@ -1,5 +1,5 @@
 //
-//  MovieVideo.swift
+//  MovieVideoResponse.swift
 //  MediaProject
 //
 //  Created by Jisoo HAM on 7/1/24.
@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct MovieVideo: Decodable {
+struct MovieVideoResponse: Decodable {
     let id: Int
-    let results: [VideoInfo]
+    let results: [VideoInfoResponse]
 }
 
-struct VideoInfo: Decodable {
+struct VideoInfoResponse: Decodable {
     let iso_639_1: String
     let iso_3166_1: String
     let name: String
@@ -25,8 +25,8 @@ struct VideoInfo: Decodable {
     let id: String
 }
 
-extension MovieVideo {
-    var toDomain: MovieVideoResponse {
+extension MovieVideoResponse {
+    var toDTO: MovieVideoResponseDTO {
         return .init(
             movieId: id,
             movieVideos: results.map({

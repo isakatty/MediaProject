@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: TableView 안에 CollectionView 좌우 스크롤
 final class RecommendMoviesViewController: BaseViewController {
-    var movie: MovieInfo
+    var movie: MovieInfoResponse
     private var moviePosterArrays: [[TrendInfo]] = [[],[]]
     private var posterArrays: [PosterPath] = []
     
@@ -29,7 +29,7 @@ final class RecommendMoviesViewController: BaseViewController {
         return table
     }()
     
-    init(movie: MovieInfo) {
+    init(movie: MovieInfoResponse) {
         self.movie = movie
         
         super.init(viewTitle: ViewCase.similar.viewTitle)
