@@ -23,7 +23,7 @@ enum Trends: Int, CaseIterable {
 
 final class NewTrendViewController: BaseViewController {
     
-    private var trendMovie = TrendMovieResponseDTO(page: 1, media: [MovieResponseDTO.init(id: 1, title: "", poster_path: "")])
+    private var trendMovie = TrendMovieResponseDTO(page: 1, media: [MovieResponseDTO.init(id: 0, title: "", poster_path: "", backdrop_path: "", releaseDate: "", overView: "", voteAvg: 10.0, voteCnt: 1)])
     private var trendTV  = TrendTVResponseDTO(page: 1, media: [TVResponseDTO.init(id: 1, name: "", poster_path: "")])
     
     private lazy var segments: UISegmentedControl = {
@@ -208,5 +208,20 @@ extension NewTrendViewController
             )
         }
         return cell
+    }
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        switch segments.selectedSegmentIndex {
+        case Trends.movie.rawValue:
+            print("Detailview")
+            let vc = TrendMovieDetailViewController(movieInfo: trendMovie.media[indexPath.row])
+            navigationController?.pushViewController(vc, animated: true)
+        case Trends.tv.rawValue:
+            print("아무일도 일어나지 않음")
+        default:
+            print("아무일도 일어나지 않음")
+        }
     }
 }

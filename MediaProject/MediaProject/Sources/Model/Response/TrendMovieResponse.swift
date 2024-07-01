@@ -34,7 +34,12 @@ extension TrendMovieResponse {
             MovieResponseDTO(
                 id: $0.id,
                 title: $0.title,
-                poster_path: $0.poster_path
+                poster_path: $0.poster_path,
+                backdrop_path: $0.backdrop_path,
+                releaseDate: $0.release_date,
+                overView: $0.overview,
+                voteAvg: $0.vote_average,
+                voteCnt: $0.vote_count
             )
         })
     }
