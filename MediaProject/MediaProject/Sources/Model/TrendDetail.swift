@@ -17,3 +17,8 @@ struct TrendDetail {
     var descriptionText: String?
     var actorInfo: [Cast]?
 }
+
+struct TrendCollection {
+    var actorInfo: [Cast]?
+    var similar: [TrendInfo]?
+}

@@ -12,24 +12,14 @@ enum SectionKind: Int, CaseIterable {
     case cast
     case video
     
-    /// 일단 이렇게 정의 . . ?
-    var columnsInt: Int {
-        switch self {
-        case .movieInfo:
-            return 1
-        case .cast, .video:
-            return 2
-        }
-    }
-    
     var groupSize: [String: CGFloat] {
         switch self {
         case .movieInfo:
             return ["wid": 1.0, "hght": 0.5]
         case .cast:
-            return ["wid": 2 / 9, "hght": 0.15]
+            return ["wid": 2 / 9, "hght": 0.2]
         case .video:
-            return ["wid": 1 / 3 , "hght": 0.15]
+            return ["wid": 1 / 3 , "hght": 0.2]
         }
     }
 }
@@ -38,7 +28,28 @@ final class TrendMovieDetailViewController: BaseViewController {
     // 전View에서 받아올 값
     let movieInfo: MovieResponseDTO
     
-    private var sectionItems: [Int] = .init(repeating: 4, count: 0)
+    private var sectionItems: [Int] = .init(repeating: 1, count: SectionKind.allCases.count) {
+        didSet {
+            detailCollectionView.reloadData()
+        }
+    }
+    private var sectionDetails: [TrendCollection] = [
+        TrendCollection(
+            actorInfo: [Cast.init(
+                adult: true,
+                id: 1,
+                name: "",
+                original_name: "",
+                profile_path: "",
+                character: ""
+            )],
+            similar: nil
+        ),
+        TrendCollection.init(
+            actorInfo: nil,
+            similar: [TrendInfo(poster_path: "")]
+        )
+    ]
     private lazy var detailCollectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
@@ -54,6 +65,10 @@ final class TrendMovieDetailViewController: BaseViewController {
             TrendMovieTitleCollectionViewCell.self,
             forCellWithReuseIdentifier: TrendMovieTitleCollectionViewCell.identifier
         )
+        collectionView.register(
+            TrendMovieCastCell.self,
+            forCellWithReuseIdentifier: TrendMovieCastCell.identifier
+        )
         return collectionView
     }()
     
@@ -68,10 +83,12 @@ final class TrendMovieDetailViewController: BaseViewController {
         
         configureHierarchy()
         configureLayout()
-        configureUI()
+        DispatchQueue.main.async {
+            self.configureUI()
+        }
     }
     
-    func configureHierarchy() {
+    private func configureHierarchy() {
         [detailCollectionView]
             .forEach { view.addSubview($0) }
     }
@@ -82,9 +99,59 @@ final class TrendMovieDetailViewController: BaseViewController {
             make.edges.equalTo(safeArea)
         }
     }
-    func configureUI() {
+    private func configureUI() {
         // network 통신하고 item count 줘야함.
-        sectionItems = [1,5,9]
+        requestDetails(movieId: movieInfo.id)
+    }
+    
+    private func requestDetails(movieId: Int) {
+        let group = DispatchGroup()
+        
+        group.enter()
+        DispatchQueue.global().async {
+            NetworkService.shared.callTMDB(
+                endPoint: .trendDetail(
+                    movieId: String(movieId)
+                ),
+                type: MovieCredit.self
+            ) { [weak self] cast, error in
+                if let error {
+                    print("cast - error가 있다 !", error)
+                } else {
+                    guard let self else { return }
+                    guard let cast else {
+                        print("NetworkService - similar movies X")
+                        return
+                    }
+                    self.sectionDetails[0].actorInfo = cast.cast
+                    sectionItems[1] = cast.cast.count
+                }
+                group.leave()
+            }
+        }
+        group.enter()
+        DispatchQueue.global().async {
+            NetworkService.shared.callTMDB(
+                endPoint: .similarMovies(movieId: String(self.movieInfo.id)),
+                type: TrendMovies.self
+            ) { [weak self] movies, error in
+                if let error {
+                    print("similar - error가 있다 !", error)
+                } else {
+                    guard let self else { return }
+                    guard let movies else {
+                        print("NetworkService - similar movies X")
+                        return
+                    }
+                    self.sectionDetails[1].similar = movies.results
+                    sectionItems[2] = movies.results.count
+                }
+                group.leave()
+            }
+        }
+        group.notify(queue: .main) {
+            print("여기까지 옴")
+        }
     }
     
     private func collectionViewLayout() -> UICollectionViewLayout {
@@ -187,7 +254,15 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
             ) as? TrendMovieTitleCollectionViewCell else { return UICollectionViewCell() }
             cell.configureUI(movieDetail: movieInfo)
             return cell
-        case .cast, .video:
+        case .cast:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: TrendMovieCastCell.identifier,
+                for: indexPath
+            ) as? TrendMovieCastCell else { return UICollectionViewCell() }
+            
+            cell.configureUI(cast: sectionDetails[sectionKind.rawValue - 1].actorInfo?[indexPath.item])
+            return cell
+        case .video:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TrendMovieCollectionViewCell.identifier,
                 for: indexPath
