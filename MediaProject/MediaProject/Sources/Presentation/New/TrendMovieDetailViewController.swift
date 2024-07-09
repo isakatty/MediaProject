@@ -31,12 +31,7 @@ final class TrendMovieDetailViewController: BaseViewController {
     // 전View에서 받아올 값
     let movieInfo: MovieResponseDTO
     
-    private var sectionItems: [Int] = .init(repeating: 1, count: SectionKind.allCases.count) 
-//    {
-//        didSet {
-//            detailCollectionView.reloadData()
-//        }
-//    }
+    private var sectionItems: [Int] = .init(repeating: 1, count: SectionKind.allCases.count)
     private var sectionDetails: [TrendCollection] = [
         TrendCollection(
             actorInfo: [Cast.init(

@@ -181,6 +181,16 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		C959DBBC2C3D56E000F97C9A /* MovieDetailCell */ = {
+			isa = PBXGroup;
+			children = (
+				C9F5F1392C32E2D6002FAACE /* TrendMovieTitleCollectionViewCell.swift */,
+				C9F5F1372C32DCA7002FAACE /* TrendMovieCollectionViewCell.swift */,
+				C9F5F13E2C32F45B002FAACE /* TrendMovieCastCell.swift */,
+			);
+			path = MovieDetailCell;
+			sourceTree = "<group>";
+		};
 		C968A1E92C11AA45004947C7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -292,12 +302,10 @@
 		C9F5F11D2C329D12002FAACE /* New */ = {
 			isa = PBXGroup;
 			children = (
+				C959DBBC2C3D56E000F97C9A /* MovieDetailCell */,
 				C9F5F11E2C329D29002FAACE /* NewTrendViewController.swift */,
 				C9F5F1202C32B286002FAACE /* TrendCollectionViewCell.swift */,
 				C9F5F1352C32D2BB002FAACE /* TrendMovieDetailViewController.swift */,
-				C9F5F1372C32DCA7002FAACE /* TrendMovieCollectionViewCell.swift */,
-				C9F5F1392C32E2D6002FAACE /* TrendMovieTitleCollectionViewCell.swift */,
-				C9F5F13E2C32F45B002FAACE /* TrendMovieCastCell.swift */,
 			);
 			path = New;
 			sourceTree = "<group>";
