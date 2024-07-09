@@ -51,6 +51,7 @@ final class TrendMovieCollectionViewCell: BaseCollectionViewCell {
         guard let path = path,
               let imagURL = URL(string: NetworkRequest.imageBaseURL + path)
         else { return }
+//        posterImage.image = UIImage()
         posterImage.kf.setImage(with: imagURL)
         sectionName.text = similarTitle
         
@@ -65,5 +66,12 @@ final class TrendMovieCollectionViewCell: BaseCollectionViewCell {
             make.leading.trailing.bottom.equalToSuperview()
             make.height.equalTo(posterImage.snp.width).multipliedBy(isSimilar ? heightRatio : 0.6)
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        posterImage.image = nil
+        print(#function)
     }
 }

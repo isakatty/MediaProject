@@ -407,8 +407,8 @@
 		C9FA01C02C2C55A100E5C100 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				C9F5F11D2C329D12002FAACE /* New */,
 				C9BD15902C0F18AF0049787E /* JoinViewController.swift */,
+				C9F5F11D2C329D12002FAACE /* New */,
 				C9A538AF2C2EBD0800BA240A /* Base */,
 				C9A538AA2C2E975600BA240A /* Tabbar */,
 				C999FDD92C17469100855246 /* Trend */,

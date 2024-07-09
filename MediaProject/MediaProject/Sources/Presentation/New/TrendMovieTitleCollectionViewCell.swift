@@ -59,6 +59,13 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
         label.textAlignment = .left
         return label
     }()
+    private let videoLogoImg: UIImageView = {
+        let image = UIImageView()
+        image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
+        image.image = UIImage(named: "youtube_logo")
+        return image
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -70,7 +77,7 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
     private func configureHierarchy() {
         [backPosterImg, halfView, posterContainerView]
             .forEach { contentView.addSubview($0) }
-        [titleLabel, dateLabel, overviewLabel]
+        [titleLabel, dateLabel, videoLogoImg, overviewLabel]
             .forEach { halfView.addSubview($0) }
         posterContainerView.addSubview(posterImg)
     }
@@ -89,15 +96,22 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
             make.width.equalToSuperview().multipliedBy(0.3)
             make.height.equalTo(posterImg.snp.width).multipliedBy(1.4)
         }
+        videoLogoImg.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(16)
+            make.trailing.equalToSuperview().inset(12)
+            make.width.equalTo(60)
+            make.height.equalTo(30)
+        }
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(16)
             make.leading.equalTo(posterImg.snp.trailing).inset(-12)
-            make.trailing.equalToSuperview()
+            make.trailing.equalTo(videoLogoImg.snp.leading)
             make.height.equalTo(titleLabel.snp.width).multipliedBy(0.15)
         }
         dateLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).inset(12)
-            make.leading.trailing.height.equalTo(titleLabel)
+            make.top.equalTo(titleLabel.snp.bottom)
+            make.trailing.equalTo(videoLogoImg.snp.leading)
+            make.leading.height.equalTo(titleLabel)
         }
         overviewLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)

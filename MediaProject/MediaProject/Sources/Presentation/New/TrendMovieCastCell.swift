@@ -22,7 +22,7 @@ final class TrendMovieCastCell: BaseCollectionViewCell {
         label.font = Constant.Font.regular13
         label.textColor = .darkGray
         label.textAlignment = .center
-        label.numberOfLines = 2
+        label.numberOfLines = .zero
         return label
     }()
     private let castName: UILabel = {
@@ -65,12 +65,16 @@ final class TrendMovieCastCell: BaseCollectionViewCell {
             print("cast nil")
             return
         }
-        guard let image = cast.profile_path else { return }
+        guard let image = cast.profile_path else {
+            // profile_path 없으면 cast에서 빼는것도 ?
+            profileImgView.image = UIImage(named: "preparingImg")
+            return
+        }
         guard let imgURL = URL(string: NetworkRequest.imageBaseURL + image) else {
             print("이미지 url Error")
             return
         }
-        
+        profileImgView.image = UIImage()
         profileImgView.kf.setImage(with: imgURL)
         actorName.text = cast.name
         castName.text = cast.character
@@ -81,5 +85,11 @@ final class TrendMovieCastCell: BaseCollectionViewCell {
         DispatchQueue.main.async {
             self.profileImgView.layer.cornerRadius = self.profileImgView.bounds.width / 2
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        profileImgView.image = UIImage(systemName: "star.fill")
     }
 }

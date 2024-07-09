@@ -31,11 +31,12 @@ final class TrendMovieDetailViewController: BaseViewController {
     // 전View에서 받아올 값
     let movieInfo: MovieResponseDTO
     
-    private var sectionItems: [Int] = .init(repeating: 1, count: SectionKind.allCases.count) {
-        didSet {
-            detailCollectionView.reloadData()
-        }
-    }
+    private var sectionItems: [Int] = .init(repeating: 1, count: SectionKind.allCases.count) 
+//    {
+//        didSet {
+//            detailCollectionView.reloadData()
+//        }
+//    }
     private var sectionDetails: [TrendCollection] = [
         TrendCollection(
             actorInfo: [Cast.init(
@@ -46,11 +47,13 @@ final class TrendMovieDetailViewController: BaseViewController {
                 profile_path: "",
                 character: ""
             )],
-            poster: nil, similar: nil
+            poster: nil,
+            similar: nil
         ),
         TrendCollection.init(
             actorInfo: nil,
-            poster: [PosterPath(file_path: "")], similar: nil
+            poster: [PosterPath(file_path: "")],
+            similar: nil
         ),
         TrendCollection.init(similar: [TrendInfo.init(poster_path: "")])
     ]
@@ -179,6 +182,7 @@ final class TrendMovieDetailViewController: BaseViewController {
         }
         group.notify(queue: .main) {
             print("여기까지 옴")
+            self.detailCollectionView.reloadData()
         }
     }
     
