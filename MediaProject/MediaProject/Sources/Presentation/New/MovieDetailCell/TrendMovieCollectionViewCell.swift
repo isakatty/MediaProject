@@ -72,6 +72,5 @@ final class TrendMovieCollectionViewCell: BaseCollectionViewCell {
         super.prepareForReuse()
         
         posterImage.image = nil
-        print(#function)
     }
 }

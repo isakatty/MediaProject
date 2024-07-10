@@ -22,7 +22,7 @@ final class Observable<T> {
     
     func bind(_ closure: @escaping (T) -> Void) {
         // bind 함수의 매개변수로 closure를 받고
-        closure(value)
+//        closure(value)
         self.closure = closure
     }
 }
