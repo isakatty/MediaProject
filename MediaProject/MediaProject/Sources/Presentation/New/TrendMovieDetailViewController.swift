@@ -34,7 +34,7 @@ final class TrendMovieDetailViewController: BaseViewController {
     private var sectionItems: [Int] = .init(repeating: 1, count: SectionKind.allCases.count)
     private var sectionDetails: [TrendCollection] = [
         TrendCollection(
-            actorInfo: [Cast.init(
+            actorInfo: [CastResponseDTO.init(
                 adult: true,
                 id: 1,
                 name: "",
@@ -115,7 +115,7 @@ final class TrendMovieDetailViewController: BaseViewController {
                 endPoint: .trendDetail(
                     movieId: String(movieId)
                 ),
-                type: MovieCredit.self
+                type: MovieCreditResponse.self
             ) { [weak self] cast, error in
                 if let error {
                     print("cast - error가 있다 !", error)
@@ -125,8 +125,8 @@ final class TrendMovieDetailViewController: BaseViewController {
                         print("NetworkService - similar movies X")
                         return
                     }
-                    self.sectionDetails[0].actorInfo = cast.cast
-                    sectionItems[1] = cast.cast.count
+                    self.sectionDetails[0].actorInfo = cast.toDTO.cast
+                    sectionItems[1] = cast.toDTO.cast.count
                 }
                 group.leave()
             }

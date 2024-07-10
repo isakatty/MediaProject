@@ -60,17 +60,12 @@ final class TrendMovieCastCell: BaseCollectionViewCell {
             make.horizontalEdges.bottom.equalToSuperview()
         }
     }
-    func configureUI(cast: Cast?) {
+    func configureUI(cast: CastResponseDTO?) {
         guard let cast = cast else {
             print("cast nil")
             return
         }
-        guard let image = cast.profile_path else {
-            // profile_path 없으면 cast에서 빼는것도 ?
-            profileImgView.image = UIImage(named: "preparingImg")
-            return
-        }
-        guard let imgURL = URL(string: NetworkRequest.imageBaseURL + image) else {
+        guard let imgURL = URL(string: NetworkRequest.imageBaseURL + cast.profile_path) else {
             print("이미지 url Error")
             return
         }

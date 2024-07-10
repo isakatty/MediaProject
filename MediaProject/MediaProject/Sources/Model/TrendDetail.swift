@@ -15,11 +15,11 @@ enum Sections: String {
 struct TrendDetail {
     let section: Sections
     var descriptionText: String?
-    var actorInfo: [Cast]?
+    var actorInfo: [CastResponse]?
 }
 
 struct TrendCollection {
-    var actorInfo: [Cast]?
+    var actorInfo: [CastResponseDTO]?
     var poster: [PosterPath]?
     var similar: [TrendInfo]?
 }

@@ -88,7 +88,7 @@ final class MovieDetailViewController: BaseViewController {
     private func configureUI(movieInfo: SearchedMovieInfo) {
         NetworkService.shared.callTMDB(
             endPoint: .trendDetail(movieId: String(movieInfo.id)),
-            type: MovieCredit.self
+            type: MovieCreditResponse.self
         ) { [weak self] details, error in
             if let error {
                 print("NetworkService - Movie Detail 통신 에러", error)

@@ -7,6 +7,8 @@
 
 import UIKit
 
+import SnapKit
+
 enum Trends: Int, CaseIterable {
     case movie = 0
     case tv

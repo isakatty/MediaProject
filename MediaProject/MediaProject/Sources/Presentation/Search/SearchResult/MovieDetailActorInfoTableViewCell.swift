@@ -81,7 +81,7 @@ final class MovieDetailActorInfoTableViewCell: UITableViewCell {
         }
     }
     func configureUI(
-        cast: Cast?
+        cast: CastResponse?
     ) {
         guard let cast else { return }
         if cast.profile_path != nil {
