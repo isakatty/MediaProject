@@ -30,28 +30,7 @@ enum SectionKind: Int, CaseIterable {
 final class TrendMovieDetailViewController: BaseViewController {
     // 전View에서 받아올 값
     let movieInfo: MovieResponseDTO
-    
-    private var sectionItems: [Int] = .init(repeating: 1, count: SectionKind.allCases.count)
-    private var sectionDetails: [TrendCollection] = [
-        TrendCollection(
-            actorInfo: [CastResponseDTO.init(
-                adult: true,
-                id: 1,
-                name: "",
-                original_name: "",
-                profile_path: "",
-                character: ""
-            )],
-            poster: nil,
-            similar: nil
-        ),
-        TrendCollection.init(
-            actorInfo: nil,
-            poster: [PosterPath(file_path: "")],
-            similar: nil
-        ),
-        TrendCollection.init(similar: [TrendInfo.init(poster_path: "")])
-    ]
+    let viewModel: TrendDetailViewModel
     private lazy var detailCollectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
@@ -76,6 +55,7 @@ final class TrendMovieDetailViewController: BaseViewController {
     
     init(movieInfo: MovieResponseDTO) {
         self.movieInfo = movieInfo
+        self.viewModel = TrendDetailViewModel(movieInfo: movieInfo)
         
         super.init(viewTitle: movieInfo.title)
     }
@@ -83,11 +63,25 @@ final class TrendMovieDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bindData()
         configureHierarchy()
         configureLayout()
-        DispatchQueue.main.async {
-            self.configureUI()
+    }
+    
+    private func bindData() {
+        viewModel.inputViewDidLoadTrigger.value = ()
+        viewModel.catchedDataFetch.bind { isFinished in
+            if isFinished {
+                self.detailCollectionView.reloadData()
+            }
         }
+        viewModel.outputSectionDatas.bind { _ in
+            self.detailCollectionView.reloadData()
+        }
+        viewModel.outputSectionItems.bind { _ in
+            self.detailCollectionView.reloadData()
+        }
+        
     }
     
     private func configureHierarchy() {
@@ -99,85 +93,6 @@ final class TrendMovieDetailViewController: BaseViewController {
         let safeArea = view.safeAreaLayoutGuide
         detailCollectionView.snp.makeConstraints { make in
             make.edges.equalTo(safeArea)
-        }
-    }
-    private func configureUI() {
-        // network 통신하고 item count 줘야함.
-        requestDetails(movieId: movieInfo.id)
-    }
-    
-    private func requestDetails(movieId: Int) {
-        let group = DispatchGroup()
-        
-        group.enter()
-        DispatchQueue.global().async {
-            NetworkService.shared.callTMDB(
-                endPoint: .trendDetail(
-                    movieId: String(movieId)
-                ),
-                type: MovieCreditResponse.self
-            ) { [weak self] cast, error in
-                if let error {
-                    print("cast - error가 있다 !", error)
-                } else {
-                    guard let self else { return }
-                    guard let cast else {
-                        print("NetworkService - similar movies X")
-                        return
-                    }
-                    self.sectionDetails[0].actorInfo = cast.toDTO.cast
-                    sectionItems[1] = cast.toDTO.cast.count
-                }
-                group.leave()
-            }
-        }
-        group.enter()
-        DispatchQueue.global().async {
-            NetworkService.shared.callTMDB(
-                endPoint: .images(movieId: String(self.movieInfo.id)),
-                type: Poster.self
-            ) { [weak self] files, error in
-                if let error {
-                    print("similar - error가 있다 !", error)
-                } else {
-                    guard let self else { return }
-                    guard let files else {
-                        print("NetworkService - similar movies X")
-                        return
-                    }
-                    self.sectionDetails[1].poster = files.backdrops
-                    sectionItems[2] = files.backdrops.count
-                }
-                group.leave()
-            }
-        }
-        group.enter()
-        DispatchQueue.global().async {
-            NetworkService.shared.callTMDB(
-                endPoint: .recommends(
-                    movieId: String(
-                        self.movieInfo.id
-                    )
-                ),
-                type: TrendMovies.self
-            ) { [weak self] movies, error in
-                if let error {
-                    print("Recommend - error가 있다 !", error)
-                } else {
-                    guard let self else { return }
-                    guard let movies else {
-                        print("NetworkService - similar movies X")
-                        return
-                    }
-                    self.sectionDetails[2].similar = movies.results
-                    sectionItems[3] = movies.results.count
-                }
-                group.leave()
-            }
-        }
-        group.notify(queue: .main) {
-            print("여기까지 옴")
-            self.detailCollectionView.reloadData()
         }
     }
     
@@ -263,7 +178,7 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return sectionItems[section]
+        return viewModel.outputSectionItems.value[section]
     }
     
     func collectionView(
@@ -285,17 +200,18 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
                 withReuseIdentifier: TrendMovieCastCell.identifier,
                 for: indexPath
             ) as? TrendMovieCastCell else { return UICollectionViewCell() }
-            
-            cell.configureUI(cast: sectionDetails[sectionKind.rawValue - 1].actorInfo?[indexPath.item])
+            let castData = viewModel.outputSectionDatas.value[sectionKind.rawValue - 1].actorInfo?[indexPath.item]
+            cell.configureUI(cast: castData)
             return cell
         case .poster:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TrendMovieCollectionViewCell.identifier,
                 for: indexPath
             ) as? TrendMovieCollectionViewCell else { return UICollectionViewCell() }
-            
+            let posterData = viewModel.outputSectionDatas.value[sectionKind.rawValue - 1]
+                .poster?[indexPath.item].file_path
             cell.configureUI(
-                path: sectionDetails[sectionKind.rawValue - 1].poster?[indexPath.item].file_path,
+                path: posterData,
                 indexPath: indexPath.item,
                 similarTitle: "영화 포스터"
             )
@@ -306,8 +222,11 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
                 for: indexPath
             ) as? TrendMovieCollectionViewCell else { return UICollectionViewCell() }
             
+            let similarData = viewModel.outputSectionDatas.value[sectionKind.rawValue - 1]
+                .similar?[indexPath.item].poster_path
+            
             cell.configureUI(
-                path: sectionDetails[sectionKind.rawValue - 1].similar?[indexPath.item].poster_path,
+                path: similarData,
                 indexPath: indexPath.item,
                 similarTitle: "비슷한 영화"
             )

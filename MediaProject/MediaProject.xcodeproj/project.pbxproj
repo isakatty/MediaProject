@@ -23,6 +23,7 @@
 		C968A1EB2C11AA50004947C7 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C968A1EA2C11AA50004947C7 /* Movie.swift */; };
 		C968A1EE2C11AB08004947C7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C968A1ED2C11AB08004947C7 /* Alamofire */; };
 		C968A1F02C11B534004947C7 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C968A1EF2C11B534004947C7 /* UIViewController+.swift */; };
+		C986EF6F2C4029C400BF603D /* TrendDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C986EF6E2C4029C400BF603D /* TrendDetailViewModel.swift */; };
 		C999FDD82C17465300855246 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = C999FDD72C17465300855246 /* Kingfisher */; };
 		C999FDDB2C1746AB00855246 /* TrendMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C999FDDA2C1746AB00855246 /* TrendMovieViewController.swift */; };
 		C999FDDD2C17480C00855246 /* Trend.swift in Sources */ = {isa = PBXBuildFile; fileRef = C999FDDC2C17480C00855246 /* Trend.swift */; };
@@ -89,6 +90,7 @@
 		C968A1E52C11A684004947C7 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		C968A1EA2C11AA50004947C7 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		C968A1EF2C11B534004947C7 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
+		C986EF6E2C4029C400BF603D /* TrendDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendDetailViewModel.swift; sourceTree = "<group>"; };
 		C999FDDA2C1746AB00855246 /* TrendMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendMovieViewController.swift; sourceTree = "<group>"; };
 		C999FDDC2C17480C00855246 /* Trend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trend.swift; sourceTree = "<group>"; };
 		C999FDDE2C17483100855246 /* TrendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendTableViewCell.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				C959DBE22C3E602200F97C9A /* TrendViewModel.swift */,
+				C986EF6E2C4029C400BF603D /* TrendDetailViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -569,6 +572,7 @@
 				C9F5F1242C32BE78002FAACE /* NetworkError.swift in Sources */,
 				C959DBE32C3E602200F97C9A /* TrendViewModel.swift in Sources */,
 				C95381CA2C189B77000A054D /* UICollectionViewCell+.swift in Sources */,
+				C986EF6F2C4029C400BF603D /* TrendDetailViewModel.swift in Sources */,
 				C999FDE92C1750AF00855246 /* MovieDetailActorInfoTableViewCell.swift in Sources */,
 				C9BD15762C0EFEB20049787E /* AppDelegate.swift in Sources */,
 				C95381C62C189A65000A054D /* SearchViewController.swift in Sources */,

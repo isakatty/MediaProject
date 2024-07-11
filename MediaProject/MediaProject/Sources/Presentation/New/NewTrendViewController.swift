@@ -147,12 +147,14 @@ extension NewTrendViewController
                 )
             }
         case Trends.tv.rawValue:
-            let tvs = viewModel.outputTrendTV.value.media[indexPath.item]
-            cell.configureUI(
-                posterPath: tvs.poster_path,
-                numberIndex: indexPath.item + 1,
-                titleName: tvs.name
-            )
+            if viewModel.outputTrendTV.value.media.count > 1 {
+                let tvs = viewModel.outputTrendTV.value.media[indexPath.item]
+                cell.configureUI(
+                    posterPath: tvs.poster_path,
+                    numberIndex: indexPath.item + 1,
+                    titleName: tvs.name
+                )
+            }
         default:
             print("Default Case")
         }
