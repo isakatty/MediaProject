@@ -212,6 +212,14 @@
 			path = Observable;
 			sourceTree = "<group>";
 		};
+		C959DBE92C3EA59400F97C9A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C959DBE22C3E602200F97C9A /* TrendViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		C968A1E92C11AA45004947C7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -327,7 +335,6 @@
 				C9F5F11E2C329D29002FAACE /* NewTrendViewController.swift */,
 				C9F5F1202C32B286002FAACE /* TrendCollectionViewCell.swift */,
 				C9F5F1352C32D2BB002FAACE /* TrendMovieDetailViewController.swift */,
-				C959DBE22C3E602200F97C9A /* TrendViewModel.swift */,
 			);
 			path = New;
 			sourceTree = "<group>";
@@ -397,6 +404,7 @@
 		C9FA01BC2C2C549400E5C100 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C959DBE92C3EA59400F97C9A /* ViewModel */,
 				C959DBE42C3E602900F97C9A /* Observable */,
 				C959DBE12C3E5B4800F97C9A /* Legacy */,
 				C9FA01BB2C2C545B00E5C100 /* App */,

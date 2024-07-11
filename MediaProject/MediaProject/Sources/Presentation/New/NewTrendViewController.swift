@@ -24,16 +24,14 @@ enum Trends: Int, CaseIterable {
 }
 
 final class NewTrendViewController: BaseViewController {
-    
-    private var trendMovie = TrendMovieResponseDTO(page: 1, media: [MovieResponseDTO.init(id: 0, title: "", poster_path: "", backdrop_path: "", releaseDate: "", overView: "", voteAvg: 10.0, voteCnt: 1)])
-    private var trendTV  = TrendTVResponseDTO(page: 1, media: [TVResponseDTO.init(id: 1, name: "", poster_path: "")])
+    private let viewModel = TrendViewModel()
     
     private lazy var segments: UISegmentedControl = {
         let segmentItems = Trends.allCases.map { $0.description }
-        let segmnets = UISegmentedControl(items: segmentItems)
-        segmnets.selectedSegmentIndex = Trends.movie.rawValue
-        segmnets.addTarget(self, action: #selector(segTapped), for: .valueChanged)
-        return segmnets
+        let segments = UISegmentedControl(items: segmentItems)
+        segments.selectedSegmentIndex = Trends.movie.rawValue
+        segments.addTarget(self, action: #selector(segTapped), for: .valueChanged)
+        return segments
     }()
     private lazy var trendCollectionView: UICollectionView = {
         let collection = UICollectionView(
@@ -52,10 +50,9 @@ final class NewTrendViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fetchData(segmentedIndex: segments.selectedSegmentIndex)
+        bindData()
         configureHierarchy()
         configureLayout()
-        configureUI()
     }
     
     func configureHierarchy() {
@@ -75,47 +72,15 @@ final class NewTrendViewController: BaseViewController {
             make.horizontalEdges.bottom.equalTo(safeArea)
         }
     }
-    func configureUI() {
-        
-    }
-    private func fetchData(segmentedIndex: Int) {
-        // segmentedIndex랑 enum의 rawValue 비교해서 데이터 fetch 하기
-        if segmentedIndex == Trends.movie.rawValue {
-            // TMDB 영화
-            NetworkService.shared.callTMDB(
-                endPoint: .trendingMovie,
-                type: TrendMovieResponse.self
-            ) { [weak self] response, error in
-                guard error == nil else {
-                    print(NetworkError.invalidError.errorDescription ?? "")
-                    return
-                }
-                guard let response else {
-                    print(NetworkError.invalidResponse.errorDescription ?? "")
-                    return
-                }
-                guard let self else { return }
-                self.trendMovie = response.toDomain
-                self.trendCollectionView.reloadData()
-            }
-        } else if segmentedIndex == Trends.tv.rawValue {
-            // TMDB 드라마
-            NetworkService.shared.callTMDB(
-                endPoint: .trendingTV,
-                type: TrendTVResponse.self
-            ) { [weak self] response, error in
-                guard error == nil else {
-                    print(NetworkError.invalidError.errorDescription ?? "")
-                    return
-                }
-                guard let response else {
-                    print(NetworkError.invalidResponse.errorDescription ?? "")
-                    return
-                }
-                guard let self else { return }
-                self.trendTV = response.toDTO
-                self.trendCollectionView.reloadData()
-            }
+    private func bindData() {
+        viewModel.inputSegTrigger.value = segments.selectedSegmentIndex
+        viewModel.outputTrendMovie.bind { [weak self] _ in
+            guard let self else { return }
+            self.trendCollectionView.reloadData()
+        }
+        viewModel.outputTrendTV.bind { [weak self] _ in
+            guard let self else { return }
+            self.trendCollectionView.reloadData()
         }
     }
     
@@ -151,14 +116,7 @@ final class NewTrendViewController: BaseViewController {
     }
     /// segmentedController에 사용자 액션이 일어나 값이 변할 때 불리는 함수
     @objc func segTapped(sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case Trends.movie.rawValue:
-            fetchData(segmentedIndex: Trends.movie.rawValue)
-        case Trends.tv.rawValue:
-            fetchData(segmentedIndex: Trends.tv.rawValue)
-        default:
-            break
-        }
+        viewModel.inputSegTrigger.value = sender.selectedSegmentIndex
     }
 }
 
@@ -168,14 +126,7 @@ extension NewTrendViewController
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        switch segments.selectedSegmentIndex {
-        case Trends.movie.rawValue:
-            return trendMovie.media.count
-        case Trends.tv.rawValue:
-            return trendTV.media.count
-        default:
-            return trendMovie.media.count
-        }
+        return viewModel.outputListCount.value
     }
     func collectionView(
         _ collectionView: UICollectionView,
@@ -185,29 +136,25 @@ extension NewTrendViewController
             withReuseIdentifier: TrendCollectionViewCell.identifier,
             for: indexPath
         ) as? TrendCollectionViewCell else { return UICollectionViewCell() }
-        
-        switch segments.selectedSegmentIndex {
+        switch viewModel.inputSegTrigger.value {
         case Trends.movie.rawValue:
-            let movies = trendMovie.media[indexPath.item]
-            cell.configureUI(
-                posterPath: movies.poster_path,
-                numberIndex: indexPath.item + 1,
-                titleName: movies.title
-            )
+            if viewModel.outputTrendMovie.value.media.count > 1 {
+                let movies = viewModel.outputTrendMovie.value.media[indexPath.item]
+                cell.configureUI(
+                    posterPath: movies.poster_path,
+                    numberIndex: indexPath.item + 1,
+                    titleName: movies.title
+                )
+            }
         case Trends.tv.rawValue:
-            let tvs = trendTV.media[indexPath.item]
+            let tvs = viewModel.outputTrendTV.value.media[indexPath.item]
             cell.configureUI(
                 posterPath: tvs.poster_path,
-                numberIndex: indexPath.item,
+                numberIndex: indexPath.item + 1,
                 titleName: tvs.name
             )
         default:
-            let movies = trendMovie.media[indexPath.item]
-            cell.configureUI(
-                posterPath: movies.poster_path,
-                numberIndex: indexPath.item + 1,
-                titleName: movies.title
-            )
+            print("Default Case")
         }
         return cell
     }
@@ -218,7 +165,7 @@ extension NewTrendViewController
         switch segments.selectedSegmentIndex {
         case Trends.movie.rawValue:
             print("Detailview")
-            let vc = TrendMovieDetailViewController(movieInfo: trendMovie.media[indexPath.row])
+            let vc = TrendMovieDetailViewController(movieInfo: viewModel.outputTrendMovie.value.media[indexPath.row])
             navigationController?.pushViewController(vc, animated: true)
         case Trends.tv.rawValue:
             print("아무일도 일어나지 않음")
