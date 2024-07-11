@@ -30,7 +30,6 @@ final class NewTrendViewController: BaseViewController {
         let segmentItems = Trends.allCases.map { $0.description }
         let segments = UISegmentedControl(items: segmentItems)
         segments.selectedSegmentIndex = Trends.movie.rawValue
-        viewModel.inputSegTrigger.value = segments.selectedSegmentIndex
         segments.addTarget(self, action: #selector(segTapped), for: .valueChanged)
         return segments
     }()
@@ -74,7 +73,12 @@ final class NewTrendViewController: BaseViewController {
         }
     }
     private func bindData() {
+        viewModel.inputSegTrigger.value = segments.selectedSegmentIndex
         viewModel.outputTrendMovie.bind { [weak self] _ in
+            guard let self else { return }
+            self.trendCollectionView.reloadData()
+        }
+        viewModel.outputTrendTV.bind { [weak self] _ in
             guard let self else { return }
             self.trendCollectionView.reloadData()
         }
@@ -134,19 +138,19 @@ extension NewTrendViewController
         ) as? TrendCollectionViewCell else { return UICollectionViewCell() }
         switch viewModel.inputSegTrigger.value {
         case Trends.movie.rawValue:
-            print(indexPath.item)
-//            let movies = viewModel.outputTrendMovie.value.media[indexPath.item]
-//            cell.configureUI(
-//                posterPath: movies.poster_path,
-//                numberIndex: indexPath.item,
-//                titleName: movies.title
-//            )
-//            print("?")
+            if viewModel.outputTrendMovie.value.media.count > 1 {
+                let movies = viewModel.outputTrendMovie.value.media[indexPath.item]
+                cell.configureUI(
+                    posterPath: movies.poster_path,
+                    numberIndex: indexPath.item + 1,
+                    titleName: movies.title
+                )
+            }
         case Trends.tv.rawValue:
             let tvs = viewModel.outputTrendTV.value.media[indexPath.item]
             cell.configureUI(
                 posterPath: tvs.poster_path,
-                numberIndex: indexPath.item,
+                numberIndex: indexPath.item + 1,
                 titleName: tvs.name
             )
         default:
