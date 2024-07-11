@@ -28,8 +28,6 @@ enum SectionKind: Int, CaseIterable {
 }
 
 final class TrendMovieDetailViewController: BaseViewController {
-    // 전View에서 받아올 값
-    let movieInfo: MovieResponseDTO
     let viewModel: TrendDetailViewModel
     private lazy var detailCollectionView: UICollectionView = {
         let collectionView = UICollectionView(
@@ -53,11 +51,10 @@ final class TrendMovieDetailViewController: BaseViewController {
         return collectionView
     }()
     
-    init(movieInfo: MovieResponseDTO) {
-        self.movieInfo = movieInfo
-        self.viewModel = TrendDetailViewModel(movieInfo: movieInfo)
+    init(viewModel: TrendDetailViewModel) {
+        self.viewModel = viewModel
         
-        super.init(viewTitle: movieInfo.title)
+        super.init(viewTitle: viewModel.movieInfo.title)
     }
     
     override func viewDidLoad() {
@@ -75,13 +72,6 @@ final class TrendMovieDetailViewController: BaseViewController {
                 self.detailCollectionView.reloadData()
             }
         }
-        viewModel.outputSectionDatas.bind { _ in
-            self.detailCollectionView.reloadData()
-        }
-        viewModel.outputSectionItems.bind { _ in
-            self.detailCollectionView.reloadData()
-        }
-        
     }
     
     private func configureHierarchy() {
@@ -185,53 +175,60 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let sectionKind = SectionKind(rawValue: indexPath.section) else { return UICollectionViewCell() }
-        
+        guard let sectionKind = SectionKind(rawValue: indexPath.section) else {
+            return UICollectionViewCell()
+        }
         switch sectionKind {
         case .movieInfo:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TrendMovieTitleCollectionViewCell.identifier,
                 for: indexPath
-            ) as? TrendMovieTitleCollectionViewCell else { return UICollectionViewCell() }
-            cell.configureUI(movieDetail: movieInfo)
+            ) as? TrendMovieTitleCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.configureUI(movieDetail: viewModel.movieInfo)
             return cell
+            
+            // TODO: SectionData로 묶어서 처리하지 않고, 각각의 output으로 둔다면 filter 처리하지 않아도 되지 않을까 ?
+            // output의 형태 변경
         case .cast:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TrendMovieCastCell.identifier,
                 for: indexPath
-            ) as? TrendMovieCastCell else { return UICollectionViewCell() }
-            let castData = viewModel.outputSectionDatas.value[sectionKind.rawValue - 1].actorInfo?[indexPath.item]
-            cell.configureUI(cast: castData)
+            ) as? TrendMovieCastCell else {
+                return UICollectionViewCell()
+            }
+            if viewModel.catchedDataFetch.value {
+                let castData = viewModel.outputSectionDatas.value.first(where: { $0.actorInfo != nil })?.actorInfo?[indexPath.item]
+                cell.configureUI(cast: castData)
+            }
             return cell
+
         case .poster:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TrendMovieCollectionViewCell.identifier,
                 for: indexPath
-            ) as? TrendMovieCollectionViewCell else { return UICollectionViewCell() }
-            let posterData = viewModel.outputSectionDatas.value[sectionKind.rawValue - 1]
-                .poster?[indexPath.item].file_path
-            cell.configureUI(
-                path: posterData,
-                indexPath: indexPath.item,
-                similarTitle: "영화 포스터"
-            )
+            ) as? TrendMovieCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            if viewModel.catchedDataFetch.value {
+                let posterData = viewModel.outputSectionDatas.value.first(where: { $0.poster != nil })?.poster?[indexPath.item].file_path
+                cell.configureUI(path: posterData, indexPath: indexPath.item, similarTitle: "영화 포스터")
+            }
             return cell
+
         case .similar:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TrendMovieCollectionViewCell.identifier,
                 for: indexPath
-            ) as? TrendMovieCollectionViewCell else { return UICollectionViewCell() }
-            
-            let similarData = viewModel.outputSectionDatas.value[sectionKind.rawValue - 1]
-                .similar?[indexPath.item].poster_path
-            
-            cell.configureUI(
-                path: similarData,
-                indexPath: indexPath.item,
-                similarTitle: "비슷한 영화"
-            )
-            cell.configureLayout(isSimilar: true, heightRatio: 1.3)
-            
+            ) as? TrendMovieCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            if viewModel.catchedDataFetch.value {
+                let similarData = viewModel.outputSectionDatas.value.first(where: { $0.similar != nil })?.similar?[indexPath.item].poster_path
+                cell.configureUI(path: similarData, indexPath: indexPath.item, similarTitle: "비슷한 영화")
+                cell.configureLayout(isSimilar: true, heightRatio: 1.3)
+            }
             return cell
         }
     }

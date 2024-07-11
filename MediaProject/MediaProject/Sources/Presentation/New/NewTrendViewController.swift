@@ -167,7 +167,7 @@ extension NewTrendViewController
         switch segments.selectedSegmentIndex {
         case Trends.movie.rawValue:
             print("Detailview")
-            let vc = TrendMovieDetailViewController(movieInfo: viewModel.outputTrendMovie.value.media[indexPath.row])
+            let vc = TrendMovieDetailViewController(viewModel: TrendDetailViewModel(movieInfo:  viewModel.outputTrendMovie.value.media[indexPath.row]))
             navigationController?.pushViewController(vc, animated: true)
         case Trends.tv.rawValue:
             print("아무일도 일어나지 않음")

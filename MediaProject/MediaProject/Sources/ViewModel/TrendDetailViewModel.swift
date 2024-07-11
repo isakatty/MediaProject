@@ -15,27 +15,13 @@ final class TrendDetailViewModel {
     /// TMDB API 통신 완료 감지 센서
     var catchedDataFetch: Observable<Bool> = Observable(false)
     
-    var outputSectionItems: Observable<[Int]> = Observable(.init(repeating: 1, count: SectionKind.allCases.count))
-    var outputSectionDatas: Observable<[TrendCollection]> = Observable([
-        TrendCollection(
-            actorInfo: [CastResponseDTO.init(
-                adult: true,
-                id: 1,
-                name: "",
-                original_name: "",
-                profile_path: "",
-                character: ""
-            )],
-            poster: nil,
-            similar: nil
-        ),
-        TrendCollection.init(
-            actorInfo: nil,
-            poster: [PosterPath(file_path: "")],
-            similar: nil
-        ),
-        TrendCollection.init(similar: [TrendInfo.init(poster_path: "")])
-    ])
+    var outputSectionItems: Observable<[Int]> = Observable(
+        .init(
+            repeating: 1,
+            count: SectionKind.allCases.count
+        )
+    )
+    var outputSectionDatas: Observable<[TrendCollection]> = Observable([])
     
     init(movieInfo: MovieResponseDTO) {
         self.movieInfo = movieInfo
@@ -64,13 +50,15 @@ final class TrendDetailViewModel {
                 } else {
                     guard let self else { return }
                     guard let cast else {
-                        print("NetworkService - similar movies X")
+                        print("NetworkService - cast movies X")
                         return
                     }
-                    self.outputSectionDatas.value[0] = TrendCollection(
-                        actorInfo: cast.toDTO.cast,
-                        poster: nil,
-                        similar: nil
+                    self.outputSectionDatas.value.append (
+                        TrendCollection(
+                            actorInfo: cast.toDTO.cast,
+                            poster: nil,
+                            similar: nil
+                        )
                     )
                     outputSectionItems.value[1] = cast.toDTO.cast.count
                 }
@@ -88,13 +76,15 @@ final class TrendDetailViewModel {
                 } else {
                     guard let self else { return }
                     guard let files else {
-                        print("NetworkService - similar movies X")
+                        print("NetworkService - poster movies X")
                         return
                     }
-                    self.outputSectionDatas.value[1] = TrendCollection(
-                        actorInfo: nil,
-                        poster: files.backdrops,
-                        similar: nil
+                    self.outputSectionDatas.value.append(
+                        TrendCollection(
+                            actorInfo: nil,
+                            poster: files.backdrops,
+                            similar: nil
+                        )
                     )
                     outputSectionItems.value[2] = files.backdrops.count
                 }
@@ -115,10 +105,12 @@ final class TrendDetailViewModel {
                         print("NetworkService - similar movies X")
                         return
                     }
-                    self.outputSectionDatas.value[2] = TrendCollection(
-                        actorInfo: nil,
-                        poster: nil,
-                        similar: movies.results
+                    self.outputSectionDatas.value.append(
+                        TrendCollection(
+                            actorInfo: nil,
+                            poster: nil,
+                            similar: movies.results
+                        )
                     )
                     outputSectionItems.value[3] = movies.results.count
                 }
