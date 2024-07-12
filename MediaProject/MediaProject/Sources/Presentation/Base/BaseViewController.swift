@@ -26,8 +26,12 @@ class BaseViewController: UIViewController {
         super.viewDidLoad()
         
         configureNavi(title: viewTitle)
+        configureHierarchy()
+        configureLayout()
     }
-    
+    func configureHierarchy() {
+        
+    }
     func configureLayout() {
         view.backgroundColor = .systemBackground
     }

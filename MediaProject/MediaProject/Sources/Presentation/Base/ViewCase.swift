@@ -11,7 +11,7 @@ enum ViewCase {
     case trend
     case movieDetail(movie: String)
     case search
-    case similar
+    case memo
     
     var viewTitle: String {
         switch self {
@@ -21,8 +21,8 @@ enum ViewCase {
             "\(movie)"
         case .search:
             "영화 검색"
-        case .similar:
-            "비슷한 컨텐츠"
+        case .memo:
+            "메모"
         }
     }
 }

@@ -22,8 +22,6 @@ final class VideoWebViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureHierarchy()
-        configureLayout()
         bindData()
     }
     private func bindData() {
@@ -35,7 +33,7 @@ final class VideoWebViewController: BaseViewController {
         webView.load(URLRequest(url: url))
     }
     
-    private func configureHierarchy(){
+    override func configureHierarchy() {
         view.addSubview(webView)
     }
     override func configureLayout() {

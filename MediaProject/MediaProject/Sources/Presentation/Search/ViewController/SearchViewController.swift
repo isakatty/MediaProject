@@ -38,8 +38,6 @@ final class SearchViewController: BaseViewController {
         super.viewDidLoad()
         
         bindData()
-        configureHierarchy()
-        configureLayout()
     }
     
     private func bindData() {
@@ -65,11 +63,11 @@ final class SearchViewController: BaseViewController {
         }
     }
     
-    private func configureHierarchy() {
+    override func configureHierarchy() {
         [searchBar, movieCollectionView, emptyView]
             .forEach { view.addSubview($0) }
     }
-    internal override func configureLayout() {
+    override func configureLayout() {
         super.configureLayout()
         let safeArea = view.safeAreaLayoutGuide
         

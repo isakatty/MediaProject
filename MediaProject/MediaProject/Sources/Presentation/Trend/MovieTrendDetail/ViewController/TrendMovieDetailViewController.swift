@@ -78,8 +78,6 @@ final class TrendMovieDetailViewController: BaseViewController {
         super.viewDidLoad()
         
         bindData()
-        configureHierarchy()
-        configureLayout()
     }
     
     private func bindData() {
@@ -112,7 +110,7 @@ final class TrendMovieDetailViewController: BaseViewController {
         }
     }
     
-    private func configureHierarchy() {
+    override func configureHierarchy() {
         [detailCollectionView]
             .forEach { view.addSubview($0) }
     }

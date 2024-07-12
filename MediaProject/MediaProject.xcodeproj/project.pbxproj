@@ -26,6 +26,7 @@
 		C9362E1E2C417677001A9042 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9362E1D2C417677001A9042 /* Movie.swift */; };
 		C9362E212C4177B7001A9042 /* FavoriteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9362E202C4177B7001A9042 /* FavoriteRepository.swift */; };
 		C9362E232C4177BF001A9042 /* MovieRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9362E222C4177BF001A9042 /* MovieRepository.swift */; };
+		C9362E292C4194C3001A9042 /* MemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9362E282C4194C3001A9042 /* MemoViewController.swift */; };
 		C95381C62C189A65000A054D /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C52C189A65000A054D /* SearchViewController.swift */; };
 		C95381C82C189A84000A054D /* SearchMovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C72C189A84000A054D /* SearchMovieCollectionViewCell.swift */; };
 		C95381CA2C189B77000A054D /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C92C189B77000A054D /* UICollectionViewCell+.swift */; };
@@ -94,6 +95,7 @@
 		C9362E1D2C417677001A9042 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		C9362E202C4177B7001A9042 /* FavoriteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRepository.swift; sourceTree = "<group>"; };
 		C9362E222C4177BF001A9042 /* MovieRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRepository.swift; sourceTree = "<group>"; };
+		C9362E282C4194C3001A9042 /* MemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoViewController.swift; sourceTree = "<group>"; };
 		C95381C52C189A65000A054D /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C95381C72C189A84000A054D /* SearchMovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		C95381C92C189B77000A054D /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
@@ -289,6 +291,38 @@
 				C9362E222C4177BF001A9042 /* MovieRepository.swift */,
 			);
 			path = RealmRepository;
+			sourceTree = "<group>";
+		};
+		C9362E242C419414001A9042 /* Memo */ = {
+			isa = PBXGroup;
+			children = (
+				C9362E272C4194AF001A9042 /* ViewController */,
+				C9362E262C4194A9001A9042 /* ViewModel */,
+				C9362E252C4194A2001A9042 /* View */,
+			);
+			path = Memo;
+			sourceTree = "<group>";
+		};
+		C9362E252C4194A2001A9042 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C9362E262C4194A9001A9042 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C9362E272C4194AF001A9042 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C9362E282C4194C3001A9042 /* MemoViewController.swift */,
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		C95381C42C188786000A054D /* Search */ = {
@@ -525,10 +559,11 @@
 			isa = PBXGroup;
 			children = (
 				C9BD15902C0F18AF0049787E /* JoinViewController.swift */,
-				C9F5F11D2C329D12002FAACE /* Trend */,
-				C9A538AF2C2EBD0800BA240A /* Base */,
 				C9A538AA2C2E975600BA240A /* Tabbar */,
+				C9A538AF2C2EBD0800BA240A /* Base */,
+				C9F5F11D2C329D12002FAACE /* Trend */,
 				C95381C42C188786000A054D /* Search */,
+				C9362E242C419414001A9042 /* Memo */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -622,6 +657,7 @@
 				C9A538BA2C2F10D400BA240A /* EmptyView.swift in Sources */,
 				C9BD15912C0F18AF0049787E /* JoinViewController.swift in Sources */,
 				C9F5F1312C32C037002FAACE /* TrendTVResponse.swift in Sources */,
+				C9362E292C4194C3001A9042 /* MemoViewController.swift in Sources */,
 				C9362E0E2C413C8A001A9042 /* CastResponseDTO.swift in Sources */,
 				C9362E232C4177BF001A9042 /* MovieRepository.swift in Sources */,
 				C9F5F11F2C329D29002FAACE /* NewTrendViewController.swift in Sources */,

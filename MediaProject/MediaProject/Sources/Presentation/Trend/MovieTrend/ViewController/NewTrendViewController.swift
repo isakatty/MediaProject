@@ -51,11 +51,9 @@ final class NewTrendViewController: BaseViewController {
         super.viewDidLoad()
         
         bindData()
-        configureHierarchy()
-        configureLayout()
     }
     
-    func configureHierarchy() {
+    override func configureHierarchy() {
         [segments, trendCollectionView]
             .forEach { view.addSubview($0) }
     }
