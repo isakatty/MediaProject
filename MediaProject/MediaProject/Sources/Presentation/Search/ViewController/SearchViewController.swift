@@ -11,14 +11,7 @@ import Kingfisher
 import SnapKit
 
 final class SearchViewController: BaseViewController {
-    private var page: Int = 1
-    private var isLastData: Bool = false
-    private var searchedMovieList: SearchedMovie = SearchedMovie(
-        page: 1,
-        results: [],
-        total_pages: 1,
-        total_results: 1
-    )
+    private let searchViewModel = SearchViewModel()
     private lazy var movieCollectionView: UICollectionView = {
         let collection = UICollectionView(
             frame: .zero,
@@ -44,9 +37,32 @@ final class SearchViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bindData()
         configureHierarchy()
         configureLayout()
-        configureEmptyView()
+    }
+    
+    private func bindData() {
+        searchViewModel.page.value = 1
+        searchViewModel.isLastData.value = false
+        searchViewModel.outputEmptyList.bind { isEmpty in
+            if !isEmpty {
+                self.emptyView.isHidden = true
+            }
+        }
+        searchViewModel.outputSearchedMovieList.bind { _ in
+            self.movieCollectionView.reloadData()
+            if self.searchViewModel.page.value == 1 {
+                self.movieCollectionView.scrollToItem(
+                    at: .init(
+                        item: 0,
+                        section: 0
+                    ),
+                    at: .top,
+                    animated: false
+                )
+            }
+        }
     }
     
     private func configureHierarchy() {
@@ -71,27 +87,6 @@ final class SearchViewController: BaseViewController {
             make.height.equalTo(emptyView.snp.width)
         }
     }
-    private func handleSearchedMovie(movie: SearchedMovie) {
-        if movie.page == movie.total_pages {
-            isLastData = true
-        }
-        if page == 1 {
-            searchedMovieList = movie
-        } else {
-            searchedMovieList.results.append(contentsOf: movie.results)
-        }
-        movieCollectionView.reloadData()
-        if page == 1 {
-            movieCollectionView.scrollToItem(
-                at: .init(
-                    item: 0,
-                    section: 0
-                ),
-                at: .top,
-                animated: false
-            )
-        }
-    }
     private func collectionViewLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
         let width = UIScreen.main.bounds.width - 40
@@ -107,38 +102,11 @@ final class SearchViewController: BaseViewController {
         )
         return layout
     }
-    private func configureEmptyView() {
-        if searchedMovieList.results.isEmpty == false {
-            emptyView.isHidden = true
-        }
-    }
 }
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        page = 1
-        isLastData = false
-        searchedMovieList.results.removeAll()
-        guard let text = searchBar.text else { return }
-        NetworkService.shared.callTMDB(
-            endPoint: .search(
-                movieName: text,
-                page: page
-            ),
-            type: SearchedMovie.self
-        ) { [weak self] searchedMovie, error in
-            guard let self else { return }
-            guard error == nil else {
-                print(NetworkError.invalidError.errorDescription ?? "")
-                return
-            }
-            guard let searchedMovie else {
-                print(NetworkError.invalidResponse.errorDescription ?? "")
-                return
-            }
-            handleSearchedMovie(movie: searchedMovie)
-            configureEmptyView()
-        }
+        searchViewModel.inputSearchBarText.value = searchBar.text
     }
 }
 
@@ -148,7 +116,7 @@ extension SearchViewController
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return searchedMovieList.results.count
+        return searchViewModel.outputSearchedMovieList.value.results.count
     }
     func collectionView(
         _ collectionView: UICollectionView,
@@ -160,7 +128,10 @@ extension SearchViewController
         ) as? SearchMovieCollectionViewCell
         else { return UICollectionViewCell() }
         
-        cell.configureUI(with: searchedMovieList.results[indexPath.item].poster_path ?? "")
+        let movie = searchViewModel.outputSearchedMovieList.value
+            .results[indexPath.item].poster_path
+        
+        cell.configureUI(with: movie ?? "")
         
         return cell
     }
@@ -168,7 +139,9 @@ extension SearchViewController
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        let vc = MovieDetailViewController(movieInfo: searchedMovieList.results[indexPath.item])
+        let movie = searchViewModel.outputSearchedMovieList.value
+            .results[indexPath.item]
+        let vc = MovieDetailViewController(movieInfo: movie)
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -178,25 +151,9 @@ extension SearchViewController: UICollectionViewDataSourcePrefetching {
         prefetchItemsAt indexPaths: [IndexPath]
     ) {
         for path in indexPaths {
-            let isReadyToPagenation = searchedMovieList.results.count - 6 == path.item
-            if isReadyToPagenation && isLastData == false {
-                page += 1
-                guard let text = searchBar.text else { return }
-                NetworkService.shared.callTMDB(
-                    endPoint: .search(
-                        movieName: text,
-                        page: page
-                    ),
-                    type: SearchedMovie.self
-                ) { [weak self] searchedMovie, error in
-                    if let error {
-                        print(#file, #function, "검색 에러", error)
-                    } else {
-                        guard let self else { return }
-                        guard let searchedMovie else { return }
-                        handleSearchedMovie(movie: searchedMovie)
-                    }
-                }
+            let isReadyToPagenation = searchViewModel.outputSearchedMovieList.value.results.count - 5 == path.item
+            if isReadyToPagenation && searchViewModel.isLastData.value == false {
+                searchViewModel.loadMoreMovies()
             }
         }
     }
