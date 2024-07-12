@@ -23,5 +23,25 @@ enum Constant {
             weight: .light
         )
     }
+    
+    enum Spacing {
+        case four
+        case eight
+        case twelve
+        case sixteen
+        
+        var toCGFloat: CGFloat {
+            switch self {
+            case .four:
+                4
+            case .eight:
+                8
+            case .twelve:
+                12
+            case .sixteen:
+                16
+            }
+        }
+    }
 }
 

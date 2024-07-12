@@ -20,9 +20,21 @@ enum SectionKind: Int, CaseIterable {
         case .cast:
             return ["wid": 2 / 9, "hght": 0.2]
         case .poster:
-            return ["wid": 1 / 3 , "hght": 0.2]
+            return ["wid": 1 / 3 , "hght": 0.13]
         case .similar:
             return ["wid": 1 / 4 , "hght": 0.25]
+        }
+    }
+    var toTitle: String {
+        switch self {
+        case .movieInfo:
+            ""
+        case .cast:
+            "출연 배우"
+        case .poster:
+            "영화 포스터"
+        case .similar:
+            "비슷한 영화"
         }
     }
 }
@@ -47,6 +59,11 @@ final class TrendMovieDetailViewController: BaseViewController {
         collectionView.register(
             TrendMovieCastCell.self,
             forCellWithReuseIdentifier: TrendMovieCastCell.identifier
+        )
+        collectionView.register(
+            TrendTitleSupplementaryView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: TrendTitleSupplementaryView.id
         )
         return collectionView
     }()
@@ -170,8 +187,19 @@ final class TrendMovieDetailViewController: BaseViewController {
         section.interGroupSpacing = 10
         section.orthogonalScrollingBehavior = .continuous
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        section.boundarySupplementaryItems = [self.createSupplementaryHeaderItem()]
         
         return section
+    }
+    private func createSupplementaryHeaderItem() -> NSCollectionLayoutBoundarySupplementaryItem {
+        return NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: .init(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(50)
+            ),
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
     }
     @objc private func videoBtnTapped(_ sender: UIButton) {
         print(sender.tag)
@@ -239,8 +267,10 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
                 return UICollectionViewCell()
             }
             if viewModel.catchedDataFetch.value {
-                let posterData = viewModel.outputSectionDatas.value.first(where: { $0.poster != nil })?.poster?[indexPath.item].file_path
-                cell.configureUI(path: posterData, indexPath: indexPath.item, similarTitle: "영화 포스터")
+                let posterData = viewModel.outputSectionDatas.value.first(
+                    where: { $0.poster != nil }
+                )?.poster?[indexPath.item].file_path
+                cell.configureUI(path: posterData, indexPath: indexPath.item)
             }
             return cell
 
@@ -252,11 +282,34 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
                 return UICollectionViewCell()
             }
             if viewModel.catchedDataFetch.value {
-                let similarData = viewModel.outputSectionDatas.value.first(where: { $0.similar != nil })?.similar?[indexPath.item].poster_path
-                cell.configureUI(path: similarData, indexPath: indexPath.item, similarTitle: "비슷한 영화")
-                cell.configureLayout(isSimilar: true, heightRatio: 1.3)
+                let similarData = viewModel.outputSectionDatas.value.first(
+                    where: { $0.similar != nil }
+                )?.similar?[indexPath.item].poster_path
+                cell.configureUI(path: similarData, indexPath: indexPath.item)
             }
             return cell
         }
+    }
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        guard let headerView = collectionView.dequeueReusableSupplementaryView(
+            ofKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: TrendTitleSupplementaryView.id,
+            for: indexPath
+        ) as? TrendTitleSupplementaryView,
+              let sectionKind = SectionKind(rawValue: indexPath.section)
+        else { return UICollectionReusableView() }
+        
+        switch sectionKind {
+        case .movieInfo:
+            // 없애고 싶은데..
+            print("")
+        case .cast, .poster, .similar:
+            headerView.configureUI(headerTitle: sectionKind.toTitle)
+        }
+        return headerView
     }
 }
