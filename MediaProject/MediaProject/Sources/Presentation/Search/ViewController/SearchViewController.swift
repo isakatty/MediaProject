@@ -127,14 +127,17 @@ extension SearchViewController: UISearchBarDelegate {
             ),
             type: SearchedMovie.self
         ) { [weak self] searchedMovie, error in
-            if let error {
-                print(#file, #function, "검색 에러", error)
-            } else {
-                guard let self else { return }
-                guard let searchedMovie else { return }
-                handleSearchedMovie(movie: searchedMovie)
-                configureEmptyView()
+            guard let self else { return }
+            guard error == nil else {
+                print(NetworkError.invalidError.errorDescription ?? "")
+                return
             }
+            guard let searchedMovie else {
+                print(NetworkError.invalidResponse.errorDescription ?? "")
+                return
+            }
+            handleSearchedMovie(movie: searchedMovie)
+            configureEmptyView()
         }
     }
 }

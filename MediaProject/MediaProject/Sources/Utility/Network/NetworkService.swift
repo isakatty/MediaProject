@@ -32,7 +32,7 @@ final class NetworkService: NetworkServiceProtocol {
         AF.request(
             url,
             method: HTTPMethod(rawValue: endPoint.method),
-            encoding: URLEncoding(destination: .queryString),
+            encoding: URLEncoding.default,
             headers: HTTPHeaders(endPoint.header)
         )
         .validate(statusCode: 200..<300)

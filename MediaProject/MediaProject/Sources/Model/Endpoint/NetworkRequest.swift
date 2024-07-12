@@ -64,7 +64,7 @@ enum NetworkRequest: Endpoint {
                 "language": "ko-KR",
                 "query": movieName,
                 "include_adult": true,
-                "page": page
+                "page": "\(page)"
             ]
         case .images:
             return [
