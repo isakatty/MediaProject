@@ -72,6 +72,25 @@ final class TrendMovieDetailViewController: BaseViewController {
                 self.detailCollectionView.reloadData()
             }
         }
+        viewModel.outputVideoInfo.bind {
+            [weak self] videoName,
+            urlString in
+            guard let self else { return }
+            guard let urlString,
+                  !urlString.isEmpty
+            else { return }
+            
+            if urlString != "There's no first video info" {
+                let vc = VideoWebViewController(
+                    viewModel: VideoWebViewModel(urlString: urlString),
+                    viewTitle: videoName ?? ""
+                )
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                // TODO: Toast 띄우기
+                print("?")
+            }
+        }
     }
     
     private func configureHierarchy() {
@@ -156,6 +175,11 @@ final class TrendMovieDetailViewController: BaseViewController {
         
         return section
     }
+    @objc private func videoBtnTapped(_ sender: UIButton) {
+        print(sender.tag)
+        // webView load
+        viewModel.inputVideoBtnTrigger.value = sender.tag
+    }
 }
 
 extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -186,6 +210,11 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
             ) as? TrendMovieTitleCollectionViewCell else {
                 return UICollectionViewCell()
             }
+            cell.clearBtn.addTarget(
+                self,
+                action: #selector(videoBtnTapped),
+                for: .touchUpInside
+            )
             cell.configureUI(movieDetail: viewModel.movieInfo)
             return cell
             

@@ -66,6 +66,12 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
         image.image = UIImage(named: "youtube_logo")
         return image
     }()
+    let clearBtn: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("", for: .normal)
+        btn.backgroundColor = .clear
+        return btn
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -77,7 +83,7 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
     private func configureHierarchy() {
         [backPosterImg, halfView, posterContainerView]
             .forEach { contentView.addSubview($0) }
-        [titleLabel, dateLabel, videoLogoImg, overviewLabel]
+        [titleLabel, dateLabel, videoLogoImg, overviewLabel, clearBtn]
             .forEach { halfView.addSubview($0) }
         posterContainerView.addSubview(posterImg)
     }
@@ -97,6 +103,12 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
             make.height.equalTo(posterImg.snp.width).multipliedBy(1.4)
         }
         videoLogoImg.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(16)
+            make.trailing.equalToSuperview().inset(12)
+            make.width.equalTo(60)
+            make.height.equalTo(30)
+        }
+        clearBtn.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(16)
             make.trailing.equalToSuperview().inset(12)
             make.width.equalTo(60)
@@ -136,5 +148,6 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
         titleLabel.text = movieDetail.title
         dateLabel.text = movieDetail.releaseDate
         overviewLabel.text = movieDetail.overView
+        clearBtn.tag = movieDetail.id
     }
 }
