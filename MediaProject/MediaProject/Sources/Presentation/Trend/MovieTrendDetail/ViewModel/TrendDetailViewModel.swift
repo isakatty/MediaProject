@@ -56,7 +56,7 @@ final class TrendDetailViewModel {
                 } else {
                     guard let self else { return }
                     guard let cast else {
-                        print("NetworkService - cast movies X")
+                        print(NetworkError.invalidResponse.errorDescription!)
                         return
                     }
                     self.outputSectionDatas.value.append (
@@ -82,7 +82,7 @@ final class TrendDetailViewModel {
                 } else {
                     guard let self else { return }
                     guard let files else {
-                        print("NetworkService - poster movies X")
+                        print(NetworkError.invalidResponse.errorDescription!)
                         return
                     }
                     self.outputSectionDatas.value.append(
@@ -108,7 +108,7 @@ final class TrendDetailViewModel {
                 } else {
                     guard let self else { return }
                     guard let movies else {
-                        print("NetworkService - similar movies X")
+                        print(NetworkError.invalidResponse.errorDescription!)
                         return
                     }
                     self.outputSectionDatas.value.append(

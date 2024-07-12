@@ -13,7 +13,7 @@ protocol NetworkServiceProtocol {
     func callTMDB<T: Decodable>(
         endPoint: NetworkRequest,
         type: T.Type,
-        completionHandler: @escaping (T?, String?) -> Void
+        completionHandler: @escaping (T?, NetworkError?) -> Void
     )
 }
 
@@ -26,7 +26,7 @@ final class NetworkService: NetworkServiceProtocol {
     func callTMDB<T: Decodable>(
         endPoint: NetworkRequest,
         type: T.Type,
-        completionHandler: @escaping (T?, String?) -> Void
+        completionHandler: @escaping (T?, NetworkError?) -> Void
     ) {
         guard let url = URL(string: endPoint.toURLString) else { return }
         AF.request(
@@ -41,8 +41,8 @@ final class NetworkService: NetworkServiceProtocol {
             switch response.result {
             case .success(let value):
                 completionHandler(value, nil)
-            case .failure(let error):
-                completionHandler(nil, error.localizedDescription)
+            case .failure:
+                completionHandler(nil, NetworkError.invalidResponse)
             }
         }
     }
