@@ -1,5 +1,5 @@
 //
-//  MovieFavorites.swift
+//  Movie.swift
 //  MediaProject
 //
 //  Created by Jisoo Ham on 7/12/24.
@@ -9,7 +9,7 @@ import Foundation
 
 import RealmSwift
 
-final class MovieFavorites: Object {
+final class Movie: Object {
     
     @Persisted(primaryKey: true) var id: Int // PK - TMDB의 MovieId
     @Persisted var title: String
@@ -18,6 +18,8 @@ final class MovieFavorites: Object {
     @Persisted var releaseDate: String
     @Persisted var voteAvg: Double
     @Persisted var voteCount: Int
+    
+    @Persisted var memo: List<MovieMemo>
     
     convenience init(
         id: Int,
