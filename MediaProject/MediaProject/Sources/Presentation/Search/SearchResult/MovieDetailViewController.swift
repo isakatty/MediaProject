@@ -11,7 +11,7 @@ import Kingfisher
 import SnapKit
 
 final class MovieDetailViewController: BaseViewController {
-    var movieInfo: SearchedMovieInfo
+    var movieInfo: SearchedMovieInfoResponse
     private var trendDetailData: [TrendDetail] = [
         TrendDetail(
             section: .overView,
@@ -29,7 +29,7 @@ final class MovieDetailViewController: BaseViewController {
         }
     }
     
-    init(movieInfo: SearchedMovieInfo) {
+    init(movieInfo: SearchedMovieInfoResponse) {
         self.movieInfo = movieInfo
         
         super.init(viewTitle: ViewCase.movieDetail(movie: movieInfo.title).viewTitle)
@@ -85,7 +85,7 @@ final class MovieDetailViewController: BaseViewController {
             make.centerX.equalTo(safeArea)
         }
     }
-    private func configureUI(movieInfo: SearchedMovieInfo) {
+    private func configureUI(movieInfo: SearchedMovieInfoResponse) {
         NetworkService.shared.callTMDB(
             endPoint: .trendDetail(movieId: String(movieInfo.id)),
             type: MovieCreditResponse.self

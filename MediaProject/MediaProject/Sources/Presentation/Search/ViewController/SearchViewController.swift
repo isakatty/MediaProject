@@ -142,6 +142,7 @@ extension SearchViewController
         let movie = searchViewModel.outputSearchedMovieList.value
             .results[indexPath.item]
         let vc = MovieDetailViewController(movieInfo: movie)
+//        let realVC = TrendMovieDetailViewController(viewModel: TrendDetailViewModel(movieInfo: MovieResponseDTO))
         navigationController?.pushViewController(vc, animated: true)
     }
 }

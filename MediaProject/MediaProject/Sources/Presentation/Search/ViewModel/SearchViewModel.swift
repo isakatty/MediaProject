@@ -12,8 +12,8 @@ final class SearchViewModel {
     var isLastData: Observable<Bool> = Observable(false)
     var inputSearchBarText: Observable<String?> = Observable(nil)
     
-    var outputSearchedMovieList: Observable<SearchedMovie> = Observable(
-        SearchedMovie(
+    var outputSearchedMovieList: Observable<SearchMovieResponse> = Observable(
+        SearchMovieResponse(
             page: 1,
             results: [],
             total_pages: 1,
@@ -42,7 +42,7 @@ final class SearchViewModel {
                 movieName: keyword,
                 page: page.value
             ),
-            type: SearchedMovie.self
+            type: SearchMovieResponse.self
         ) { [weak self] searchedMovie, error in
             guard let self else { return }
             guard error == nil else {
@@ -61,7 +61,7 @@ final class SearchViewModel {
         }
     }
     
-    private func handleSearchedMovie(movie: SearchedMovie) {
+    private func handleSearchedMovie(movie: SearchMovieResponse) {
         if movie.page == movie.total_pages {
             isLastData.value = true
         }

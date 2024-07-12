@@ -39,17 +39,3 @@ extension MovieCreditResponse {
         )
     }
 }
-
-struct MovieCreditResponseDTO: Decodable {
-    let id: Int
-    let cast: [CastResponseDTO]
-}
-
-struct CastResponseDTO: Decodable {
-    let adult: Bool
-    let id: Int
-    let name: String
-    let original_name: String
-    let profile_path: String
-    let character: String
-}

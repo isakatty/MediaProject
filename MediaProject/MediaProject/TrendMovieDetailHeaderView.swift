@@ -83,7 +83,7 @@ final class TrendMovieDetailHeaderView: UITableViewHeaderFooterView {
         }
     }
     func configureUI(
-        with movieInfo: SearchedMovieInfo,
+        with movieInfo: SearchedMovieInfoResponse,
         with sectionText: String
     ) {
         guard let poster_path = movieInfo.poster_path,
