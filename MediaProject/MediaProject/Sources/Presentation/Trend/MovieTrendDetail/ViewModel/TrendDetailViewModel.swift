@@ -15,7 +15,9 @@ final class TrendDetailViewModel {
     /// TMDB API 통신 완료 감지 센서
     var catchedDataFetch: Observable<Bool> = Observable(false)
     var inputVideoBtnTrigger: Observable<Int> = Observable(0)
+    var inputFavBtnTrigger: Observable<Int> = Observable(0)
     
+    var outputFavoriteMovie: Observable<Bool> = Observable(false)
     var outputSectionItems: Observable<[Int]> = Observable(
         .init(
             repeating: 1,
@@ -35,10 +37,16 @@ final class TrendDetailViewModel {
         inputViewDidLoadTrigger.bind { [weak self] _ in
             guard let self else { return }
             self.requestDetails(movieId: movieInfo.id)
+            self.outputFavoriteMovie.value = self.fetchFavorite(movieInfo.id)
         }
         inputVideoBtnTrigger.bind { [weak self] movieId in
             guard let self else { return }
             self.requestVideo(movieId: movieId)
+        }
+        inputFavBtnTrigger.bind { [weak self] movieId in
+            guard let self else { return }
+            // realm에 저장하거나 지우거나
+            self.outputFavoriteMovie.value = self.handleFavorite(movieId)
         }
     }
     
@@ -146,6 +154,29 @@ final class TrendDetailViewModel {
                 self.outputVideoInfo.value.0 = "nope"
                 self.outputVideoInfo.value.1 = "There's no first video info"
             }
+        }
+    }
+    private func handleFavorite(_ movieId: Int) -> Bool {
+        let favorites = FavoriteRepository.shared.readFavorites()
+        
+        // movieId가 favorites에 있으면 delete 아님
+        if favorites.contains(where: { $0.id == movieId }) {
+            // 삭제
+            FavoriteRepository.shared.deleteFavorite(movieId)
+            return false
+        } else {
+            // 저장
+            FavoriteRepository.shared.createFavorite(movieId)
+            return true
+        }
+    }
+    private func fetchFavorite(_ movieId: Int) -> Bool {
+        let favorites = FavoriteRepository.shared.readFavorites()
+        
+        if favorites.contains(where: { $0.id == movieId }) {
+            return true
+        } else {
+            return false
         }
     }
 }

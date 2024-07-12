@@ -24,6 +24,8 @@
 		C9362E1A2C41704B001A9042 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9362E192C41704B001A9042 /* RealmSwift */; };
 		C9362E1C2C417147001A9042 /* MovieMemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9362E1B2C417147001A9042 /* MovieMemo.swift */; };
 		C9362E1E2C417677001A9042 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9362E1D2C417677001A9042 /* Movie.swift */; };
+		C9362E212C4177B7001A9042 /* FavoriteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9362E202C4177B7001A9042 /* FavoriteRepository.swift */; };
+		C9362E232C4177BF001A9042 /* MovieRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9362E222C4177BF001A9042 /* MovieRepository.swift */; };
 		C95381C62C189A65000A054D /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C52C189A65000A054D /* SearchViewController.swift */; };
 		C95381C82C189A84000A054D /* SearchMovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C72C189A84000A054D /* SearchMovieCollectionViewCell.swift */; };
 		C95381CA2C189B77000A054D /* UICollectionViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95381C92C189B77000A054D /* UICollectionViewCell+.swift */; };
@@ -90,6 +92,8 @@
 		C9362E162C416FD5001A9042 /* MovieFavorites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieFavorites.swift; sourceTree = "<group>"; };
 		C9362E1B2C417147001A9042 /* MovieMemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieMemo.swift; sourceTree = "<group>"; };
 		C9362E1D2C417677001A9042 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		C9362E202C4177B7001A9042 /* FavoriteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRepository.swift; sourceTree = "<group>"; };
+		C9362E222C4177BF001A9042 /* MovieRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRepository.swift; sourceTree = "<group>"; };
 		C95381C52C189A65000A054D /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C95381C72C189A84000A054D /* SearchMovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		C95381C92C189B77000A054D /* UICollectionViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+.swift"; sourceTree = "<group>"; };
@@ -276,6 +280,15 @@
 				C9362E1B2C417147001A9042 /* MovieMemo.swift */,
 			);
 			path = Realm;
+			sourceTree = "<group>";
+		};
+		C9362E1F2C4177A9001A9042 /* RealmRepository */ = {
+			isa = PBXGroup;
+			children = (
+				C9362E202C4177B7001A9042 /* FavoriteRepository.swift */,
+				C9362E222C4177BF001A9042 /* MovieRepository.swift */,
+			);
+			path = RealmRepository;
 			sourceTree = "<group>";
 		};
 		C95381C42C188786000A054D /* Search */ = {
@@ -500,6 +513,7 @@
 		C9FA01BF2C2C555B00E5C100 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				C9362E1F2C4177A9001A9042 /* RealmRepository */,
 				C912D7172C29637A00361F66 /* Network */,
 				C9FA01BA2C2C545300E5C100 /* Constant */,
 				C9BD15962C0F21140049787E /* Extension */,
@@ -609,6 +623,7 @@
 				C9BD15912C0F18AF0049787E /* JoinViewController.swift in Sources */,
 				C9F5F1312C32C037002FAACE /* TrendTVResponse.swift in Sources */,
 				C9362E0E2C413C8A001A9042 /* CastResponseDTO.swift in Sources */,
+				C9362E232C4177BF001A9042 /* MovieRepository.swift in Sources */,
 				C9F5F11F2C329D29002FAACE /* NewTrendViewController.swift in Sources */,
 				C9F5F1362C32D2BB002FAACE /* TrendMovieDetailViewController.swift in Sources */,
 				C9A538BC2C2F110400BA240A /* BaseView.swift in Sources */,
@@ -626,6 +641,7 @@
 				C9BD15952C0F20E20049787E /* UITextField+.swift in Sources */,
 				C959DBE62C3E602F00F97C9A /* Observable.swift in Sources */,
 				C9A538AC2C2E976400BA240A /* MovieTabbarController.swift in Sources */,
+				C9362E212C4177B7001A9042 /* FavoriteRepository.swift in Sources */,
 				C9F5F13F2C32F45B002FAACE /* TrendMovieCastCell.swift in Sources */,
 				C9362E0C2C413C81001A9042 /* MovieCreditResponseDTO.swift in Sources */,
 				C9362DFD2C411CDB001A9042 /* VideoWebViewController.swift in Sources */,

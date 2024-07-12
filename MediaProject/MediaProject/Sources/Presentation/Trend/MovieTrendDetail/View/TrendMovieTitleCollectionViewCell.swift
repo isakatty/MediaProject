@@ -72,6 +72,13 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
         btn.backgroundColor = .clear
         return btn
     }()
+    lazy var favBtn: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.image = UIImage(systemName: "heart")?.withRenderingMode(.alwaysTemplate)
+        config.baseForegroundColor = UIColor.systemPink
+        let btn = UIButton(configuration: config)
+        return btn
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -83,7 +90,7 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
     private func configureHierarchy() {
         [backPosterImg, halfView, posterContainerView]
             .forEach { contentView.addSubview($0) }
-        [titleLabel, dateLabel, videoLogoImg, overviewLabel, clearBtn]
+        [titleLabel, dateLabel, videoLogoImg, overviewLabel, clearBtn, favBtn]
             .forEach { halfView.addSubview($0) }
         posterContainerView.addSubview(posterImg)
     }
@@ -114,6 +121,11 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
             make.width.equalTo(60)
             make.height.equalTo(30)
         }
+        favBtn.snp.makeConstraints { make in
+            make.top.equalTo(videoLogoImg.snp.bottom)
+            make.centerX.equalTo(videoLogoImg.snp.centerX)
+            make.width.height.equalTo(50)
+        }
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(16)
             make.leading.equalTo(posterImg.snp.trailing).inset(-12)
@@ -135,7 +147,7 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
         }
     }
     
-    func configureUI(movieDetail: MovieResponseDTO) {
+    func configureUI(movieDetail: MovieResponseDTO, isFav: Bool) {
         guard let backImgURL = URL(string: NetworkRequest.imageBaseURL + movieDetail.backdrop_path),
               let posterImgURL = URL(string: NetworkRequest.imageBaseURL + movieDetail.poster_path)
         else { 
@@ -149,5 +161,13 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
         dateLabel.text = movieDetail.releaseDate
         overviewLabel.text = movieDetail.overView
         clearBtn.tag = movieDetail.id
+        favBtn.tag = movieDetail.id
+        configFavBtn(isFav: isFav)
+    }
+    private func configFavBtn(isFav: Bool) {
+        var config = favBtn.configuration
+        let imageName: String = isFav ? "heart.fill" : "heart"
+        config?.image = UIImage(systemName: imageName)
+        favBtn.configuration = config
     }
 }

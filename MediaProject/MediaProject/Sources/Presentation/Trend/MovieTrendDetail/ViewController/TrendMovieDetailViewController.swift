@@ -106,6 +106,10 @@ final class TrendMovieDetailViewController: BaseViewController {
                 showToast(message: "해당 영화의 영화 트레일러가 준비중입니다.")
             }
         }
+        viewModel.outputFavoriteMovie.bind { [weak self] _ in
+            guard let self else { return }
+            self.detailCollectionView.reloadSections(IndexSet(integer: 0))
+        }
     }
     
     private func configureHierarchy() {
@@ -206,6 +210,11 @@ final class TrendMovieDetailViewController: BaseViewController {
         // webView load
         viewModel.inputVideoBtnTrigger.value = sender.tag
     }
+    @objc private func favBtnTapped(_ sender: UIButton) {
+        // viewModel input trigger - sender.tag
+        print(sender.tag)
+        viewModel.inputFavBtnTrigger.value = sender.tag
+    }
 }
 
 extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -241,7 +250,15 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
                 action: #selector(videoBtnTapped),
                 for: .touchUpInside
             )
-            cell.configureUI(movieDetail: viewModel.movieInfo)
+            cell.favBtn.addTarget(
+                self,
+                action: #selector(favBtnTapped),
+                for: .touchUpInside
+            )
+            cell.configureUI(
+                movieDetail: viewModel.movieInfo,
+                isFav: viewModel.outputFavoriteMovie.value
+            )
             return cell
             
             // TODO: SectionData로 묶어서 처리하지 않고, 각각의 output으로 둔다면 filter 처리하지 않아도 되지 않을까 ?
