@@ -72,9 +72,7 @@ final class TrendMovieDetailViewController: BaseViewController {
                 self.detailCollectionView.reloadData()
             }
         }
-        viewModel.outputVideoInfo.bind {
-            [weak self] videoName,
-            urlString in
+        viewModel.outputVideoInfo.bind { [weak self] videoName, urlString in
             guard let self else { return }
             guard let urlString,
                   !urlString.isEmpty
@@ -88,7 +86,7 @@ final class TrendMovieDetailViewController: BaseViewController {
                 self.navigationController?.pushViewController(vc, animated: true)
             } else {
                 // TODO: Toast 띄우기
-                print("?")
+                showToast(message: "해당 영화의 영화 트레일러가 준비중입니다.")
             }
         }
     }
