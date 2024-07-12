@@ -131,7 +131,7 @@ extension SearchViewController
         let movie = searchViewModel.outputSearchedMovieList.value
             .results[indexPath.item].poster_path
         
-        cell.configureUI(with: movie ?? "")
+        cell.configureUI(with: movie)
         
         return cell
     }
@@ -139,10 +139,8 @@ extension SearchViewController
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        let movie = searchViewModel.outputSearchedMovieList.value
-            .results[indexPath.item]
-        let vc = MovieDetailViewController(movieInfo: movie)
-//        let realVC = TrendMovieDetailViewController(viewModel: TrendDetailViewModel(movieInfo: MovieResponseDTO))
+        searchViewModel.inputSelectedIndex.value = indexPath.item
+        let vc = TrendMovieDetailViewController(viewModel: TrendDetailViewModel(movieInfo: searchViewModel.changedMovieDTO.value))
         navigationController?.pushViewController(vc, animated: true)
     }
 }
