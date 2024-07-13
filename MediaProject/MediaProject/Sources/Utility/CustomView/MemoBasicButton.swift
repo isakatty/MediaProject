@@ -56,7 +56,7 @@ final class MemoBasicButton: UIButton {
     }
     private func configureLayout() {
         layer.cornerRadius = 15
-        layer.borderColor = UIColor.lightGray.cgColor
+        layer.borderColor = UIColor.darkGray.cgColor
         layer.borderWidth = 1
         
         btnTitle.snp.makeConstraints { make in

@@ -26,7 +26,7 @@ final class MemoTextView: UITextView {
     private func configureTextView() {
         self.layer.cornerRadius = 15
         self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.lightGray.cgColor
+        self.layer.borderColor = UIColor.darkGray.cgColor
         self.textContainerInset = padding
     }
 }

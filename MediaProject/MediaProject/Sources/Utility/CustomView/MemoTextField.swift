@@ -28,7 +28,7 @@ final class MemoTextField: UITextField {
     private func configureTextField() {
         self.layer.cornerRadius = 15
         self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.lightGray.cgColor
+        self.layer.borderColor = UIColor.darkGray.cgColor
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {

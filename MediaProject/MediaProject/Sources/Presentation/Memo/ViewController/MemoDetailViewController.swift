@@ -21,6 +21,15 @@ enum BasicBtn: CaseIterable {
 }
 
 final class MemoDetailViewController: BaseViewController {
+    private let contentPlaceholder: String = "어떤 내용의 영화를 누구와 봤는지, 어땠는지 남겨주세요."
+    
+    private let scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.showsHorizontalScrollIndicator = false
+        return view
+    }()
+    private let contentView = UIView()
+    private let posterImgView = MoviePosterView()
     private let titleTextField: MemoTextField = {
         let tf = MemoTextField(padding: .init(top: 0, left: 10, bottom: 0, right: 10))
         tf.placeholder = "제목을 입력하세요."
@@ -28,11 +37,12 @@ final class MemoDetailViewController: BaseViewController {
         tf.textColor = .black
         return tf
     }()
-    private let contentTextView: MemoTextView = {
+    private lazy var contentTextView: MemoTextView = {
         let view = MemoTextView(padding: .init(top: 10, left: 10, bottom: 10, right: 10))
-        view.textColor = .black
+        view.textColor = .darkGray
         view.font = Constant.Font.regular13
-        view.text = "하이루 이건 placeholder처리 해줘야함"
+        view.text = contentPlaceholder
+        view.delegate = self
         return view
     }()
     private let dateButton: MemoBasicButton = MemoBasicButton(title: BasicBtn.date.toTitle)
@@ -44,36 +54,56 @@ final class MemoDetailViewController: BaseViewController {
         configureBtn()
     }
     override func configureHierarchy() {
-        [titleTextField, contentTextView, dateButton, tagButton]
-            .forEach { view.addSubview($0) }
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        [posterImgView, titleTextField, contentTextView, dateButton, tagButton]
+            .forEach { contentView.addSubview($0) }
     }
     override func configureLayout() {
         super.configureLayout()
         let safeArea = view.safeAreaLayoutGuide
         
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(safeArea)
+        }
+        contentView.snp.makeConstraints { make in
+            make.width.equalTo(scrollView.snp.width)
+            make.verticalEdges.equalToSuperview()
+        }
+        configureContentView()
+    }
+    private func configureContentView() {
+        posterImgView.snp.makeConstraints { make in
+            make.top.equalTo(contentView.snp.top)
+            make.horizontalEdges.equalTo(contentView.snp.horizontalEdges).inset(24)
+            make.width.equalTo(posterImgView.snp.height).multipliedBy(0.67)
+        }
+        
         titleTextField.snp.makeConstraints { make in
-            make.top.equalTo(safeArea)
-            make.horizontalEdges.equalToSuperview().inset(Constant.Spacing.twelve.toCGFloat)
+            make.top.equalTo(posterImgView.snp.bottom).offset(20)
+            make.horizontalEdges.equalTo(contentView.snp.horizontalEdges).inset(Constant.Spacing.twelve.toCGFloat)
             make.height.equalTo(50)
         }
         contentTextView.snp.makeConstraints { make in
             make.top.equalTo(titleTextField.snp.bottom).offset(20)
-            make.horizontalEdges.equalToSuperview().inset(Constant.Spacing.twelve.toCGFloat)
-            make.height.equalTo(100)
+            make.horizontalEdges.equalTo(contentView.snp.horizontalEdges).inset(Constant.Spacing.twelve.toCGFloat)
+            make.height.equalTo(150)
         }
         dateButton.snp.makeConstraints { make in
             make.top.equalTo(contentTextView.snp.bottom).offset(20)
-            make.horizontalEdges.equalToSuperview().inset(Constant.Spacing.twelve.toCGFloat)
+            make.horizontalEdges.equalTo(contentView.snp.horizontalEdges).inset(Constant.Spacing.twelve.toCGFloat)
             make.height.equalTo(50)
         }
         tagButton.snp.makeConstraints { make in
             make.top.equalTo(dateButton.snp.bottom).offset(20)
-            make.horizontalEdges.equalToSuperview().inset(Constant.Spacing.twelve.toCGFloat)
+            make.horizontalEdges.equalTo(contentView.snp.horizontalEdges).inset(Constant.Spacing.twelve.toCGFloat)
             make.height.equalTo(50)
+            make.bottom.equalTo(contentView.snp.bottom).inset(Constant.Spacing.twelve.toCGFloat)
         }
     }
     
     private func configureBtn() {
+        posterImgView.clearBtn.addTarget(self, action: #selector(addMovieClearBtnTapped), for: .touchUpInside)
         dateButton.addTarget(self, action: #selector(dateBtnTapped), for: .touchUpInside)
         tagButton.addTarget(self, action: #selector(tagBtnTapped), for: .touchUpInside)
     }
@@ -84,5 +114,22 @@ final class MemoDetailViewController: BaseViewController {
     @objc private func tagBtnTapped() {
         print(#function) // - textfield
     }
-    
+    @objc private func addMovieClearBtnTapped() {
+        print(#function) // 영화 정보 추가하는 투명 버튼
+    }
+}
+
+extension MemoDetailViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == contentPlaceholder {
+            textView.text = ""
+            textView.textColor = .black
+        }
+    }
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = contentPlaceholder
+            textView.textColor = .lightGray
+        }
+    }
 }
