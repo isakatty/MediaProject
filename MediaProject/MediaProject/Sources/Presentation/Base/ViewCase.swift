@@ -12,6 +12,7 @@ enum ViewCase {
     case movieDetail(movie: String)
     case search
     case memo
+    case calendar
     
     var viewTitle: String {
         switch self {
@@ -23,6 +24,8 @@ enum ViewCase {
             "영화 검색"
         case .memo:
             "메모"
+        case .calendar:
+            "달력"
         }
     }
 }

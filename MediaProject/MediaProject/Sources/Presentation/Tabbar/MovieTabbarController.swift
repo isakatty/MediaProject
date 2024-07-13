@@ -22,7 +22,7 @@ final class MovieTabbarController: UITabBarController {
         let vcs = [
             NewTrendViewController(viewTitle: ViewCase.trend.viewTitle),
             SearchViewController(viewTitle: ViewCase.search.viewTitle),
-            MemoViewController(viewTitle: ViewCase.memo.viewTitle)
+            MemoCalendarViewController(viewTitle: ViewCase.calendar.viewTitle)
         ]
         
         setViewControllers(

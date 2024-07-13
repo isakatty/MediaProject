@@ -13,9 +13,9 @@ final class CalendarLabelView: BaseView {
     private let posterImgView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
-        view.image = UIImage(systemName: "star.fill")
+        view.image = UIImage(systemName: "plus")
+        view.tintColor = .darkGray
         view.clipsToBounds = true
-        view.backgroundColor = .yellow
         return view
     }()
     private let movieTitleLabel: PaddingLabel = {
@@ -23,7 +23,7 @@ final class CalendarLabelView: BaseView {
         let label = PaddingLabel(inset: .init(top: spacing, left: spacing, bottom: spacing, right: spacing))
         label.font = Constant.Font.bold17
         label.textColor = UIColor.black
-        label.text = "영화 메모를 작성해보세요 !"
+        label.text = " "
         label.textAlignment = .center
         return label
     }()
@@ -32,6 +32,7 @@ final class CalendarLabelView: BaseView {
         let label = PaddingLabel(inset: .init(top: spacing, left: spacing, bottom: spacing, right: spacing))
         label.font = Constant.Font.bold13
         label.textColor = UIColor.darkGray
+        label.text = "영화 메모를 작성해보세요 !"
         label.textAlignment = .left
         return label
     }()
@@ -78,7 +79,7 @@ final class CalendarLabelView: BaseView {
         }
         
         movieTitleLabel.snp.makeConstraints { make in
-            make.top.trailing.equalToSuperview()
+            make.top.trailing.equalToSuperview().inset(Constant.Spacing.eight.toCGFloat)
             make.leading.equalTo(posterImgView.snp.trailing)
         }
         memoTitleLabel.snp.makeConstraints { make in

@@ -1,5 +1,5 @@
 //
-//  MemoViewController.swift
+//  MemoCalendarViewController.swift
 //  MediaProject
 //
 //  Created by Jisoo Ham on 7/13/24.
@@ -9,7 +9,7 @@ import UIKit
 
 import FSCalendar
 
-final class MemoViewController: BaseViewController {
+final class MemoCalendarViewController: BaseViewController {
     private var events = [Date]()
     private lazy var fsCalendar: FSCalendar = {
         let calendar = FSCalendar(frame: .zero)
@@ -27,12 +27,12 @@ final class MemoViewController: BaseViewController {
         
         configCalendar()
         setEvents()
-        calendarLabel.configureUI(
-            movie: "디센던츠: 레드의 반항",
-            memoTitle: "오늘은 이상한 영화를 보앗다",
-            wroteDate: Date(),
-            tag: "#수윤"
-        )
+//        calendarLabel.configureUI(
+//            movie: "디센던츠: 레드의 반항",
+//            memoTitle: "오늘은 이상한 영화를 보앗다",
+//            wroteDate: Date(),
+//            tag: "#수윤"
+//        )
         configureBtn()
     }
     override func configureHierarchy() {
@@ -81,10 +81,11 @@ final class MemoViewController: BaseViewController {
         calendarLabel.clearBtn.addTarget(self, action: #selector(clearBtnTapped), for: .touchUpInside)
     }
     @objc func clearBtnTapped() {
-        print("ㅎㅎ")
+        let vc = MemoDetailViewController(viewTitle: ViewCase.memo.viewTitle)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
-extension MemoViewController: FSCalendarDelegate, FSCalendarDataSource {
+extension MemoCalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
     func calendar(
         _ calendar: FSCalendar,
         didSelect date: Date,
