@@ -9,6 +9,6 @@ import Foundation
 
 struct TrendCollection {
     var actorInfo: [CastResponseDTO]?
-    var poster: [PosterPath]?
+    var poster: [PosterPathResponseDTO]?
     var similar: [TrendInfo]?
 }

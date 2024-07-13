@@ -83,7 +83,7 @@ final class TrendDetailViewModel {
         DispatchQueue.global().async {
             NetworkService.shared.callTMDB(
                 endPoint: .images(movieId: String(movieId)),
-                type: Poster.self
+                type: PosterResponse.self
             ) { [weak self] files, error in
                 if let error {
                     print("similar - error가 있다 !", error)
@@ -96,11 +96,11 @@ final class TrendDetailViewModel {
                     self.outputSectionDatas.value.append(
                         TrendCollection(
                             actorInfo: nil,
-                            poster: files.backdrops,
+                            poster: files.toDTO.backdrops,
                             similar: nil
                         )
                     )
-                    outputSectionItems.value[2] = files.backdrops.count
+                    outputSectionItems.value[2] = files.toDTO.backdrops.count
                 }
                 group.leave()
             }
