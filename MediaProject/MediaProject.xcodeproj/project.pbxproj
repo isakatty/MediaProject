@@ -63,6 +63,10 @@
 		C9CB2C772C42B69D004B0A0D /* MemoTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C762C42B69D004B0A0D /* MemoTextField.swift */; };
 		C9CB2C792C42C242004B0A0D /* MemoTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C782C42C242004B0A0D /* MemoTextView.swift */; };
 		C9CB2C7B2C42CF33004B0A0D /* MoviePosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C7A2C42CF33004B0A0D /* MoviePosterView.swift */; };
+		C9CB2C7D2C42D6A7004B0A0D /* MemoDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C7C2C42D6A7004B0A0D /* MemoDetailViewModel.swift */; };
+		C9CB2C7F2C42D6E0004B0A0D /* MemoCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C7E2C42D6E0004B0A0D /* MemoCalendarViewModel.swift */; };
+		C9CB2C812C42D77F004B0A0D /* DateFormatterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C802C42D77F004B0A0D /* DateFormatterManager.swift */; };
+		C9CB2C842C42D793004B0A0D /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C832C42D793004B0A0D /* String.swift */; };
 		C9F5F1162C328B21002FAACE /* MovieVideoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F5F1152C328B21002FAACE /* MovieVideoResponse.swift */; };
 		C9F5F11A2C32931D002FAACE /* MovieVideoResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F5F1192C32931D002FAACE /* MovieVideoResponseDTO.swift */; };
 		C9F5F11C2C329364002FAACE /* VideoResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F5F11B2C329364002FAACE /* VideoResponseDTO.swift */; };
@@ -141,6 +145,10 @@
 		C9CB2C762C42B69D004B0A0D /* MemoTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoTextField.swift; sourceTree = "<group>"; };
 		C9CB2C782C42C242004B0A0D /* MemoTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoTextView.swift; sourceTree = "<group>"; };
 		C9CB2C7A2C42CF33004B0A0D /* MoviePosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePosterView.swift; sourceTree = "<group>"; };
+		C9CB2C7C2C42D6A7004B0A0D /* MemoDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoDetailViewModel.swift; sourceTree = "<group>"; };
+		C9CB2C7E2C42D6E0004B0A0D /* MemoCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoCalendarViewModel.swift; sourceTree = "<group>"; };
+		C9CB2C802C42D77F004B0A0D /* DateFormatterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterManager.swift; sourceTree = "<group>"; };
+		C9CB2C832C42D793004B0A0D /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		C9F5F1152C328B21002FAACE /* MovieVideoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieVideoResponse.swift; sourceTree = "<group>"; };
 		C9F5F1192C32931D002FAACE /* MovieVideoResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieVideoResponseDTO.swift; sourceTree = "<group>"; };
 		C9F5F11B2C329364002FAACE /* VideoResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoResponseDTO.swift; sourceTree = "<group>"; };
@@ -335,6 +343,8 @@
 		C9362E262C4194A9001A9042 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				C9CB2C7E2C42D6E0004B0A0D /* MemoCalendarViewModel.swift */,
+				C9CB2C7C2C42D6A7004B0A0D /* MemoDetailViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -453,6 +463,7 @@
 				C968A1EF2C11B534004947C7 /* UIViewController+.swift */,
 				C95381C92C189B77000A054D /* UICollectionViewCell+.swift */,
 				C912D7212C29BE6100361F66 /* UILabel+.swift */,
+				C9CB2C832C42D793004B0A0D /* String.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -466,6 +477,14 @@
 				C9CB2C782C42C242004B0A0D /* MemoTextView.swift */,
 			);
 			path = CustomView;
+			sourceTree = "<group>";
+		};
+		C9CB2C822C42D781004B0A0D /* Formatter */ = {
+			isa = PBXGroup;
+			children = (
+				C9CB2C802C42D77F004B0A0D /* DateFormatterManager.swift */,
+			);
+			path = Formatter;
 			sourceTree = "<group>";
 		};
 		C9F5F1182C329305002FAACE /* DTO */ = {
@@ -591,6 +610,7 @@
 		C9FA01BF2C2C555B00E5C100 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				C9CB2C822C42D781004B0A0D /* Formatter */,
 				C9CB2C6F2C428C36004B0A0D /* CustomView */,
 				C9362E1F2C4177A9001A9042 /* RealmRepository */,
 				C912D7172C29637A00361F66 /* Network */,
@@ -701,11 +721,14 @@
 				C9362DFB2C411932001A9042 /* VideoRequest.swift in Sources */,
 				C9362E172C416FD5001A9042 /* MovieFavorites.swift in Sources */,
 				C9F5F13C2C32E2FA002FAACE /* BaseCollectionViewCell.swift in Sources */,
+				C9CB2C812C42D77F004B0A0D /* DateFormatterManager.swift in Sources */,
 				C9A538BA2C2F10D400BA240A /* EmptyView.swift in Sources */,
+				C9CB2C7D2C42D6A7004B0A0D /* MemoDetailViewModel.swift in Sources */,
 				C9BD15912C0F18AF0049787E /* JoinViewController.swift in Sources */,
 				C9F5F1312C32C037002FAACE /* TrendTVResponse.swift in Sources */,
 				C9CB2C6E2C428B01004B0A0D /* CalendarLabelView.swift in Sources */,
 				C9362E292C4194C3001A9042 /* MemoCalendarViewController.swift in Sources */,
+				C9CB2C7F2C42D6E0004B0A0D /* MemoCalendarViewModel.swift in Sources */,
 				C9362E0E2C413C8A001A9042 /* CastResponseDTO.swift in Sources */,
 				C9362E232C4177BF001A9042 /* MovieRepository.swift in Sources */,
 				C9F5F11F2C329D29002FAACE /* NewTrendViewController.swift in Sources */,
@@ -758,6 +781,7 @@
 				C9A538B52C2EBF1200BA240A /* ViewCase.swift in Sources */,
 				C9362E072C4139FE001A9042 /* SearchResponseDTO.swift in Sources */,
 				C9FA01B72C2B288200E5C100 /* PosterResponse.swift in Sources */,
+				C9CB2C842C42D793004B0A0D /* String.swift in Sources */,
 				C9362E1E2C417677001A9042 /* Movie.swift in Sources */,
 				C9F5F12A2C32BF3D002FAACE /* TrendTVResponseDTO.swift in Sources */,
 				C9CB2C712C428C54004B0A0D /* PaddingLabel.swift in Sources */,

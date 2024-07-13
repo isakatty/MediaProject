@@ -11,9 +11,9 @@ final class MoviePosterView: UIView {
     private let poster: UIImageView = {
         let view = UIImageView()
         view.clipsToBounds = true
-        view.contentMode = .scaleAspectFill
-        view.image = UIImage(systemName: "star.fill")
-        view.backgroundColor = .yellow
+        view.contentMode = .scaleAspectFit
+        view.image = UIImage(systemName: "movieclapper")
+        view.tintColor = .black
         return view
     }()
     let clearBtn: UIButton = {

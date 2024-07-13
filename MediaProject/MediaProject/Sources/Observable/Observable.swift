@@ -25,4 +25,10 @@ final class Observable<T> {
 //        closure(value)
         self.closure = closure
     }
+    
+    /// 생성되자마자 didSet이 필요한 경우 사용
+    func onNext(_ closure: @escaping (T) -> Void) {
+        closure(value)
+        self.closure = closure
+    }
 }

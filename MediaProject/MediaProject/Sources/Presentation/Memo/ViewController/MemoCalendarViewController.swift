@@ -10,6 +10,8 @@ import UIKit
 import FSCalendar
 
 final class MemoCalendarViewController: BaseViewController {
+    private let viewModel = MemoCalendarViewModel()
+    
     private var events = [Date]()
     private lazy var fsCalendar: FSCalendar = {
         let calendar = FSCalendar(frame: .zero)
@@ -34,7 +36,19 @@ final class MemoCalendarViewController: BaseViewController {
 //            tag: "#수윤"
 //        )
         configureBtn()
+        bindData()
     }
+    
+    private func bindData() {
+        viewModel.outputMemoDetail.bind { [weak self] _ in
+            guard let self else { return }
+            
+            // 메모 유무에 따라 VC, DetailVM이 받을 데이터가 다를 듯.
+            let vc = MemoDetailViewController(viewTitle: ViewCase.memo.viewTitle)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
     override func configureHierarchy() {
         [fsCalendar, calendarLabel]
             .forEach { view.addSubview($0) }
@@ -81,8 +95,7 @@ final class MemoCalendarViewController: BaseViewController {
         calendarLabel.clearBtn.addTarget(self, action: #selector(clearBtnTapped), for: .touchUpInside)
     }
     @objc func clearBtnTapped() {
-        let vc = MemoDetailViewController(viewTitle: ViewCase.memo.viewTitle)
-        navigationController?.pushViewController(vc, animated: true)
+        viewModel.movieBtnTrigger.value = ()
     }
 }
 extension MemoCalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
