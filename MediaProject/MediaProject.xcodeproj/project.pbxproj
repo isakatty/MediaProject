@@ -55,6 +55,9 @@
 		C9BD15822C0EFEB30049787E /* Base in Resources */ = {isa = PBXBuildFile; fileRef = C9BD15812C0EFEB30049787E /* Base */; };
 		C9BD15912C0F18AF0049787E /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD15902C0F18AF0049787E /* JoinViewController.swift */; };
 		C9BD15952C0F20E20049787E /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BD15942C0F20E20049787E /* UITextField+.swift */; };
+		C9CB2C6C2C426C6D004B0A0D /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = C9CB2C6B2C426C6D004B0A0D /* FSCalendar */; };
+		C9CB2C6E2C428B01004B0A0D /* CalendarLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C6D2C428B01004B0A0D /* CalendarLabelView.swift */; };
+		C9CB2C712C428C54004B0A0D /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C702C428C54004B0A0D /* PaddingLabel.swift */; };
 		C9F5F1162C328B21002FAACE /* MovieVideoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F5F1152C328B21002FAACE /* MovieVideoResponse.swift */; };
 		C9F5F11A2C32931D002FAACE /* MovieVideoResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F5F1192C32931D002FAACE /* MovieVideoResponseDTO.swift */; };
 		C9F5F11C2C329364002FAACE /* VideoResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F5F11B2C329364002FAACE /* VideoResponseDTO.swift */; };
@@ -126,6 +129,8 @@
 		C9BD15832C0EFEB30049787E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9BD15902C0F18AF0049787E /* JoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewController.swift; sourceTree = "<group>"; };
 		C9BD15942C0F20E20049787E /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		C9CB2C6D2C428B01004B0A0D /* CalendarLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarLabelView.swift; sourceTree = "<group>"; };
+		C9CB2C702C428C54004B0A0D /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		C9F5F1152C328B21002FAACE /* MovieVideoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieVideoResponse.swift; sourceTree = "<group>"; };
 		C9F5F1192C32931D002FAACE /* MovieVideoResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieVideoResponseDTO.swift; sourceTree = "<group>"; };
 		C9F5F11B2C329364002FAACE /* VideoResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoResponseDTO.swift; sourceTree = "<group>"; };
@@ -157,6 +162,7 @@
 				C9362E1A2C41704B001A9042 /* RealmSwift in Frameworks */,
 				C999FDD82C17465300855246 /* Kingfisher in Frameworks */,
 				C968A1E42C11A61C004947C7 /* SnapKit in Frameworks */,
+				C9CB2C6C2C426C6D004B0A0D /* FSCalendar in Frameworks */,
 				C968A1EE2C11AB08004947C7 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -310,6 +316,7 @@
 		C9362E252C4194A2001A9042 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C9CB2C6D2C428B01004B0A0D /* CalendarLabelView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -438,6 +445,14 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		C9CB2C6F2C428C36004B0A0D /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				C9CB2C702C428C54004B0A0D /* PaddingLabel.swift */,
+			);
+			path = CustomView;
+			sourceTree = "<group>";
+		};
 		C9F5F1182C329305002FAACE /* DTO */ = {
 			isa = PBXGroup;
 			children = (
@@ -561,6 +576,7 @@
 		C9FA01BF2C2C555B00E5C100 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				C9CB2C6F2C428C36004B0A0D /* CustomView */,
 				C9362E1F2C4177A9001A9042 /* RealmRepository */,
 				C912D7172C29637A00361F66 /* Network */,
 				C9FA01BA2C2C545300E5C100 /* Constant */,
@@ -603,6 +619,7 @@
 				C968A1ED2C11AB08004947C7 /* Alamofire */,
 				C999FDD72C17465300855246 /* Kingfisher */,
 				C9362E192C41704B001A9042 /* RealmSwift */,
+				C9CB2C6B2C426C6D004B0A0D /* FSCalendar */,
 			);
 			productName = MediaProject;
 			productReference = C9BD15722C0EFEB20049787E /* MediaProject.app */;
@@ -637,6 +654,7 @@
 				C968A1EC2C11AB08004947C7 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				C999FDD62C17465300855246 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				C9362E182C41704B001A9042 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				C9CB2C6A2C426C6D004B0A0D /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			productRefGroup = C9BD15732C0EFEB20049787E /* Products */;
 			projectDirPath = "";
@@ -671,6 +689,7 @@
 				C9A538BA2C2F10D400BA240A /* EmptyView.swift in Sources */,
 				C9BD15912C0F18AF0049787E /* JoinViewController.swift in Sources */,
 				C9F5F1312C32C037002FAACE /* TrendTVResponse.swift in Sources */,
+				C9CB2C6E2C428B01004B0A0D /* CalendarLabelView.swift in Sources */,
 				C9362E292C4194C3001A9042 /* MemoViewController.swift in Sources */,
 				C9362E0E2C413C8A001A9042 /* CastResponseDTO.swift in Sources */,
 				C9362E232C4177BF001A9042 /* MovieRepository.swift in Sources */,
@@ -721,6 +740,7 @@
 				C9FA01B72C2B288200E5C100 /* PosterResponse.swift in Sources */,
 				C9362E1E2C417677001A9042 /* Movie.swift in Sources */,
 				C9F5F12A2C32BF3D002FAACE /* TrendTVResponseDTO.swift in Sources */,
+				C9CB2C712C428C54004B0A0D /* PaddingLabel.swift in Sources */,
 				C9F5F1282C32BF1F002FAACE /* MovieResponseDTO.swift in Sources */,
 				C9FA01AD2C2B021700E5C100 /* _HTTPMethod.swift in Sources */,
 				C9362E2C2C425CB7001A9042 /* PosterResponseDTO.swift in Sources */,
@@ -985,6 +1005,14 @@
 				minimumVersion = 7.12.0;
 			};
 		};
+		C9CB2C6A2C426C6D004B0A0D /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1007,6 +1035,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C999FDD62C17465300855246 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		C9CB2C6B2C426C6D004B0A0D /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C9CB2C6A2C426C6D004B0A0D /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

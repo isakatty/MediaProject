@@ -30,10 +30,9 @@ final class EmptyView: BaseView {
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
-        configureHierarchy()
         configureUI()
     }
-    func configureHierarchy() {
+    override func configureHierarchy() {
         [searchImage, searchLabel]
             .forEach { addSubview($0) }
     }

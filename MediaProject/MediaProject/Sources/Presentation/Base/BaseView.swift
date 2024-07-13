@@ -12,6 +12,8 @@ class BaseView: UIView {
         super.init(frame: frame)
         
         configureView()
+        configureHierarchy()
+        configureLayout()
     }
     
     @available(*, unavailable)
@@ -21,5 +23,11 @@ class BaseView: UIView {
     
     func configureView() {
         backgroundColor = .systemBackground
+    }
+    func configureHierarchy() {
+        
+    }
+    func configureLayout() {
+        
     }
 }
