@@ -13,13 +13,22 @@ extension UIViewController {
         navigationController?.navigationBar.tintColor = UIColor.black
     }
     
-    func configureNavigationBar() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "chevron.left"),
-            style: .plain,
-            target: self,
-            action: #selector(backBtnTapped)
-        )
+    func configureNavigationLeftBar(action: Selector?) {
+        if action != nil {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "chevron.left"),
+                style: .plain,
+                target: self,
+                action: action
+            )
+        } else {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "chevron.left"),
+                style: .plain,
+                target: self,
+                action: #selector(backBtnTapped)
+            )
+        }
         navigationController?
             .interactivePopGestureRecognizer?.delegate = nil
     }

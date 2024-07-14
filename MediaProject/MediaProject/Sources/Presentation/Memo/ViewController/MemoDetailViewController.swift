@@ -69,21 +69,17 @@ final class MemoDetailViewController: BaseViewController {
             
             if movieMemo != nil {
                 // view에 보여질 데이터
-                guard let movieMemo,
-                let movie = movieMemo.movie.first else { print("?")
+                guard let movieMemo, let movie = movieMemo.movie.first else {
+                    print("movieMemo.movie.first 없는 문제?", #function)
                     return
                 }
-                print(movieMemo, movie, #function)
                 self.configureMemo(
                     poster: movie.poster,
                     title: movieMemo.title,
                     content: movieMemo.content,
-                    date: movieMemo.regDate,
-                    tag: movieMemo.tag
+                    date: movieMemo.watchedDate,
+                    tag: movieMemo.tag?.addHashTag()
                 )
-            } else {
-                // nil일 때 표시
-                print("네?")
             }
         }
         viewModel.outputSearchMovie.bind { [weak self] _ in
@@ -95,7 +91,22 @@ final class MemoDetailViewController: BaseViewController {
         viewModel.selectedMovie.bind { [weak self] movie in
             guard let self, let movie else { return }
             posterImgView.configureUI(posterPath: movie.poster)
-            
+        }
+        viewModel.outputSelectedTagBtn.bind { [weak self] _ in
+            guard let self else { return }
+            let vc = MemoTagViewController(
+                tagViewModel: MemoTagViewModel(
+                    tagString: viewModel.outputMovieMemo.value?.tag
+                ),
+                viewTitle: "태그"
+            )
+            vc.tagViewModel.delegate = self.viewModel
+            let navi = UINavigationController(rootViewController: vc)
+            present(navi, animated: true)
+        }
+        viewModel.outputTagString.bind { [weak self] tag in
+            guard let self else { return }
+            self.tagButton.configureUI(detail: tag?.addHashTag())
         }
     }
     
@@ -165,9 +176,11 @@ final class MemoDetailViewController: BaseViewController {
     
     @objc private func dateBtnTapped() {
         print(#function) // - datepicker
+        viewModel.inputDateTrigger.value = ()
     }
     @objc private func tagBtnTapped() {
         print(#function) // - textfield
+        viewModel.inputTagTrigger.value = ()
     }
     @objc private func addMovieClearBtnTapped() {
         print(#function) // 영화 정보 추가하는 투명 버튼

@@ -67,6 +67,8 @@
 		C9CB2C7F2C42D6E0004B0A0D /* MemoCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C7E2C42D6E0004B0A0D /* MemoCalendarViewModel.swift */; };
 		C9CB2C812C42D77F004B0A0D /* DateFormatterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C802C42D77F004B0A0D /* DateFormatterManager.swift */; };
 		C9CB2C842C42D793004B0A0D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C832C42D793004B0A0D /* String+.swift */; };
+		C9CB2C862C440042004B0A0D /* MemoTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C852C440042004B0A0D /* MemoTagViewController.swift */; };
+		C9CB2C882C44023B004B0A0D /* MemoTagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CB2C872C44023B004B0A0D /* MemoTagViewModel.swift */; };
 		C9F5F1162C328B21002FAACE /* MovieVideoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F5F1152C328B21002FAACE /* MovieVideoResponse.swift */; };
 		C9F5F11A2C32931D002FAACE /* MovieVideoResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F5F1192C32931D002FAACE /* MovieVideoResponseDTO.swift */; };
 		C9F5F11C2C329364002FAACE /* VideoResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F5F11B2C329364002FAACE /* VideoResponseDTO.swift */; };
@@ -149,6 +151,8 @@
 		C9CB2C7E2C42D6E0004B0A0D /* MemoCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoCalendarViewModel.swift; sourceTree = "<group>"; };
 		C9CB2C802C42D77F004B0A0D /* DateFormatterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterManager.swift; sourceTree = "<group>"; };
 		C9CB2C832C42D793004B0A0D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		C9CB2C852C440042004B0A0D /* MemoTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoTagViewController.swift; sourceTree = "<group>"; };
+		C9CB2C872C44023B004B0A0D /* MemoTagViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoTagViewModel.swift; sourceTree = "<group>"; };
 		C9F5F1152C328B21002FAACE /* MovieVideoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieVideoResponse.swift; sourceTree = "<group>"; };
 		C9F5F1192C32931D002FAACE /* MovieVideoResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieVideoResponseDTO.swift; sourceTree = "<group>"; };
 		C9F5F11B2C329364002FAACE /* VideoResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoResponseDTO.swift; sourceTree = "<group>"; };
@@ -345,6 +349,7 @@
 			children = (
 				C9CB2C7E2C42D6E0004B0A0D /* MemoCalendarViewModel.swift */,
 				C9CB2C7C2C42D6A7004B0A0D /* MemoDetailViewModel.swift */,
+				C9CB2C872C44023B004B0A0D /* MemoTagViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -354,6 +359,7 @@
 			children = (
 				C9362E282C4194C3001A9042 /* MemoCalendarViewController.swift */,
 				C9CB2C722C42A7E6004B0A0D /* MemoDetailViewController.swift */,
+				C9CB2C852C440042004B0A0D /* MemoTagViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -728,6 +734,7 @@
 				C9F5F1312C32C037002FAACE /* TrendTVResponse.swift in Sources */,
 				C9CB2C6E2C428B01004B0A0D /* CalendarLabelView.swift in Sources */,
 				C9362E292C4194C3001A9042 /* MemoCalendarViewController.swift in Sources */,
+				C9CB2C882C44023B004B0A0D /* MemoTagViewModel.swift in Sources */,
 				C9CB2C7F2C42D6E0004B0A0D /* MemoCalendarViewModel.swift in Sources */,
 				C9362E0E2C413C8A001A9042 /* CastResponseDTO.swift in Sources */,
 				C9362E232C4177BF001A9042 /* MovieRepository.swift in Sources */,
@@ -763,6 +770,7 @@
 				C9BD15762C0EFEB20049787E /* AppDelegate.swift in Sources */,
 				C95381C62C189A65000A054D /* SearchViewController.swift in Sources */,
 				C9362E042C41364B001A9042 /* SearchMovieResponse.swift in Sources */,
+				C9CB2C862C440042004B0A0D /* MemoTagViewController.swift in Sources */,
 				C9F5F1162C328B21002FAACE /* MovieVideoResponse.swift in Sources */,
 				C9F5F13A2C32E2D6002FAACE /* TrendMovieTitleCollectionViewCell.swift in Sources */,
 				C9F5F12C2C32BF49002FAACE /* TVResponseDTO.swift in Sources */,

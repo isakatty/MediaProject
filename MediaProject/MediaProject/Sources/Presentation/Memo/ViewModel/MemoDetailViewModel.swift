@@ -9,10 +9,12 @@ import Foundation
 
 protocol PassMovieResponse: AnyObject {
     func passSelectedMovieInfo(movie: MovieResponseDTO)
+    func passDate(date: Date?)
+    func passTag(tag: String?)
 }
 
 
-final class MemoDetailViewModel: PassMovieResponse {
+final class MemoDetailViewModel {
     var memoInfo: MovieMemo?
     
     // load되면서 메모 내용 넣어주기
@@ -26,6 +28,11 @@ final class MemoDetailViewModel: PassMovieResponse {
     var outputMovieMemo = Observable<MovieMemo?>(nil)
     var outputSearchMovie = Observable<Void?>(nil)
     var selectedMovie = Observable<Movie?>(nil)
+    var outputSelectedDateBtn = Observable<Void?>(nil)
+    var outputSelectedTagBtn = Observable<Void?>(nil)
+    
+    // 이렇게 output이 많아져도 괜찮은가 ?
+    var outputTagString = Observable<String?>(nil)
     
     init(memoInfo: MovieMemo? = nil) {
         self.memoInfo = memoInfo
@@ -40,18 +47,18 @@ final class MemoDetailViewModel: PassMovieResponse {
             if memoInfo != nil {
                 self.outputMovieMemo.value = memoInfo
             } else {
-                print("메모 없이 들어오면 어떻게 해야할까 ?")
                 self.outputMovieMemo.value = nil
             }
         }
         inputDateTrigger.bind { [weak self] _ in
             guard let self else { return }
             
-            
+            outputSelectedDateBtn.value = () // 화면 이동을 위한
         }
         inputTagTrigger.bind { [weak self] _ in
             guard let self else { return }
             
+            outputSelectedTagBtn.value = () // 화면 이동을 위한
         }
         inputSearchMovieTrigger.bind { [weak self] _ in
             guard let self else { return }
@@ -59,7 +66,9 @@ final class MemoDetailViewModel: PassMovieResponse {
             self.outputSearchMovie.value = () // 화면 트리거
         }
     }
-    
+}
+
+extension MemoDetailViewModel: PassMovieResponse {
     // 전달 받은 웅앵..
     func passSelectedMovieInfo(movie: MovieResponseDTO) {
         selectedMovie.value = Movie(
@@ -71,5 +80,12 @@ final class MemoDetailViewModel: PassMovieResponse {
             voteAvg: movie.voteAvg,
             voteCount: movie.voteCnt
         )
+    }
+    // 선택 안할수도 있으니까 optional 값
+    func passDate(date: Date?) {
+        print(date)
+    }
+    func passTag(tag: String?) {
+        outputTagString.value = tag
     }
 }
