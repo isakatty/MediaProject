@@ -63,12 +63,13 @@ final class MemoTagViewController: BaseViewController {
     
     @objc private func customBackBtnTapped() {
         print("하이루")
-        // Trigger
+        // Trigger - 얘도 input, output으로 넘겨야할까?
         navigationController?.popViewController(animated: true)
     }
     @objc private func textFieldChanged(_ sender: UITextField) {
         tagViewModel.outputTag.value = sender.text
         tagViewModel.delegate?.passTag(tag: sender.text)
+        // Trigger - 얘도 input, output으로 넘겨야할까?
         dismiss(animated: true)
     }
 }

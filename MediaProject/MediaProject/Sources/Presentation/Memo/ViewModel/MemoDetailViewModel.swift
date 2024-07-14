@@ -33,6 +33,7 @@ final class MemoDetailViewModel {
     
     // 이렇게 output이 많아져도 괜찮은가 ?
     var outputTagString = Observable<String?>(nil)
+    var outputDate = Observable<Date?>(nil)
     
     init(memoInfo: MovieMemo? = nil) {
         self.memoInfo = memoInfo
@@ -83,7 +84,7 @@ extension MemoDetailViewModel: PassMovieResponse {
     }
     // 선택 안할수도 있으니까 optional 값
     func passDate(date: Date?) {
-        print(date)
+        outputDate.value = date
     }
     func passTag(tag: String?) {
         outputTagString.value = tag

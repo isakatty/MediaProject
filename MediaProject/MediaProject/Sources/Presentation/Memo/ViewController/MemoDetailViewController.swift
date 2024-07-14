@@ -104,9 +104,27 @@ final class MemoDetailViewController: BaseViewController {
             let navi = UINavigationController(rootViewController: vc)
             present(navi, animated: true)
         }
+        viewModel.outputSelectedDateBtn.bind { [weak self] _ in
+            guard let self else { return }
+            let vc = MemoDateViewController(
+                dateViewModel: MemoDateViewModel(
+                    date: viewModel.outputMovieMemo.value?.watchedDate
+                ),
+                viewTitle: "영화 관람 날짜"
+            )
+            vc.dateViewModel.delegate = self.viewModel
+            let navi = UINavigationController(rootViewController: vc)
+            present(navi, animated: true)
+        }
         viewModel.outputTagString.bind { [weak self] tag in
             guard let self else { return }
             self.tagButton.configureUI(detail: tag?.addHashTag())
+        }
+        viewModel.outputDate.bind { [weak self] date in
+            guard let self else { return }
+            if let date {
+                self.dateButton.configureUI(detail: DateFormatterManager.shared.changedDateFormat(date1: date))
+            }
         }
     }
     
