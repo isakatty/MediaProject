@@ -60,6 +60,7 @@ final class MemoDetailViewController: BaseViewController {
         
         configureBtn()
         bindData()
+        configureNavigationRightBar(action: #selector(saveBtnTapped))
     }
     
     private func bindData() {
@@ -203,6 +204,9 @@ final class MemoDetailViewController: BaseViewController {
     @objc private func addMovieClearBtnTapped() {
         print(#function) // 영화 정보 추가하는 투명 버튼
         viewModel.inputSearchMovieTrigger.value = ()
+    }
+    @objc private func saveBtnTapped() {
+        print("저장")
     }
 }
 

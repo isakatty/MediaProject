@@ -32,6 +32,14 @@ extension UIViewController {
         navigationController?
             .interactivePopGestureRecognizer?.delegate = nil
     }
+    func configureNavigationRightBar(action: Selector) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "저장",
+            style: .plain,
+            target: self,
+            action: action
+        )
+    }
     
     func hideKeyboard() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
