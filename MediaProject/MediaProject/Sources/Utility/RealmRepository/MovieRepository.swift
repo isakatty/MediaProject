@@ -17,9 +17,22 @@ final class MovieRepository {
         print(realm.configuration.fileURL)
     }
     
-    func readMovies() -> [Movie]{
-        let memoedMovie = realm.objects(Movie.self)
-        return Array(memoedMovie)
+    func readMovies() -> [Movie] {
+        let movie = realm.objects(Movie.self)
+        return Array(movie)
+    }
+    
+    func findMemoFromDate(selectedDate: Date) -> [MovieMemo] {
+        let movies = readMovies()
+        
+        let memo = movies.flatMap { $0.memo }
+            .filter {
+                DateFormatterManager.shared.isSameDate(
+                    date1: $0.regDate,
+                    date2: selectedDate
+                )
+            }
+        return memo
     }
     
 }

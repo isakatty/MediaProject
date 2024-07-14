@@ -102,11 +102,30 @@ final class CalendarLabelView: BaseView {
         }
     }
     
-    func configureUI(movie: String, memoTitle: String, wroteDate: Date, tag: String?) {
+    func configureUI(
+        posterPath: String,
+        movie: String,
+        memoTitle: String,
+        wroteDate: Date,
+        tag: String?
+    ) {
         movieTitleLabel.textAlignment = .left
         movieTitleLabel.text = movie
         memoTitleLabel.text = memoTitle
-        wroteDateLabel.text = wroteDate.description // DateFormatter Manager 써야할듯?
+        wroteDateLabel.text = DateFormatterManager.shared.changedDateFormat(date1: wroteDate)
         tagLabel.text = tag
+        
+        let totalURLStr = NetworkRequest.imageBaseURL + posterPath
+        guard let url = URL(string: totalURLStr) else { return }
+        posterImgView.kf.setImage(with: url)
+    }
+    
+    func configureNoMemo() {
+        posterImgView.image = UIImage(systemName: "plus")
+        posterImgView.tintColor = .darkGray
+        memoTitleLabel.text = ""
+        movieTitleLabel.text = "영화 메모를 작성해보세요 !"
+        wroteDateLabel.text = ""
+        tagLabel.text = ""
     }
 }

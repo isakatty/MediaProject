@@ -28,18 +28,29 @@ final class MemoCalendarViewController: BaseViewController {
         super.viewDidLoad()
         
         configCalendar()
-        setEvents()
-//        calendarLabel.configureUI(
-//            movie: "디센던츠: 레드의 반항",
-//            memoTitle: "오늘은 이상한 영화를 보앗다",
-//            wroteDate: Date(),
-//            tag: "#수윤"
-//        )
         configureBtn()
         bindData()
     }
     
     private func bindData() {
+        viewModel.inputViewDidLoad.value = ()
+        viewModel.outputMovieMemo.onNext { [weak self] movieMemo in
+            guard let self = self else { return }
+//            print(movieMemo)
+            if movieMemo != nil {
+                guard let movieMemo = movieMemo,
+                      let movie = movieMemo.movie.first else { return }
+                self.calendarLabel.configureUI(
+                    posterPath: movie.poster,
+                    movie: movie.title,
+                    memoTitle: movieMemo.title,
+                    wroteDate: movieMemo.regDate,
+                    tag: movieMemo.tag
+                )
+            } else {
+                self.calendarLabel.configureNoMemo()
+            }
+        }
         viewModel.outputMemoDetail.bind { [weak self] _ in
             guard let self else { return }
             
@@ -67,18 +78,6 @@ final class MemoCalendarViewController: BaseViewController {
             make.height.equalTo(120)
         }
     }
-    // TODO: 이벤트 추가 하는 형태 - Date형태 맞춰서 calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) 에서 관리
-    private func setEvents() {
-        let dfMatter = DateFormatter()
-        dfMatter.locale = Locale(identifier: "ko_KR")
-        dfMatter.dateFormat = "yyyy-MM-dd"
-        
-        // events
-        let myFirstEvent = dfMatter.date(from: "2024-07-11")
-        let mySecondEvent = dfMatter.date(from: "2024-07-01")
-        
-        events = [myFirstEvent!, mySecondEvent!]
-    }
     private func configCalendar() {
         fsCalendar.appearance.headerTitleColor = .black
         fsCalendar.appearance.weekdayTextColor = .black
@@ -104,7 +103,7 @@ extension MemoCalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
         didSelect date: Date,
         at monthPosition: FSCalendarMonthPosition
     ) {
-        print(date, "선택됨")
+        viewModel.inputDateTrigger.value = date
         calendar.appearance.todayColor = .clear
     }
     func calendar(
@@ -115,7 +114,14 @@ extension MemoCalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
         print(date, "선택해제됨")
     }
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        if self.events.contains(date) {
+        let changedDate = DateFormatterManager.shared.changedDateFormat(date1: date)
+        let memoTest = viewModel.outputDates.value.map { dates in
+            dates.map { date in
+                DateFormatterManager.shared.changedDateFormat(date1: date)
+            }
+        }
+        guard let memoTest else { return 0 }
+        if memoTest.contains(changedDate) {
             return 1
         } else {
             return 0

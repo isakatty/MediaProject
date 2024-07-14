@@ -17,6 +17,8 @@ final class MovieMemo: Object {
     @Persisted var regDate: Date // registration date
     @Persisted var watchedDate: Date? // watched movie date
     
+    @Persisted(originProperty: "memo") var movie: LinkingObjects<Movie>
+    
     convenience init(
         title: String,
         content: String? = nil,
