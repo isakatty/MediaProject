@@ -21,6 +21,7 @@ enum BasicBtn: CaseIterable {
 }
 
 final class MemoDetailViewController: BaseViewController {
+    var viewModel: MemoDetailViewModel
     private let contentPlaceholder: String = "어떤 내용의 영화를 누구와 봤는지, 어땠는지 남겨주세요."
     
     private let scrollView: UIScrollView = {
@@ -48,11 +49,45 @@ final class MemoDetailViewController: BaseViewController {
     private let dateButton: MemoBasicButton = MemoBasicButton(title: BasicBtn.date.toTitle)
     private let tagButton: MemoBasicButton = MemoBasicButton(title: BasicBtn.tag.toTitle)
     
+    init(viewModel: MemoDetailViewModel, viewTitle: String) {
+        self.viewModel = viewModel
+        
+        super.init(viewTitle: viewTitle)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureBtn()
+        bindData()
     }
+    
+    private func bindData() {
+        viewModel.inputViewDidLoad.value = ()
+        viewModel.outputMovieMemo.onNext { [weak self] movieMemo in
+            guard let self else { return }
+            
+            if movieMemo != nil {
+                // view에 보여질 데이터
+                guard let movieMemo,
+                let movie = movieMemo.movie.first else { print("?")
+                    return
+                }
+                print(movieMemo, movie, #function)
+                self.configureMemo(
+                    poster: movie.poster,
+                    title: movieMemo.title,
+                    content: movieMemo.content,
+                    date: movieMemo.regDate,
+                    tag: movieMemo.tag
+                )
+            } else {
+                // nil일 때 표시
+                print("네?")
+            }
+        }
+    }
+    
     override func configureHierarchy() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -106,6 +141,15 @@ final class MemoDetailViewController: BaseViewController {
         posterImgView.clearBtn.addTarget(self, action: #selector(addMovieClearBtnTapped), for: .touchUpInside)
         dateButton.addTarget(self, action: #selector(dateBtnTapped), for: .touchUpInside)
         tagButton.addTarget(self, action: #selector(tagBtnTapped), for: .touchUpInside)
+    }
+    private func configureMemo(poster: String, title: String, content: String?, date: Date?, tag: String?) {
+        if date != nil, let date = date {
+            dateButton.configureUI(detail: DateFormatterManager.shared.changedDateFormat(date1: date))
+        }
+        posterImgView.configureUI(posterPath: poster)
+        titleTextField.text = title
+        contentTextView.text = content
+        tagButton.configureUI(detail: tag?.addHashTag())
     }
     
     @objc private func dateBtnTapped() {

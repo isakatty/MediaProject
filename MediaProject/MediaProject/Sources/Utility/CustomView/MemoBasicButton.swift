@@ -76,9 +76,10 @@ final class MemoBasicButton: UIButton {
             make.trailing.equalTo(chevronImg.snp.leading).offset(-Constant.Spacing.eight.toCGFloat)
         }
     }
-    func configureUI(title: String, detail: String?) {
-        btnTitle.text = title
+    func configureUI(detail: String?) {
+//        btnTitle.text = title
         resultLabel.text = detail
+        resultLabel.textColor = .darkGray
     }
     
 }

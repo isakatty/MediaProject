@@ -7,6 +7,8 @@
 
 import UIKit
 
+import Kingfisher
+
 final class MoviePosterView: UIView {
     private let poster: UIImageView = {
         let view = UIImageView()

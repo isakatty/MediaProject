@@ -36,16 +36,16 @@ final class MemoCalendarViewController: BaseViewController {
         viewModel.inputViewDidLoad.value = ()
         viewModel.outputMovieMemo.onNext { [weak self] movieMemo in
             guard let self = self else { return }
-//            print(movieMemo)
             if movieMemo != nil {
                 guard let movieMemo = movieMemo,
                       let movie = movieMemo.movie.first else { return }
+                
                 self.calendarLabel.configureUI(
                     posterPath: movie.poster,
                     movie: movie.title,
                     memoTitle: movieMemo.title,
                     wroteDate: movieMemo.regDate,
-                    tag: movieMemo.tag
+                    tag: movieMemo.tag?.addHashTag()
                 )
             } else {
                 self.calendarLabel.configureNoMemo()
@@ -54,9 +54,18 @@ final class MemoCalendarViewController: BaseViewController {
         viewModel.outputMemoDetail.bind { [weak self] _ in
             guard let self else { return }
             
-            // 메모 유무에 따라 VC, DetailVM이 받을 데이터가 다를 듯.
-            let vc = MemoDetailViewController(viewTitle: ViewCase.memo.viewTitle)
-            self.navigationController?.pushViewController(vc, animated: true)
+            let movieMemoInfo = self.viewModel.outputMovieMemo.value
+            if movieMemoInfo != nil {
+                // 메모 유무에 따라 VC, DetailVM이 받을 데이터가 다를 듯.
+                let vc = MemoDetailViewController(
+                    viewModel: MemoDetailViewModel(memoInfo: movieMemoInfo),
+                    viewTitle: movieMemoInfo?.movie.first?.title ?? ""
+                )
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                let vc = MemoDetailViewController(viewModel: MemoDetailViewModel(memoInfo: nil), viewTitle: "메모 추가")
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
     
