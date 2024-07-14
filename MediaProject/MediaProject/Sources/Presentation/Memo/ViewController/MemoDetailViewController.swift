@@ -86,6 +86,17 @@ final class MemoDetailViewController: BaseViewController {
                 print("네?")
             }
         }
+        viewModel.outputSearchMovie.bind { [weak self] _ in
+            guard let self else { return }
+            let vc = SearchViewController(searchFlow: .memoToSearch)
+            vc.searchViewModel.delegate = self.viewModel
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        viewModel.selectedMovie.bind { [weak self] movie in
+            guard let self, let movie else { return }
+            posterImgView.configureUI(posterPath: movie.poster)
+            
+        }
     }
     
     override func configureHierarchy() {
@@ -160,6 +171,7 @@ final class MemoDetailViewController: BaseViewController {
     }
     @objc private func addMovieClearBtnTapped() {
         print(#function) // 영화 정보 추가하는 투명 버튼
+        viewModel.inputSearchMovieTrigger.value = ()
     }
 }
 

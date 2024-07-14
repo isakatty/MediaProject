@@ -8,6 +8,8 @@
 import Foundation
 
 final class SearchViewModel {
+    weak var delegate: PassMovieResponse?
+    
     var page: Observable<Int> = Observable(1)
     var isLastData: Observable<Bool> = Observable(false)
     var inputSearchBarText: Observable<String?> = Observable(nil)

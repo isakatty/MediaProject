@@ -55,5 +55,8 @@ final class MoviePosterView: UIView {
     
     func configureUI(posterPath: String) {
         //이미지 kingfisher
+        let baseURL = NetworkRequest.imageBaseURL + posterPath
+        guard let url = URL(string: baseURL) else { return }
+        poster.kf.setImage(with: url)
     }
 }

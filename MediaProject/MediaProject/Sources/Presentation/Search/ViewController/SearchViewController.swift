@@ -10,8 +10,14 @@ import UIKit
 import Kingfisher
 import SnapKit
 
+enum SearchFlow {
+    case search
+    case memoToSearch
+}
+
 final class SearchViewController: BaseViewController {
-    private let searchViewModel = SearchViewModel()
+    var searchFlow: SearchFlow
+    let searchViewModel = SearchViewModel()
     private lazy var movieCollectionView: UICollectionView = {
         let collection = UICollectionView(
             frame: .zero,
@@ -33,6 +39,12 @@ final class SearchViewController: BaseViewController {
         return bar
     }()
     private let emptyView = EmptyView()
+    
+    init(searchFlow: SearchFlow) {
+        self.searchFlow = searchFlow
+        
+        super.init(viewTitle: ViewCase.search.viewTitle)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -138,8 +150,14 @@ extension SearchViewController
         didSelectItemAt indexPath: IndexPath
     ) {
         searchViewModel.inputSelectedIndex.value = indexPath.item
-        let vc = TrendMovieDetailViewController(viewModel: TrendDetailViewModel(movieInfo: searchViewModel.changedMovieDTO.value))
-        navigationController?.pushViewController(vc, animated: true)
+        switch searchFlow {
+        case .search:
+            let vc = TrendMovieDetailViewController(viewModel: TrendDetailViewModel(movieInfo: searchViewModel.changedMovieDTO.value))
+            navigationController?.pushViewController(vc, animated: true)
+        case .memoToSearch:
+            searchViewModel.delegate?.passSelectedMovieInfo(movie: searchViewModel.changedMovieDTO.value)
+            navigationController?.popViewController(animated: true)
+        }
     }
 }
 extension SearchViewController: UICollectionViewDataSourcePrefetching {
