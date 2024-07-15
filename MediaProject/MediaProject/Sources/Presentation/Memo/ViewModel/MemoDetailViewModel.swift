@@ -38,8 +38,11 @@ final class MemoDetailViewModel {
     var outputDate = Observable<Date?>(nil)
     var outputDismissTrigger = Observable<Void?>(nil)
     
-    init(memoInfo: MovieMemo? = nil) {
+    init(memoInfo: MovieMemo? = nil, calendarSelected: Date? = nil) {
         self.memoInfo = memoInfo
+        self.calendarSelectedDate = calendarSelected
+        
+        print("DetailVM", calendarSelectedDate)
         
         tranform()
     }
@@ -69,15 +72,26 @@ final class MemoDetailViewModel {
             
             self.outputSearchMovie.value = () // 화면 트리거
         }
-        inputSaveTrigger.bind { [weak self] (memo, movie) in
-            guard let self else { return }
-            if var memo, let calendarSelectedDate, let movie {
-                print(calendarSelectedDate)
+        inputSaveTrigger.onNext { [weak self] (memo, movie) in
+            guard let self = self else { return }
+            if var memo = memo, let movie = movie {
+                if self.calendarSelectedDate == nil {
+                    self.calendarSelectedDate = Date()
+                }
+                guard let calendarSelectedDate = self.calendarSelectedDate else { return }
                 memo.regDate = calendarSelectedDate
                 
-                if MovieRepository.shared.findMovie(movieId: movie.id).0 {
-                    guard let regMovie = MovieRepository.shared.findMovie(movieId: movie.id).1 else { return }
-                    MovieRepository.shared.updateMemo(movie: regMovie, memo: memo)
+                let (isMovieExist, existingMovie) = MovieRepository.shared.findMovie(movieId: movie.id)
+                
+                if isMovieExist, let regMovie = existingMovie {
+                    guard let origin = self.outputMovieMemo.value else { return }
+                    print(origin)
+                    memo.id = origin.id
+                    if regMovie.memo.contains(where: { $0.id == memo.id}) {
+                        MovieRepository.shared.updateMemo(movie: regMovie, memo: memo)
+                    } else {
+                        MovieRepository.shared.addMemoToMovie(movie: regMovie, memo: memo)
+                    }
                 } else {
                     movie.memo.append(memo)
                     MovieRepository.shared.createMovieWithMemo(movie: movie)

@@ -53,7 +53,6 @@ final class MemoCalendarViewModel {
     
     private func fetchMovies() -> [Movie] {
         let fetchedMovies = MovieRepository.shared.readMovies()
-        print(fetchedMovies)
         return fetchedMovies
     }
     private func setDates(movies: [Movie]) -> [Date] {

@@ -20,6 +20,7 @@ final class MemoTagViewController: BaseViewController {
             action: #selector(textFieldChanged),
             for: .editingDidEndOnExit
         )
+        tf.addTarget(self, action: #selector(textFieldChanging), for: .editingChanged)
         return tf
     }()
     init(tagViewModel: MemoTagViewModel, viewTitle: String) {
@@ -33,6 +34,7 @@ final class MemoTagViewController: BaseViewController {
         
         bindData()
         configureNavigationLeftBar(action: #selector(customBackBtnTapped))
+        configureNavigationRightBar(action: #selector(saveBtnTapped))
     }
     
     private func bindData() {
@@ -44,6 +46,24 @@ final class MemoTagViewController: BaseViewController {
             if let tag, !tag.isEmpty {
                 self.tagTextField.text = tag
             }
+        }
+        tagViewModel.outputDismiss.bind { [weak self] isChanged in
+            guard let self else { return }
+            if isChanged {
+                dismiss(animated: true)
+            } else {
+                showAlert(title: "뒤로가기", message: "태그 저장 없이 돌아가시겠습니까?", ok: "확인") { [weak self] in
+                    guard let self else { return }
+                    dismiss(animated: true)
+                }
+            }
+        }
+        tagViewModel.outputSave.bind { [weak self] text in
+            guard let self else { return }
+            if text != tagViewModel.tagString {
+                tagViewModel.delegate?.passTag(tag: self.tagViewModel.outputTag.value)
+            }
+            dismiss(animated: true)
         }
     }
     
@@ -64,12 +84,21 @@ final class MemoTagViewController: BaseViewController {
     @objc private func customBackBtnTapped() {
         print("하이루")
         // Trigger - 얘도 input, output으로 넘겨야할까?
-        navigationController?.popViewController(animated: true)
+        tagViewModel.inputBackBtnTrigger.value = ()
     }
     @objc private func textFieldChanged(_ sender: UITextField) {
         tagViewModel.outputTag.value = sender.text
-        tagViewModel.delegate?.passTag(tag: sender.text)
-        // Trigger - 얘도 input, output으로 넘겨야할까?
-        dismiss(animated: true)
+        
+        tagViewModel.inputTextFieldEndEditing.value = ()
+    }
+    @objc private func textFieldChanging(_ sender: UITextField) {
+        tagViewModel.outputTag.value = sender.text
+    }
+    @objc private func saveBtnTapped() {
+        if tagTextField.text != nil {
+            tagViewModel.outputTag.value = tagTextField.text
+            print("이건 원본: \(tagTextField.text)", "🔥", tagViewModel.outputTag.value)
+            tagViewModel.inputSaveBtnTrigger.value = tagTextField.text
+        }
     }
 }

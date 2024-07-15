@@ -67,13 +67,18 @@ final class MemoCalendarViewController: BaseViewController {
             if movieMemoInfo != nil {
                 // 메모 유무에 따라 VC, DetailVM이 받을 데이터가 다를 듯.
                 let vc = MemoDetailViewController(
-                    viewModel: MemoDetailViewModel(memoInfo: movieMemoInfo),
+                    viewModel: MemoDetailViewModel(memoInfo: movieMemoInfo, calendarSelected: viewModel.outputSelectedDate.value),
                     viewTitle: movieMemoInfo?.movie.first?.title ?? ""
                 )
                 self.navigationController?.pushViewController(vc, animated: true)
             } else {
-                let vc = MemoDetailViewController(viewModel: MemoDetailViewModel(memoInfo: nil), viewTitle: "메모 추가")
-                vc.viewModel.calendarSelectedDate = viewModel.outputSelectedDate.value
+                let vc = MemoDetailViewController(
+                    viewModel: MemoDetailViewModel(
+                        memoInfo: nil,
+                        calendarSelected: viewModel.outputSelectedDate.value
+                    ),
+                    viewTitle: "메모 추가"
+                )
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }
@@ -127,6 +132,7 @@ extension MemoCalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
         at monthPosition: FSCalendarMonthPosition
     ) {
         viewModel.inputDateTrigger.value = date
+        print(viewModel.inputDateTrigger.value)
         calendar.appearance.todayColor = .clear
     }
     func calendar(

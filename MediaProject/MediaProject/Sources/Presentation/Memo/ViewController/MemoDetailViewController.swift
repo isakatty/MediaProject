@@ -194,7 +194,7 @@ final class MemoDetailViewController: BaseViewController {
         posterImgView.configureUI(posterPath: poster)
         titleTextField.text = title
         contentTextView.text = content
-        tagButton.configureUI(detail: tag?.addHashTag())
+        tagButton.configureUI(detail: tag)
     }
     
     @objc private func dateBtnTapped() {
@@ -214,11 +214,17 @@ final class MemoDetailViewController: BaseViewController {
         guard let titleText = titleTextField.text else { return }
         let reSave = MovieMemo(
             title: titleText,
-            content: contentTextView.text,
+            content: contentTextView.text == contentPlaceholder ? nil : contentTextView.text,
             tag: viewModel.outputTagString.value == nil ? viewModel.outputMovieMemo.value?.tag : viewModel.outputTagString.value,
             watchedDate: viewModel.outputDate.value == nil ? viewModel.outputMovieMemo.value?.watchedDate : viewModel.outputDate.value
         )
-        viewModel.inputSaveTrigger.value = (reSave, viewModel.selectedMovie.value)
+//        reSave.id = viewModel.outputMovieMemo.value!.id 
+        viewModel.inputSaveTrigger.value = (
+            reSave,
+            viewModel.selectedMovie.value == nil 
+            ? viewModel.outputMovieMemo.value?.movie.first
+            : viewModel.selectedMovie.value
+        )
     }
 }
 
