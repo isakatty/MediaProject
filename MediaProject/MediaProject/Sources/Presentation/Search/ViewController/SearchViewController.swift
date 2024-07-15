@@ -38,7 +38,11 @@ final class SearchViewController: BaseViewController {
         bar.placeholder = "영화를 검색하세요."
         return bar
     }()
-    private let emptyView = EmptyView()
+    private let emptyView: EmptyView = {
+        let view = EmptyView()
+        view.isHidden = false
+        return view
+    }()
     
     init(searchFlow: SearchFlow) {
         self.searchFlow = searchFlow
@@ -55,22 +59,30 @@ final class SearchViewController: BaseViewController {
     private func bindData() {
         searchViewModel.page.value = 1
         searchViewModel.isLastData.value = false
-        searchViewModel.outputEmptyList.bind { isEmpty in
+        searchViewModel.outputEmptyList.onNext { [weak self] isEmpty in
+            guard let self else { return }
             if !isEmpty {
                 self.emptyView.isHidden = true
+                self.movieCollectionView.isHidden = false
+            } else {
+                self.movieCollectionView.isHidden = true
+                self.emptyView.isHidden = false
             }
         }
-        searchViewModel.outputSearchedMovieList.bind { _ in
-            self.movieCollectionView.reloadData()
-            if self.searchViewModel.page.value == 1 {
-                self.movieCollectionView.scrollToItem(
-                    at: .init(
-                        item: 0,
-                        section: 0
-                    ),
-                    at: .top,
-                    animated: false
-                )
+        searchViewModel.outputSearchedMovieList.bind { [weak self] data in
+            guard let self else { return }
+            if !data.results.isEmpty {
+                self.movieCollectionView.reloadData()
+                if self.searchViewModel.page.value == 1 {
+                    self.movieCollectionView.scrollToItem(
+                        at: .init(
+                            item: 0,
+                            section: 0
+                        ),
+                        at: .top,
+                        animated: false
+                    )
+                }
             }
         }
     }

@@ -74,9 +74,7 @@ final class SearchViewModel {
             }
             handleSearchedMovie(movie: searchedMovie)
             // outputEmptyList.value 줘야함
-            if !self.outputSearchedMovieList.value.results.isEmpty {
-                self.outputEmptyList.value = false
-            }
+            self.outputEmptyList.value = self.outputSearchedMovieList.value.results.isEmpty
         }
     }
     
