@@ -95,7 +95,7 @@ final class CalendarLabelView: BaseView {
         }
         tagLabel.snp.makeConstraints { make in
             make.leading.equalTo(posterImgView.snp.trailing)
-            make.bottom.trailing.equalToSuperview()
+            make.bottom.trailing.equalToSuperview().inset(Constant.Spacing.eight.toCGFloat)
         }
         clearBtn.snp.makeConstraints { make in
             make.edges.equalToSuperview()
