@@ -75,9 +75,13 @@ final class MemoDetailViewModel {
                 print(calendarSelectedDate)
                 memo.regDate = calendarSelectedDate
                 
-                //TODO: 이미 등록된 영화가 있는지 없는지를 확인하는 로직이 필요함!
-                movie.memo.append(memo)
-                MovieRepository.shared.createMovieMemo(movie: movie)
+                if MovieRepository.shared.findMovie(movieId: movie.id).0 {
+                    guard let regMovie = MovieRepository.shared.findMovie(movieId: movie.id).1 else { return }
+                    MovieRepository.shared.updateMemo(movie: regMovie, memo: memo)
+                } else {
+                    movie.memo.append(memo)
+                    MovieRepository.shared.createMovieWithMemo(movie: movie)
+                }
             }
             self.outputDismissTrigger.value = ()
         }

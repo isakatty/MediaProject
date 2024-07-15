@@ -9,6 +9,23 @@ import Foundation
 
 import RealmSwift
 
+enum RepositoryError: Error {
+    case createError
+    case deleteError
+    case updateError
+    
+    var errorDescription: String {
+        switch self {
+        case .createError:
+            "추가 오류"
+        case .deleteError:
+            "삭제 오류"
+        case .updateError:
+            "Movie Memo 추가 오류"
+        }
+    }
+}
+
 final class MovieRepository {
     static let shared = MovieRepository()
     private let realm = try! Realm()
@@ -35,14 +52,33 @@ final class MovieRepository {
         return memo
     }
     
-    func createMovieMemo(movie: Movie) {
+    func createMovieWithMemo(movie: Movie) {
         do {
             try realm.write {
                 realm.add(movie)
             }
         } catch {
-            
+            print(RepositoryError.createError.errorDescription)
         }
     }
     
+    func updateMemo(movie: Movie, memo: MovieMemo) {
+        do {
+            try realm.write {
+                movie.memo.append(memo)
+            }
+        } catch {
+            print(RepositoryError.updateError.errorDescription)
+        }
+    }
+    
+    func findMovie(movieId: Int) -> (Bool, Movie?) {
+        let movie = realm.object(ofType: Movie.self, forPrimaryKey: movieId)
+        
+        if movie != nil {
+            return (true, movie)
+        } else {
+            return (false, nil)
+        }
+    }
 }
