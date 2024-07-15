@@ -58,5 +58,6 @@ final class MoviePosterView: UIView {
         let baseURL = NetworkRequest.imageBaseURL + posterPath
         guard let url = URL(string: baseURL) else { return }
         poster.kf.setImage(with: url)
+//        poster.contentMode = .scaleAspectFill
     }
 }

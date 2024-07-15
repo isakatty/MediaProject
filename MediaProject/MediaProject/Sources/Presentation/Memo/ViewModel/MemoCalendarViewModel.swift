@@ -14,10 +14,12 @@ final class MemoCalendarViewModel {
     var inputViewDidLoad = Observable<Void?>(nil)
     var movieBtnTrigger = Observable<Void?>(nil) // 메모 label trigger
     var inputDateTrigger = Observable<Date?>(nil) // 캘린더 날짜 선택
+    var inputViewWillAppear = Observable<Void?>(nil)
     
     var outputDates = Observable<[Date]?>(nil)
     var outputMovieMemo = Observable<MovieMemo?>(nil)
     var outputMemoDetail = Observable<Void?>(nil) // 화면 전환용
+    var outputSelectedDate = Observable<Date>(Date())
     
     init() {
         transform()
@@ -34,11 +36,18 @@ final class MemoCalendarViewModel {
             guard let date,
                   let self else { return }
             
+            outputSelectedDate.value = date
             self.outputMovieMemo.value = MovieRepository.shared.findMemoFromDate(selectedDate: date).first
         }
         movieBtnTrigger.bind { [weak self] _ in
             guard let self else { return }
             outputMemoDetail.value = ()
+        }
+        inputViewWillAppear.bind { [weak self] _ in
+            guard let self else { return }
+            let movies = self.fetchMovies()
+            self.outputDates.value = setDates(movies: movies)
+            self.outputMovieMemo.value = MovieRepository.shared.findMemoFromDate(selectedDate: self.outputSelectedDate.value).first
         }
     }
     

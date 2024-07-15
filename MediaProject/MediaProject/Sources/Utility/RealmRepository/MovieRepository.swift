@@ -35,4 +35,14 @@ final class MovieRepository {
         return memo
     }
     
+    func createMovieMemo(movie: Movie) {
+        do {
+            try realm.write {
+                realm.add(movie)
+            }
+        } catch {
+            
+        }
+    }
+    
 }

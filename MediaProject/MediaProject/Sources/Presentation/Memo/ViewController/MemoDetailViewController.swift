@@ -127,6 +127,10 @@ final class MemoDetailViewController: BaseViewController {
                 self.dateButton.configureUI(detail: DateFormatterManager.shared.changedDateFormat(date1: date))
             }
         }
+        viewModel.outputDismissTrigger.bind { [weak self] _ in
+            guard let self else { return }
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     override func configureHierarchy() {
@@ -152,7 +156,7 @@ final class MemoDetailViewController: BaseViewController {
         posterImgView.snp.makeConstraints { make in
             make.top.equalTo(contentView.snp.top)
             make.horizontalEdges.equalTo(contentView.snp.horizontalEdges).inset(24)
-            make.width.equalTo(posterImgView.snp.height).multipliedBy(0.67)
+            make.height.equalTo(posterImgView.snp.width).multipliedBy(1.50)
         }
         
         titleTextField.snp.makeConstraints { make in
@@ -207,6 +211,14 @@ final class MemoDetailViewController: BaseViewController {
     }
     @objc private func saveBtnTapped() {
         print("저장")
+        guard let titleText = titleTextField.text else { return }
+        let reSave = MovieMemo(
+            title: titleText,
+            content: contentTextView.text,
+            tag: viewModel.outputTagString.value == nil ? viewModel.outputMovieMemo.value?.tag : viewModel.outputTagString.value,
+            watchedDate: viewModel.outputDate.value == nil ? viewModel.outputMovieMemo.value?.watchedDate : viewModel.outputDate.value
+        )
+        viewModel.inputSaveTrigger.value = (reSave, viewModel.selectedMovie.value)
     }
 }
 

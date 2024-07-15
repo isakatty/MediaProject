@@ -32,6 +32,12 @@ final class MemoCalendarViewController: BaseViewController {
         bindData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel.inputViewWillAppear.value = ()
+    }
+    
     private func bindData() {
         viewModel.inputViewDidLoad.value = ()
         viewModel.outputMovieMemo.onNext { [weak self] movieMemo in
@@ -39,16 +45,19 @@ final class MemoCalendarViewController: BaseViewController {
             if movieMemo != nil {
                 guard let movieMemo = movieMemo,
                       let movie = movieMemo.movie.first else { return }
-                
-                self.calendarLabel.configureUI(
-                    posterPath: movie.poster,
-                    movie: movie.title,
-                    memoTitle: movieMemo.title,
-                    wroteDate: movieMemo.regDate,
-                    tag: movieMemo.tag?.addHashTag()
-                )
+                DispatchQueue.main.async {
+                    self.calendarLabel.configureUI(
+                        posterPath: movie.poster,
+                        movie: movie.title,
+                        memoTitle: movieMemo.title,
+                        wroteDate: movieMemo.regDate,
+                        tag: movieMemo.tag?.addHashTag()
+                    )
+                }
             } else {
-                self.calendarLabel.configureNoMemo()
+                DispatchQueue.main.async {
+                    self.calendarLabel.configureNoMemo()
+                }
             }
         }
         viewModel.outputMemoDetail.bind { [weak self] _ in
@@ -64,8 +73,13 @@ final class MemoCalendarViewController: BaseViewController {
                 self.navigationController?.pushViewController(vc, animated: true)
             } else {
                 let vc = MemoDetailViewController(viewModel: MemoDetailViewModel(memoInfo: nil), viewTitle: "메모 추가")
+                vc.viewModel.calendarSelectedDate = viewModel.outputSelectedDate.value
                 self.navigationController?.pushViewController(vc, animated: true)
             }
+        }
+        viewModel.outputDates.bind { [weak self] _ in
+            guard let self else { return }
+            self.fsCalendar.reloadData()
         }
     }
     

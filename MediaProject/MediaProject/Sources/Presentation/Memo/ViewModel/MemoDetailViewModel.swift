@@ -16,6 +16,7 @@ protocol PassMovieResponse: AnyObject {
 
 final class MemoDetailViewModel {
     var memoInfo: MovieMemo?
+    var calendarSelectedDate: Date?
     
     // load되면서 메모 내용 넣어주기
     var inputViewDidLoad = Observable<Void?>(nil)
@@ -24,6 +25,7 @@ final class MemoDetailViewModel {
     var inputDateTrigger = Observable<Void?>(nil)
     var inputTagTrigger = Observable<Void?>(nil)
     var inputSearchMovieTrigger = Observable<Void?>(nil)
+    var inputSaveTrigger = Observable<(MovieMemo?, Movie?)>((nil, nil))
     
     var outputMovieMemo = Observable<MovieMemo?>(nil)
     var outputSearchMovie = Observable<Void?>(nil)
@@ -34,6 +36,7 @@ final class MemoDetailViewModel {
     // 이렇게 output이 많아져도 괜찮은가 ?
     var outputTagString = Observable<String?>(nil)
     var outputDate = Observable<Date?>(nil)
+    var outputDismissTrigger = Observable<Void?>(nil)
     
     init(memoInfo: MovieMemo? = nil) {
         self.memoInfo = memoInfo
@@ -66,11 +69,22 @@ final class MemoDetailViewModel {
             
             self.outputSearchMovie.value = () // 화면 트리거
         }
+        inputSaveTrigger.bind { [weak self] (memo, movie) in
+            guard let self else { return }
+            if var memo, let calendarSelectedDate, let movie {
+                print(calendarSelectedDate)
+                memo.regDate = calendarSelectedDate
+                
+                //TODO: 이미 등록된 영화가 있는지 없는지를 확인하는 로직이 필요함!
+                movie.memo.append(memo)
+                MovieRepository.shared.createMovieMemo(movie: movie)
+            }
+            self.outputDismissTrigger.value = ()
+        }
     }
 }
 
 extension MemoDetailViewModel: PassMovieResponse {
-    // 전달 받은 웅앵..
     func passSelectedMovieInfo(movie: MovieResponseDTO) {
         selectedMovie.value = Movie(
             id: movie.id,
