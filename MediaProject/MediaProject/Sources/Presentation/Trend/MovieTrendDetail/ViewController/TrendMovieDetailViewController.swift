@@ -7,40 +7,9 @@
 
 import UIKit
 
-enum SectionKind: Int, CaseIterable {
-    case movieInfo = 0
-    case cast
-    case poster
-    case similar
-    
-    var groupSize: [String: CGFloat] {
-        switch self {
-        case .movieInfo:
-            return ["wid": 1.0, "hght": 0.5]
-        case .cast:
-            return ["wid": 2 / 9, "hght": 0.2]
-        case .poster:
-            return ["wid": 1 / 3 , "hght": 0.13]
-        case .similar:
-            return ["wid": 1 / 4 , "hght": 0.25]
-        }
-    }
-    var toTitle: String {
-        switch self {
-        case .movieInfo:
-            ""
-        case .cast:
-            "출연 배우"
-        case .poster:
-            "영화 포스터"
-        case .similar:
-            "비슷한 영화"
-        }
-    }
-}
-
 final class TrendMovieDetailViewController: BaseViewController {
     let viewModel: TrendDetailViewModel
+    
     private lazy var detailCollectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
@@ -125,7 +94,7 @@ final class TrendMovieDetailViewController: BaseViewController {
     private func collectionViewLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout(sectionProvider: {
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            guard let sectionKind = SectionKind(rawValue: sectionIndex) else { return nil }
+            guard let sectionKind = TrendDetailSectionKind(rawValue: sectionIndex) else { return nil }
             switch sectionKind {
             case .movieInfo:
                 return self.createVerticalSection(
@@ -218,7 +187,7 @@ final class TrendMovieDetailViewController: BaseViewController {
 extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     /// section 4개
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return SectionKind.allCases.count
+        return TrendDetailSectionKind.allCases.count
     }
     /// section - item의 개수
     func collectionView(
@@ -232,7 +201,7 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let sectionKind = SectionKind(rawValue: indexPath.section) else {
+        guard let sectionKind = TrendDetailSectionKind(rawValue: indexPath.section) else {
             return UICollectionViewCell()
         }
         switch sectionKind {
@@ -315,7 +284,7 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
             withReuseIdentifier: TrendTitleSupplementaryView.id,
             for: indexPath
         ) as? TrendTitleSupplementaryView,
-              let sectionKind = SectionKind(rawValue: indexPath.section)
+              let sectionKind = TrendDetailSectionKind(rawValue: indexPath.section)
         else { return UICollectionReusableView() }
         
         switch sectionKind {

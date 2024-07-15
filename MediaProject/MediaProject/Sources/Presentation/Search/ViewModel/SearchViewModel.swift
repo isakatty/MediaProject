@@ -14,6 +14,8 @@ final class SearchViewModel {
     var isLastData: Observable<Bool> = Observable(false)
     var inputSearchBarText: Observable<String?> = Observable(nil)
     var inputSelectedIndex: Observable<Int> = Observable(9999)
+    var inputSearchFlow = Observable<Void?>(nil)
+    var inputMemoFlow = Observable<Void?>(nil)
     
     var outputSearchedMovieList: Observable<SearchResponseDTO> = Observable(
         SearchResponseDTO(
@@ -36,6 +38,8 @@ final class SearchViewModel {
         )
     )
     var outputEmptyList: Observable<Bool> = Observable(true)
+    var outputSearchFlow = Observable<Void?>(nil)
+    var outputMemoFlow = Observable<Void?>(nil)
     
     init() {
         transform()
@@ -52,6 +56,14 @@ final class SearchViewModel {
         inputSelectedIndex.bind { [weak self] index in
             guard let self else { return }
             self.changeDTO(index: index)
+        }
+        inputSearchFlow.bind { [weak self] _ in
+            guard let self else { return }
+            self.outputSearchFlow.value = ()
+        }
+        inputMemoFlow.bind { [weak self] _ in
+            guard let self else { return }
+            self.outputMemoFlow.value = ()
         }
     }
     

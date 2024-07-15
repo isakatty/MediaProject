@@ -85,6 +85,18 @@ final class SearchViewController: BaseViewController {
                 }
             }
         }
+        searchViewModel.outputSearchFlow.bind { [weak self] _ in
+            guard let self else { return }
+            
+            let vc = TrendMovieDetailViewController(viewModel: TrendDetailViewModel(movieInfo: self.searchViewModel.changedMovieDTO.value))
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        searchViewModel.outputMemoFlow.bind { [weak self] _ in
+            guard let self else { return }
+            
+            self.searchViewModel.delegate?.passSelectedMovieInfo(movie: self.searchViewModel.changedMovieDTO.value)
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     override func configureHierarchy() {
@@ -164,11 +176,9 @@ extension SearchViewController
         searchViewModel.inputSelectedIndex.value = indexPath.item
         switch searchFlow {
         case .search:
-            let vc = TrendMovieDetailViewController(viewModel: TrendDetailViewModel(movieInfo: searchViewModel.changedMovieDTO.value))
-            navigationController?.pushViewController(vc, animated: true)
+            searchViewModel.inputSearchFlow.value = ()
         case .memoToSearch:
-            searchViewModel.delegate?.passSelectedMovieInfo(movie: searchViewModel.changedMovieDTO.value)
-            navigationController?.popViewController(animated: true)
+            searchViewModel.inputMemoFlow.value = ()
         }
     }
 }

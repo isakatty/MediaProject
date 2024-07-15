@@ -21,7 +21,7 @@ final class TrendDetailViewModel {
     var outputSectionItems: Observable<[Int]> = Observable(
         .init(
             repeating: 1,
-            count: SectionKind.allCases.count
+            count: TrendDetailSectionKind.allCases.count
         )
     )
     var outputSectionDatas: Observable<[TrendCollection]> = Observable([])
