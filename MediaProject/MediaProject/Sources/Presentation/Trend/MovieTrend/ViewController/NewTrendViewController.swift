@@ -52,7 +52,22 @@ final class NewTrendViewController: BaseViewController {
         
         bindData()
     }
-    
+    private func bindData() {
+        viewModel.inputSegTrigger.value = segments.selectedSegmentIndex
+        viewModel.outputTrendMovie.bind { [weak self] _ in
+            guard let self else { return }
+            self.trendCollectionView.reloadData()
+        }
+        viewModel.outputTrendTV.bind { [weak self] _ in
+            guard let self else { return }
+            self.trendCollectionView.reloadData()
+        }
+        viewModel.outputMovieResponse.bind { [weak self] movieInfo in
+            guard let self, let movieInfo else { return }
+            let vc = TrendMovieDetailViewController(viewModel: TrendDetailViewModel(movieInfo:  movieInfo))
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
     override func configureHierarchy() {
         [segments, trendCollectionView]
             .forEach { view.addSubview($0) }
@@ -68,17 +83,6 @@ final class NewTrendViewController: BaseViewController {
         trendCollectionView.snp.makeConstraints { make in
             make.top.equalTo(segments.snp.bottom).offset(20)
             make.horizontalEdges.bottom.equalTo(safeArea)
-        }
-    }
-    private func bindData() {
-        viewModel.inputSegTrigger.value = segments.selectedSegmentIndex
-        viewModel.outputTrendMovie.bind { [weak self] _ in
-            guard let self else { return }
-            self.trendCollectionView.reloadData()
-        }
-        viewModel.outputTrendTV.bind { [weak self] _ in
-            guard let self else { return }
-            self.trendCollectionView.reloadData()
         }
     }
     
@@ -133,9 +137,12 @@ extension NewTrendViewController
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: TrendCollectionViewCell.identifier,
             for: indexPath
-        ) as? TrendCollectionViewCell else { return UICollectionViewCell() }
-        switch viewModel.inputSegTrigger.value {
-        case Trends.movie.rawValue:
+        ) as? TrendCollectionViewCell,
+              let trend = Trends(rawValue: viewModel.inputSegTrigger.value)
+        else { return UICollectionViewCell() }
+        
+        switch trend {
+        case .movie:
             if viewModel.outputTrendMovie.value.media.count > 1 {
                 let movies = viewModel.outputTrendMovie.value.media[indexPath.item]
                 cell.configureUI(
@@ -144,7 +151,7 @@ extension NewTrendViewController
                     titleName: movies.title
                 )
             }
-        case Trends.tv.rawValue:
+        case .tv:
             if viewModel.outputTrendTV.value.media.count > 1 {
                 let tvs = viewModel.outputTrendTV.value.media[indexPath.item]
                 cell.configureUI(
@@ -153,23 +160,20 @@ extension NewTrendViewController
                     titleName: tvs.name
                 )
             }
-        default:
-            print("Default Case")
         }
+        
         return cell
     }
     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        switch segments.selectedSegmentIndex {
-        case Trends.movie.rawValue:
-            print("Detailview")
-            let vc = TrendMovieDetailViewController(viewModel: TrendDetailViewModel(movieInfo:  viewModel.outputTrendMovie.value.media[indexPath.row]))
-            navigationController?.pushViewController(vc, animated: true)
-        case Trends.tv.rawValue:
-            print("아무일도 일어나지 않음")
-        default:
+        guard let trend = Trends(rawValue: segments.selectedSegmentIndex) else { return }
+        
+        switch trend {
+        case .movie:
+            viewModel.inputMovieSelectedTrigger.value = indexPath.item
+        case .tv:
             print("아무일도 일어나지 않음")
         }
     }

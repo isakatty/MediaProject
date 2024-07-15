@@ -9,10 +9,13 @@ import Foundation
 
 final class TrendViewModel {
     var inputSegTrigger: Observable<Int> = Observable(0)
+    var inputMovieSelectedTrigger = Observable<Int?>(nil)
     
     var outputTrendMovie = Observable(TrendMovieResponseDTO(page: 1, media: []))
     var outputTrendTV = Observable(TrendTVResponseDTO(page: 1, media: []))
     var outputListCount = Observable(1)
+    var outputIndex = Observable<Int>(0)
+    var outputMovieResponse = Observable<MovieResponseDTO?>(nil)
     
     init() {
         transform()
@@ -20,18 +23,18 @@ final class TrendViewModel {
     
     private func transform() {
         inputSegTrigger.bind { [weak self] segIndex in
-            guard let self else { return }
-            print("시점 확인용 - input 데이터")
-            self.fetchTrendData(index: segIndex)
-            print("시점 확인용 - fetch 끝")
+            guard let self, let trend = Trends(rawValue: segIndex) else { return }
+            self.fetchTrendData(trend: trend)
+        }
+        inputMovieSelectedTrigger.bind { [weak self] movieId in
+            guard let self, let movieId else { return }
+            self.outputMovieResponse.value = self.outputTrendMovie.value.media[movieId]
         }
     }
     
-    private func fetchTrendData(index: Int) {
-        // segmentedIndex랑 enum의 rawValue 비교해서 데이터 fetch 하기
-        if index == Trends.movie.rawValue {
-            print("통신하러 들어가는 중")
-            // TMDB 영화
+    private func fetchTrendData(trend: Trends) {
+        switch trend {
+        case .movie:
             NetworkService.shared.callTMDB(
                 endPoint: .trendingMovie,
                 type: TrendMovieResponse.self
@@ -45,13 +48,10 @@ final class TrendViewModel {
                     return
                 }
                 guard let self else { return }
-                print("통신 중")
                 self.outputTrendMovie.value = response.toDomain
                 self.outputListCount.value = self.outputTrendMovie.value.media.count
-                print("결과값 넣기완")
             }
-        } else if index == Trends.tv.rawValue {
-            // TMDB 드라마
+        case .tv:
             NetworkService.shared.callTMDB(
                 endPoint: .trendingTV,
                 type: TrendTVResponse.self
@@ -69,7 +69,5 @@ final class TrendViewModel {
                 self.outputListCount.value = outputTrendTV.value.media.count
             }
         }
-        
-        print("fetch 완")
     }
 }
