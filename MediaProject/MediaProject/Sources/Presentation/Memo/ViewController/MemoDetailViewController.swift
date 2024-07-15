@@ -7,19 +7,6 @@
 
 import UIKit
 
-enum BasicBtn: CaseIterable {
-    case date, tag
-    
-    var toTitle: String {
-        switch self {
-        case .date:
-            "영화 관람 날짜"
-        case .tag:
-            "태그"
-        }
-    }
-}
-
 final class MemoDetailViewController: BaseViewController {
     var viewModel: MemoDetailViewModel
     private let contentPlaceholder: String = "어떤 내용의 영화를 누구와 봤는지, 어땠는지 남겨주세요."
@@ -131,6 +118,10 @@ final class MemoDetailViewController: BaseViewController {
             guard let self else { return }
             self.navigationController?.popViewController(animated: true)
         }
+        viewModel.outputAlert.bind { [weak self] _ in
+            guard let self else { return }
+            self.showToast(message: "영화를 선택하고 메모의 제목을 작성해주세요.")
+        }
     }
     
     override func configureHierarchy() {
@@ -210,24 +201,36 @@ final class MemoDetailViewController: BaseViewController {
         viewModel.inputSearchMovieTrigger.value = ()
     }
     @objc private func saveBtnTapped() {
-        print("저장")
         guard let titleText = titleTextField.text else { return }
+        if titleText.isEmpty {
+            print("Alert 띄워야함")
+            viewModel.inputAlertTrigger.value = ()
+        } else {
+            if let selectedMovie = viewModel.selectedMovie.value {
+                saveMovieMemo(title: titleText, movie: selectedMovie)
+            } else if viewModel.outputMovieMemo.value?.movie.first != nil {
+                saveMovieMemo(title: titleText, movie: viewModel.outputMovieMemo.value?.movie.first)
+            } else {
+                viewModel.inputAlertTrigger.value = ()
+            }
+        }
+    }
+    
+    private func createMemo(title: String) -> MovieMemo {
         let reSave = MovieMemo(
-            title: titleText,
+            title: title,
             content: contentTextView.text == contentPlaceholder ? nil : contentTextView.text,
             tag: viewModel.outputTagString.value == nil ? viewModel.outputMovieMemo.value?.tag : viewModel.outputTagString.value,
             watchedDate: viewModel.outputDate.value == nil ? viewModel.outputMovieMemo.value?.watchedDate : viewModel.outputDate.value
         )
-//        reSave.id = viewModel.outputMovieMemo.value!.id
+        return reSave
+    }
+    private func saveMovieMemo(title: String, movie: Movie?) {
+        var reSave = createMemo(title: title)
         if let movieMemo = viewModel.outputMovieMemo.value {
             reSave.id = movieMemo.id
         }
-        viewModel.inputSaveTrigger.value = (
-            reSave,
-            viewModel.selectedMovie.value == nil
-            ? viewModel.outputMovieMemo.value?.movie.first
-            : viewModel.selectedMovie.value
-        )
+        viewModel.inputSaveTrigger.value = (reSave, movie)
     }
 }
 

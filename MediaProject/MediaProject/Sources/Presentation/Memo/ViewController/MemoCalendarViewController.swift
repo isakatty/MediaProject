@@ -132,7 +132,6 @@ extension MemoCalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
         at monthPosition: FSCalendarMonthPosition
     ) {
         viewModel.inputDateTrigger.value = date
-        print(viewModel.inputDateTrigger.value)
         calendar.appearance.todayColor = .clear
     }
     func calendar(

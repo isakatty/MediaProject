@@ -26,6 +26,7 @@ final class MemoDetailViewModel {
     var inputTagTrigger = Observable<Void?>(nil)
     var inputSearchMovieTrigger = Observable<Void?>(nil)
     var inputSaveTrigger = Observable<(MovieMemo?, Movie?)>((nil, nil))
+    var inputAlertTrigger = Observable<Void?>(nil)
     
     var outputMovieMemo = Observable<MovieMemo?>(nil)
     var outputSearchMovie = Observable<Void?>(nil)
@@ -37,12 +38,14 @@ final class MemoDetailViewModel {
     var outputTagString = Observable<String?>(nil)
     var outputDate = Observable<Date?>(nil)
     var outputDismissTrigger = Observable<Void?>(nil)
+    var outputAlert = Observable<Void?>(nil)
     
-    init(memoInfo: MovieMemo? = nil, calendarSelected: Date? = nil) {
+    init(
+        memoInfo: MovieMemo? = nil,
+        calendarSelected: Date? = nil
+    ) {
         self.memoInfo = memoInfo
         self.calendarSelectedDate = calendarSelected
-        
-        print("DetailVM", calendarSelectedDate)
         
         tranform()
     }
@@ -74,7 +77,7 @@ final class MemoDetailViewModel {
         }
         inputSaveTrigger.onNext { [weak self] (memo, movie) in
             guard let self = self else { return }
-            if var memo = memo, let movie = movie {
+            if let memo = memo, let movie = movie {
                 if self.calendarSelectedDate == nil {
                     self.calendarSelectedDate = Date()
                 }
@@ -95,6 +98,11 @@ final class MemoDetailViewModel {
                 }
             }
             self.outputDismissTrigger.value = ()
+        }
+        inputAlertTrigger.bind { [weak self] _ in
+            guard let self else { return }
+            
+            self.outputAlert.value = ()
         }
     }
 }

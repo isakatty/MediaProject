@@ -60,11 +60,7 @@ final class MemoTagViewController: BaseViewController {
         }
         tagViewModel.outputSave.bind { [weak self] text in
             guard let self else { return }
-            if text != tagViewModel.tagString {
-                tagViewModel.delegate?.passTag(tag: self.tagViewModel.outputTag.value)
-                print("여기가 타는지 봐야할듯?")
-            }
-            print("여기는 무조건 탐 - 2")
+            tagViewModel.delegate?.passTag(tag: self.tagViewModel.outputTag.value)
             dismiss(animated: true)
         }
     }
@@ -84,8 +80,6 @@ final class MemoTagViewController: BaseViewController {
     }
     
     @objc private func customBackBtnTapped() {
-        print("하이루")
-        // Trigger - 얘도 input, output으로 넘겨야할까?
         tagViewModel.inputBackBtnTrigger.value = ()
     }
     @objc private func textFieldChanged(_ sender: UITextField) {
@@ -99,7 +93,6 @@ final class MemoTagViewController: BaseViewController {
     @objc private func saveBtnTapped() {
         if tagTextField.text != nil {
             tagViewModel.outputTag.value = tagTextField.text
-            print("이건 원본: \(tagTextField.text)", "🔥", tagViewModel.outputTag.value)
             tagViewModel.inputSaveBtnTrigger.value = tagTextField.text
         }
     }

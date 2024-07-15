@@ -92,6 +92,7 @@ final class CalendarLabelView: BaseView {
             make.trailing.equalToSuperview()
             make.leading.equalTo(memoTitleLabel.snp.trailing)
             make.height.equalTo(20)
+            make.width.greaterThanOrEqualTo(100)
         }
         tagLabel.snp.makeConstraints { make in
             make.leading.equalTo(posterImgView.snp.trailing)
