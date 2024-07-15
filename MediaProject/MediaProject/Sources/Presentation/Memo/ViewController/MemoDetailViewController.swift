@@ -218,10 +218,13 @@ final class MemoDetailViewController: BaseViewController {
             tag: viewModel.outputTagString.value == nil ? viewModel.outputMovieMemo.value?.tag : viewModel.outputTagString.value,
             watchedDate: viewModel.outputDate.value == nil ? viewModel.outputMovieMemo.value?.watchedDate : viewModel.outputDate.value
         )
-//        reSave.id = viewModel.outputMovieMemo.value!.id 
+//        reSave.id = viewModel.outputMovieMemo.value!.id
+        if let movieMemo = viewModel.outputMovieMemo.value {
+            reSave.id = movieMemo.id
+        }
         viewModel.inputSaveTrigger.value = (
             reSave,
-            viewModel.selectedMovie.value == nil 
+            viewModel.selectedMovie.value == nil
             ? viewModel.outputMovieMemo.value?.movie.first
             : viewModel.selectedMovie.value
         )

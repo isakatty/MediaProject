@@ -47,9 +47,7 @@ final class MemoDateViewController: BaseViewController {
         dateViewModel.outputBackBtnAction.bind { [weak self] _ in
             guard let self else { return }
             
-            // 화면이동하면서 데이터 전달.
             dateViewModel.delegate?.passDate(date: self.dateViewModel.outputSelectedDate.value)
-            // dismiss를 Trigger하는 것도 input output으로 나눠야할까?
             dismiss(animated: true)
         }
     }

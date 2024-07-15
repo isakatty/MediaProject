@@ -40,7 +40,7 @@ final class MemoTagViewController: BaseViewController {
     private func bindData() {
         tagViewModel.inputViewDidLoad.value = ()
         
-        tagViewModel.outputTag.onNext { [weak self] tag in
+        tagViewModel.outputTag.bind { [weak self] tag in
             guard let self else { return }
             
             if let tag, !tag.isEmpty {
@@ -62,7 +62,9 @@ final class MemoTagViewController: BaseViewController {
             guard let self else { return }
             if text != tagViewModel.tagString {
                 tagViewModel.delegate?.passTag(tag: self.tagViewModel.outputTag.value)
+                print("여기가 타는지 봐야할듯?")
             }
+            print("여기는 무조건 탐 - 2")
             dismiss(animated: true)
         }
     }

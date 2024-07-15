@@ -84,9 +84,6 @@ final class MemoDetailViewModel {
                 let (isMovieExist, existingMovie) = MovieRepository.shared.findMovie(movieId: movie.id)
                 
                 if isMovieExist, let regMovie = existingMovie {
-                    guard let origin = self.outputMovieMemo.value else { return }
-                    print(origin)
-                    memo.id = origin.id
                     if regMovie.memo.contains(where: { $0.id == memo.id}) {
                         MovieRepository.shared.updateMemo(movie: regMovie, memo: memo)
                     } else {
