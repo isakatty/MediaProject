@@ -33,6 +33,10 @@ final class TrendDetailViewModel {
         transform(movieInfo: movieInfo)
     }
     
+    deinit {
+        print(#file, "Detail Trend VM deinit")
+    }
+    
     private func transform(movieInfo: MovieResponseDTO) {
         inputViewDidLoadTrigger.bind { [weak self] _ in
             guard let self else { return }

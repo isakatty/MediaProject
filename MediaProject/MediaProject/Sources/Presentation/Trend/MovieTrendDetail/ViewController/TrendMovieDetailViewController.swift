@@ -39,8 +39,12 @@ final class TrendMovieDetailViewController: BaseViewController {
     
     init(viewModel: TrendDetailViewModel) {
         self.viewModel = viewModel
-        
+        print("Detail VC init")
         super.init(viewTitle: viewModel.movieInfo.title)
+    }
+    
+    deinit {
+        print(#file, "Detail Trend VC deinit")
     }
     
     override func viewDidLoad() {
@@ -51,7 +55,8 @@ final class TrendMovieDetailViewController: BaseViewController {
     
     private func bindData() {
         viewModel.inputViewDidLoadTrigger.value = ()
-        viewModel.catchedDataFetch.bind { isFinished in
+        viewModel.catchedDataFetch.bind { [weak self] isFinished in
+            guard let self else { return }
             if isFinished {
                 self.detailCollectionView.reloadData()
             }
@@ -92,8 +97,9 @@ final class TrendMovieDetailViewController: BaseViewController {
     }
     
     private func collectionViewLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout(sectionProvider: {
+        let layout = UICollectionViewCompositionalLayout(sectionProvider: { [weak self]
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            guard let self = self else { return nil }
             guard let sectionKind = TrendDetailSectionKind(rawValue: sectionIndex) else { return nil }
             switch sectionKind {
             case .movieInfo:
@@ -158,7 +164,7 @@ final class TrendMovieDetailViewController: BaseViewController {
         section.interGroupSpacing = 10
         section.orthogonalScrollingBehavior = .continuous
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
-        section.boundarySupplementaryItems = [self.createSupplementaryHeaderItem()]
+        section.boundarySupplementaryItems = [createSupplementaryHeaderItem()]
         
         return section
     }
