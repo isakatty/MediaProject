@@ -68,25 +68,23 @@ final class SearchViewModel {
     }
     
     private func searchMovie(with keyword: String) {
-        NetworkService.shared.callTMDB(
-            endPoint: .search(
+        NetworkService.shared.callRequest(
+            endpoint: .search(
                 movieName: keyword,
                 page: page.value
             ),
             type: SearchMovieResponse.self
-        ) { [weak self] searchedMovie, error in
+        ) { [weak self] response in
             guard let self else { return }
-            guard error == nil else {
-                print(NetworkError.invalidError.errorDescription ?? "")
-                return
+            DispatchQueue.main.async {
+                switch response {
+                case .success(let success):
+                    self.handleSearchedMovie(movie: success)
+                    self.outputEmptyList.value = self.outputSearchedMovieList.value.results.isEmpty
+                case .failure(let failure):
+                    print(failure.errorDescription ?? "")
+                }
             }
-            guard let searchedMovie else {
-                print(NetworkError.invalidResponse.errorDescription ?? "")
-                return
-            }
-            handleSearchedMovie(movie: searchedMovie)
-            // outputEmptyList.value 줘야함
-            self.outputEmptyList.value = self.outputSearchedMovieList.value.results.isEmpty
         }
     }
     
