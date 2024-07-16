@@ -58,82 +58,19 @@ final class TrendDetailViewModel {
         let group = DispatchGroup()
         
         group.enter()
-        DispatchQueue.global().async {
-            NetworkService.shared.callTMDB(
-                endPoint: .trendDetail(movieId: String(movieId)),
-                type: MovieCreditResponse.self
-            ) { [weak self] cast, error in
-                if let error {
-                    print("cast - error가 있다 !", error)
-                } else {
-                    guard let self else { return }
-                    guard let cast else {
-                        print(NetworkError.invalidResponse.errorDescription!)
-                        return
-                    }
-                    self.outputSectionDatas.value.append (
-                        TrendCollection(
-                            actorInfo: cast.toDTO.cast,
-                            poster: nil,
-                            similar: nil
-                        )
-                    )
-                    outputSectionItems.value[1] = cast.toDTO.cast.count
-                }
-                group.leave()
-            }
+        DispatchQueue.global().async { [weak self] in
+            guard let self else { return }
+            self.requestMovieDetail(movieId: movieId, dispatchGroup: group)
         }
         group.enter()
-        DispatchQueue.global().async {
-            NetworkService.shared.callTMDB(
-                endPoint: .images(movieId: String(movieId)),
-                type: PosterResponse.self
-            ) { [weak self] files, error in
-                if let error {
-                    print("similar - error가 있다 !", error)
-                } else {
-                    guard let self else { return }
-                    guard let files else {
-                        print(NetworkError.invalidResponse.errorDescription!)
-                        return
-                    }
-                    self.outputSectionDatas.value.append(
-                        TrendCollection(
-                            actorInfo: nil,
-                            poster: files.toDTO.backdrops,
-                            similar: nil
-                        )
-                    )
-                    outputSectionItems.value[2] = files.toDTO.backdrops.count
-                }
-                group.leave()
-            }
+        DispatchQueue.global().async { [weak self] in
+            guard let self else { return }
+            self.requestPoster(movieId: movieId, dispatchGroup: group)
         }
         group.enter()
-        DispatchQueue.global().async {
-            NetworkService.shared.callTMDB(
-                endPoint: .recommends(movieId: String(movieId)),
-                type: TrendMovies.self
-            ) { [weak self] movies, error in
-                if let error {
-                    print("Recommend - error가 있다 !", error)
-                } else {
-                    guard let self else { return }
-                    guard let movies else {
-                        print(NetworkError.invalidResponse.errorDescription!)
-                        return
-                    }
-                    self.outputSectionDatas.value.append(
-                        TrendCollection(
-                            actorInfo: nil,
-                            poster: nil,
-                            similar: movies.results
-                        )
-                    )
-                    outputSectionItems.value[3] = movies.results.count
-                }
-                group.leave()
-            }
+        DispatchQueue.global().async { [weak self] in
+            guard let self else { return }
+            self.requestRecommends(movieId: movieId, dispatchGroup: group)
         }
         group.notify(queue: .main) {
             print("여기까지 옴")
@@ -141,23 +78,100 @@ final class TrendDetailViewModel {
         }
     }
     private func requestVideo(movieId: Int) {
-        NetworkService.shared.callTMDB(
-            endPoint: .movieVideo(movieId: movieId),
+        NetworkService.shared.callRequest(
+            endpoint: .movieVideo(movieId: movieId),
             type: MovieVideoResponse.self
-        ) { [weak self] video, err in
+        ) { [weak self] response in
             guard let self else { return }
-            guard err == nil else {
-                print(NetworkError.invalidError.errorDescription ?? "")
-                return
+            DispatchQueue.main.async {
+                switch response {
+                case .success(let success):
+                    if let firstVideo = success.toDTO.movieVideos.first {
+                        let urlString: String = VideoRequest.video(key: firstVideo.movieKey).toURLString
+                        self.outputVideoInfo.value = (firstVideo.movieName, urlString)
+                    } else {
+                        self.outputVideoInfo.value.0 = "nope"
+                        self.outputVideoInfo.value.1 = "There's no first video info"
+                    }
+                case .failure(let failure):
+                    print(failure.errorDescription ?? "")
+                }
             }
-            guard let video else { return }
-            if let firstVideo = video.toDTO.movieVideos.first {
-                let urlString: String = VideoRequest.video(key: firstVideo.movieKey).toURLString
-                self.outputVideoInfo.value = (firstVideo.movieName, urlString)
-            } else {
-                self.outputVideoInfo.value.0 = "nope"
-                self.outputVideoInfo.value.1 = "There's no first video info"
+        }
+    }
+    private func requestMovieDetail(movieId: Int, dispatchGroup: DispatchGroup) {
+        NetworkService.shared.callRequest(
+            endpoint: .trendDetail(movieId: String(movieId)),
+            type: MovieCreditResponse.self
+        ) { [weak self] response in
+            guard let self else { return }
+            
+            DispatchQueue.main.async {
+                switch response {
+                case .success(let success):
+                    self.outputSectionDatas.value.append (
+                        TrendCollection(
+                            actorInfo: success.toDTO.cast,
+                            poster: nil,
+                            similar: nil
+                        )
+                    )
+                    self.outputSectionItems.value[1] = success.toDTO.cast.count
+                case .failure(let failure):
+                    print(failure.errorDescription ?? "")
+                }
             }
+            dispatchGroup.leave()
+        }
+    }
+    private func requestRecommends(movieId: Int, dispatchGroup: DispatchGroup) {
+        NetworkService.shared.callRequest(
+            endpoint: .recommends(movieId: String(movieId)),
+            type: TrendMovies.self
+        ) { [weak self] response in
+            guard let self else { return }
+            
+            DispatchQueue.main.async {
+                switch response {
+                case .success(let success):
+                    self.outputSectionDatas.value.append(
+                        TrendCollection(
+                            actorInfo: nil,
+                            poster: nil,
+                            similar: success.results
+                        )
+                    )
+                    self.outputSectionItems.value[3] = success.results.count
+                case .failure(let failure):
+                    print(failure.errorDescription ?? "")
+                }
+            }
+            dispatchGroup.leave()
+        }
+    }
+    private func requestPoster(movieId: Int, dispatchGroup: DispatchGroup) {
+        NetworkService.shared.callRequest(
+            endpoint: .images(movieId: String(movieId)),
+            type: PosterResponse.self
+        ) { [weak self] response in
+            guard let self else { return }
+            
+            DispatchQueue.main.async {
+                switch response {
+                case .success(let success):
+                    self.outputSectionDatas.value.append(
+                        TrendCollection(
+                            actorInfo: nil,
+                            poster: success.toDTO.backdrops,
+                            similar: nil
+                        )
+                    )
+                    self.outputSectionItems.value[2] = success.toDTO.backdrops.count
+                case .failure(let failure):
+                    print(failure.errorDescription ?? "")
+                }
+            }
+            dispatchGroup.leave()
         }
     }
     private func handleFavorite(_ movieId: Int) -> Bool {
