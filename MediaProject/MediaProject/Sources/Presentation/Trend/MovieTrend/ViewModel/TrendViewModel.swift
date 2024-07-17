@@ -35,38 +35,36 @@ final class TrendViewModel {
     private func fetchTrendData(trend: Trends) {
         switch trend {
         case .movie:
-            NetworkService.shared.callTMDB(
-                endPoint: .trendingMovie,
+            NetworkService.shared.callRequest(
+                endpoint: .trendingMovie,
                 type: TrendMovieResponse.self
-            ) { [weak self] response, error in
-                guard error == nil else {
-                    print(NetworkError.invalidError.errorDescription ?? "")
-                    return
-                }
-                guard let response else {
-                    print(NetworkError.invalidResponse.errorDescription ?? "")
-                    return
-                }
+            ) { [weak self] response in
                 guard let self else { return }
-                self.outputTrendMovie.value = response.toDomain
-                self.outputListCount.value = self.outputTrendMovie.value.media.count
+                DispatchQueue.main.async {
+                    switch response {
+                    case .success(let success):
+                        self.outputTrendMovie.value = success.toDomain
+                        self.outputListCount.value = self.outputTrendMovie.value.media.count
+                    case .failure(let failure):
+                        print(failure.errorDescription ?? "")
+                    }
+                }
             }
         case .tv:
-            NetworkService.shared.callTMDB(
-                endPoint: .trendingTV,
+            NetworkService.shared.callRequest(
+                endpoint: .trendingTV,
                 type: TrendTVResponse.self
-            ) { [weak self] response, error in
-                guard error == nil else {
-                    print(NetworkError.invalidError.errorDescription ?? "")
-                    return
-                }
-                guard let response else {
-                    print(NetworkError.invalidResponse.errorDescription ?? "")
-                    return
-                }
+            ) { [weak self] response in
                 guard let self else { return }
-                self.outputTrendTV.value = response.toDTO
-                self.outputListCount.value = outputTrendTV.value.media.count
+                DispatchQueue.main.async {
+                    switch response {
+                    case .success(let success):
+                        self.outputTrendTV.value = success.toDTO
+                        self.outputListCount.value = self.outputTrendTV.value.media.count
+                    case .failure(let failure):
+                        print(failure.errorDescription ?? "")
+                    }
+                }
             }
         }
     }
