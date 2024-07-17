@@ -37,4 +37,22 @@ extension Endpoint {
         
         return urlComponent.url?.absoluteString ?? ""
     }
+    var toURLRequest: URLRequest? {
+        var urlComponent = URLComponents()
+        urlComponent.scheme = scheme.rawValue
+        urlComponent.host = host
+        urlComponent.port = Int(port)
+        urlComponent.path = path
+        if !query.isEmpty {
+            urlComponent.queryItems = query.map {
+                URLQueryItem(name: $0.key, value: $0.value as? String)
+            }
+        }
+        guard let url = urlComponent.url else { return nil }
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = method
+        urlRequest.allHTTPHeaderFields = header
+        
+        return urlRequest
+    }
 }

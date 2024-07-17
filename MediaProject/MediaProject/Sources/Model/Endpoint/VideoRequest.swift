@@ -37,18 +37,4 @@ enum VideoRequest: Endpoint {
     var method: String {
         _HTTPMethod.get.toString
     }
-    var toURLString: String {
-        var urlComponent = URLComponents()
-        urlComponent.scheme = scheme.rawValue
-        urlComponent.host = host
-        urlComponent.port = Int(port)
-        urlComponent.path = path
-        if !query.isEmpty {
-            urlComponent.queryItems = query.map {
-                URLQueryItem(name: $0.key, value: $0.value as? String)
-            }
-        }
-        
-        return urlComponent.url?.absoluteString ?? ""
-    }
 }
