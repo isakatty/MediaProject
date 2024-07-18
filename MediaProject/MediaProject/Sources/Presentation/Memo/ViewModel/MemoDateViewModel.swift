@@ -15,8 +15,8 @@ final class MemoDateViewModel {
     var inputDatePickerTrigger = Observable<Date?>(nil)
     var inputBackBtnTrigger = Observable<Void?>(nil)
     
-    var outputSelectedDate = Observable<Date?>(nil)
-    var outputBackBtnAction = Observable<Void?>(nil)
+    private(set) var outputSelectedDate = Observable<Date?>(nil)
+    private(set) var outputBackBtnAction = Observable<Void?>(nil)
     
     init(date: Date? = nil) {
         self.date = date

@@ -11,11 +11,11 @@ final class TrendViewModel {
     var inputSegTrigger: Observable<Int> = Observable(0)
     var inputMovieSelectedTrigger = Observable<Int?>(nil)
     
-    var outputTrendMovie = Observable(TrendMovieResponseDTO(page: 1, media: []))
-    var outputTrendTV = Observable(TrendTVResponseDTO(page: 1, media: []))
-    var outputListCount = Observable(1)
-    var outputIndex = Observable<Int>(0)
-    var outputMovieResponse = Observable<MovieResponseDTO?>(nil)
+    private(set) var outputTrendMovie = Observable(TrendMovieResponseDTO(page: 1, media: []))
+    private(set) var outputTrendTV = Observable(TrendTVResponseDTO(page: 1, media: []))
+    private(set) var outputListCount = Observable(1)
+    private(set) var outputIndex = Observable<Int>(0)
+    private(set) var outputMovieResponse = Observable<MovieResponseDTO?>(nil)
     
     init() {
         transform()

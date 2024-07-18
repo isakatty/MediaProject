@@ -16,10 +16,10 @@ final class MemoCalendarViewModel {
     var inputDateTrigger = Observable<Date?>(nil) // 캘린더 날짜 선택
     var inputViewWillAppear = Observable<Void?>(nil)
     
-    var outputDates = Observable<[Date]?>(nil)
-    var outputMovieMemo = Observable<MovieMemo?>(nil)
-    var outputMemoDetail = Observable<Void?>(nil) // 화면 전환용
-    var outputSelectedDate = Observable<Date>(Date())
+    private(set) var outputDates = Observable<[Date]?>(nil)
+    private(set) var outputMovieMemo = Observable<MovieMemo?>(nil)
+    private(set) var outputMemoDetail = Observable<Void?>(nil) // 화면 전환용
+    private(set) var outputSelectedDate = Observable<Date>(Date())
     
     init() {
         transform()

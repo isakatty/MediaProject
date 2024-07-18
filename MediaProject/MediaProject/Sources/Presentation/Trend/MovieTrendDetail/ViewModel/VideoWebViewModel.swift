@@ -11,7 +11,7 @@ final class VideoWebViewModel {
     var urlString: String
     
     var inputViewDidLoadTrigger: Observable<Void?> = Observable(nil)
-    var outputWebView: Observable<String> = Observable("")
+    private(set) var outputWebView: Observable<String> = Observable("")
     
     init(urlString: String) {
         self.urlString = urlString

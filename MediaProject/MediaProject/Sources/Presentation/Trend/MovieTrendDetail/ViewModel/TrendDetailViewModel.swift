@@ -17,15 +17,15 @@ final class TrendDetailViewModel {
     var inputVideoBtnTrigger: Observable<Int> = Observable(0)
     var inputFavBtnTrigger: Observable<Int> = Observable(0)
     
-    var outputFavoriteMovie: Observable<Bool> = Observable(false)
-    var outputSectionItems: Observable<[Int]> = Observable(
+    private(set) var outputFavoriteMovie: Observable<Bool> = Observable(false)
+    private(set) var outputSectionItems: Observable<[Int]> = Observable(
         .init(
             repeating: 1,
             count: TrendDetailSectionKind.allCases.count
         )
     )
-    var outputSectionDatas: Observable<[TrendCollection]> = Observable([])
-    var outputVideoInfo: Observable<(String?, String?)> = Observable((nil,nil))
+    private(set) var outputSectionDatas: Observable<[TrendCollection]> = Observable([])
+    private(set) var outputVideoInfo: Observable<(String?, String?)> = Observable((nil,nil))
     
     init(movieInfo: MovieResponseDTO) {
         self.movieInfo = movieInfo

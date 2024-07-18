@@ -28,17 +28,17 @@ final class MemoDetailViewModel {
     var inputSaveTrigger = Observable<(MovieMemo?, Movie?)>((nil, nil))
     var inputAlertTrigger = Observable<Void?>(nil)
     
-    var outputMovieMemo = Observable<MovieMemo?>(nil)
-    var outputSearchMovie = Observable<Void?>(nil)
-    var selectedMovie = Observable<Movie?>(nil)
-    var outputSelectedDateBtn = Observable<Void?>(nil)
-    var outputSelectedTagBtn = Observable<Void?>(nil)
+    private(set) var outputMovieMemo = Observable<MovieMemo?>(nil)
+    private(set) var outputSearchMovie = Observable<Void?>(nil)
+    private(set) var selectedMovie = Observable<Movie?>(nil)
+    private(set) var outputSelectedDateBtn = Observable<Void?>(nil)
+    private(set) var outputSelectedTagBtn = Observable<Void?>(nil)
     
     // 이렇게 output이 많아져도 괜찮은가 ?
-    var outputTagString = Observable<String?>(nil)
-    var outputDate = Observable<Date?>(nil)
-    var outputDismissTrigger = Observable<Void?>(nil)
-    var outputAlert = Observable<Void?>(nil)
+    private(set) var outputTagString = Observable<String?>(nil)
+    private(set) var outputDate = Observable<Date?>(nil)
+    private(set) var outputDismissTrigger = Observable<Void?>(nil)
+    private(set) var outputAlert = Observable<Void?>(nil)
     
     init(
         memoInfo: MovieMemo? = nil,

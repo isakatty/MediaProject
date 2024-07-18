@@ -16,9 +16,9 @@ final class MemoTagViewModel {
     var inputBackBtnTrigger = Observable<Void?>(nil)
     var inputSaveBtnTrigger = Observable<String?>(nil)
     
-    var outputTag = Observable<String?>(nil)
-    var outputDismiss = Observable<Bool>(false)
-    var outputSave = Observable<String?>(nil)
+    private(set) var outputTag = Observable<String?>(nil)
+    private(set) var outputDismiss = Observable<Bool>(false)
+    private(set) var outputSave = Observable<String?>(nil)
     
     init(tagString: String? = nil) {
         self.tagString = tagString

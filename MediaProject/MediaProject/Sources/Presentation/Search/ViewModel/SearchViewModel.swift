@@ -37,9 +37,9 @@ final class SearchViewModel {
             voteCnt: 1
         )
     )
-    var outputEmptyList: Observable<Bool> = Observable(true)
-    var outputSearchFlow = Observable<Void?>(nil)
-    var outputMemoFlow = Observable<Void?>(nil)
+    private(set) var outputEmptyList: Observable<Bool> = Observable(true)
+    private(set) var outputSearchFlow = Observable<Void?>(nil)
+    private(set) var outputMemoFlow = Observable<Void?>(nil)
     
     init() {
         transform()
