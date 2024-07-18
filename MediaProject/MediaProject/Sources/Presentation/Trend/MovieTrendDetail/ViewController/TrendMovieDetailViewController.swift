@@ -32,7 +32,7 @@ final class TrendMovieDetailViewController: BaseViewController {
         collectionView.register(
             TrendTitleSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TrendTitleSupplementaryView.id
+            withReuseIdentifier: TrendTitleSupplementaryView.identifier
         )
         return collectionView
     }()
@@ -287,7 +287,7 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
     ) -> UICollectionReusableView {
         guard let headerView = collectionView.dequeueReusableSupplementaryView(
             ofKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TrendTitleSupplementaryView.id,
+            withReuseIdentifier: TrendTitleSupplementaryView.identifier,
             for: indexPath
         ) as? TrendTitleSupplementaryView,
               let sectionKind = TrendDetailSectionKind(rawValue: indexPath.section)

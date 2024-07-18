@@ -8,8 +8,6 @@
 import UIKit
 
 final class TrendTitleSupplementaryView: UICollectionReusableView {
-    static let id = "TrendTitleSupplementaryView"
-    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Constant.Font.bold15

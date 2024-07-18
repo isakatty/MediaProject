@@ -10,7 +10,6 @@ import UIKit
 final class PaddingLabel: UILabel {
     var padding: UIEdgeInsets
     
-    @IBInspectable
     var left: CGFloat {
         get {
             self.padding.left
@@ -19,7 +18,6 @@ final class PaddingLabel: UILabel {
             self.padding.left = newValue
         }
     }
-    @IBInspectable
     var right: CGFloat {
         get {
             self.padding.right
@@ -28,7 +26,6 @@ final class PaddingLabel: UILabel {
             self.padding.right = newValue
         }
     }
-    @IBInspectable
     var top: CGFloat {
         get {
             self.padding.top
@@ -37,7 +34,6 @@ final class PaddingLabel: UILabel {
             self.padding.top = newValue
         }
     }
-    @IBInspectable
     var bottom: CGFloat {
         get {
             self.padding.bottom

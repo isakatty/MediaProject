@@ -7,14 +7,15 @@
 
 import UIKit
 
-extension UITableViewCell {
+protocol Reusable {
+    static var identifier: String { get }
+}
+
+extension Reusable {
     static var identifier: String {
         return String(describing: self)
     }
 }
 
-extension UITableViewHeaderFooterView {
-    static var identifier: String {
-        return String(describing: self)
-    }
-}
+extension UITableViewCell: Reusable { }
+extension UITableViewHeaderFooterView: Reusable { }

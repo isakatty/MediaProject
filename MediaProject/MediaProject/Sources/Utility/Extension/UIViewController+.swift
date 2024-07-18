@@ -80,6 +80,12 @@ extension UIViewController {
             width: labelWidth,
             height: labelHeight
         )
+//        toastLabel.snp.makeConstraints { make in
+//            make.center.equalTo(self.view.snp.center)
+//            make.width.equalTo(labelWidth)
+//            make.height.equalTo(labelHeight)
+//        }
+        
         self.view.addSubview(toastLabel)
         UIView.animate(withDuration: 7.0, delay: 0.1, options: .curveEaseOut, animations: {
             toastLabel.alpha = 0.0
