@@ -40,10 +40,11 @@ final class MemoTagViewController: BaseViewController {
     private func bindData() {
         tagViewModel.inputViewDidLoad.value = ()
         
-        tagViewModel.outputTag.bind { [weak self] tag in
+        tagViewModel.outputTag.onNext { [weak self] tag in
             guard let self else { return }
             
             if let tag, !tag.isEmpty {
+                print(tag)
                 self.tagTextField.text = tag
             }
         }

@@ -35,6 +35,12 @@ final class MemoDetailViewController: BaseViewController {
     }()
     private let dateButton: MemoBasicButton = MemoBasicButton(title: BasicBtn.date.toTitle)
     private let tagButton: MemoBasicButton = MemoBasicButton(title: BasicBtn.tag.toTitle)
+    private let removeBtn = {
+        let btn = UIButton()
+        btn.setTitle("삭제", for: .normal)
+        btn.backgroundColor = .yellow
+        return btn
+    }()
     
     init(viewModel: MemoDetailViewModel, viewTitle: String) {
         self.viewModel = viewModel
@@ -48,6 +54,7 @@ final class MemoDetailViewController: BaseViewController {
         configureBtn()
         bindData()
         configureNavigationRightBar(action: #selector(saveBtnTapped))
+        // navigation back btn 정의 필요함
     }
     
     private func bindData() {
@@ -122,12 +129,17 @@ final class MemoDetailViewController: BaseViewController {
             guard let self else { return }
             self.showToast(message: "영화를 선택하고 메모의 제목을 작성해주세요.")
         }
+        viewModel.outputMovieWithMemo.bind { [weak self] (movie, memo) in
+            guard let self else { return }
+            MovieRepository.shared.removeMemoWithMovie(movie: movie, memo: memo)
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     override func configureHierarchy() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        [posterImgView, titleTextField, contentTextView, dateButton, tagButton]
+        [posterImgView, titleTextField, contentTextView, dateButton, tagButton, removeBtn]
             .forEach { contentView.addSubview($0) }
     }
     override func configureLayout() {
@@ -169,6 +181,12 @@ final class MemoDetailViewController: BaseViewController {
             make.top.equalTo(dateButton.snp.bottom).offset(20)
             make.horizontalEdges.equalTo(contentView.snp.horizontalEdges).inset(Constant.Spacing.twelve.toCGFloat)
             make.height.equalTo(50)
+//            make.bottom.equalTo(contentView.snp.bottom).inset(Constant.Spacing.twelve.toCGFloat)
+        }
+        removeBtn.snp.makeConstraints { make in
+            make.top.equalTo(tagButton.snp.bottom).offset(20)
+            make.horizontalEdges.equalTo(contentView.snp.horizontalEdges).inset(Constant.Spacing.twelve.toCGFloat)
+            make.height.equalTo(50)
             make.bottom.equalTo(contentView.snp.bottom).inset(Constant.Spacing.twelve.toCGFloat)
         }
     }
@@ -177,6 +195,7 @@ final class MemoDetailViewController: BaseViewController {
         posterImgView.clearBtn.addTarget(self, action: #selector(addMovieClearBtnTapped), for: .touchUpInside)
         dateButton.addTarget(self, action: #selector(dateBtnTapped), for: .touchUpInside)
         tagButton.addTarget(self, action: #selector(tagBtnTapped), for: .touchUpInside)
+        removeBtn.addTarget(self, action: #selector(removeBtnTapped), for: .touchUpInside)
     }
     private func configureMemo(poster: String, title: String, content: String?, date: Date?, tag: String?) {
         if date != nil, let date = date {
@@ -203,7 +222,6 @@ final class MemoDetailViewController: BaseViewController {
     @objc private func saveBtnTapped() {
         guard let titleText = titleTextField.text else { return }
         if titleText.isEmpty {
-            print("Alert 띄워야함")
             viewModel.inputAlertTrigger.value = ()
         } else {
             if let selectedMovie = viewModel.selectedMovie.value {
@@ -214,6 +232,9 @@ final class MemoDetailViewController: BaseViewController {
                 viewModel.inputAlertTrigger.value = ()
             }
         }
+    }
+    @objc private func removeBtnTapped() {
+        viewModel.inputRemoveTrigger.value = ()
     }
     
     private func createMemo(title: String) -> MovieMemo {
@@ -226,7 +247,7 @@ final class MemoDetailViewController: BaseViewController {
         return reSave
     }
     private func saveMovieMemo(title: String, movie: Movie?) {
-        var reSave = createMemo(title: title)
+        let reSave = createMemo(title: title)
         if let movieMemo = viewModel.outputMovieMemo.value {
             reSave.id = movieMemo.id
         }

@@ -9,7 +9,7 @@ import Foundation
 
 import RealmSwift
 
-enum RepositoryError: Error {
+enum MovieMemoError: Error {
     case createError
     case deleteError
     case updateError
@@ -57,7 +57,7 @@ final class MovieRepository {
                 realm.add(movie)
             }
         } catch {
-            print(RepositoryError.createError.errorDescription)
+            print(MovieMemoError.createError.errorDescription)
         }
     }
     
@@ -67,7 +67,7 @@ final class MovieRepository {
                 movie.memo.append(memo)
             }
         } catch {
-            print(RepositoryError.updateError.errorDescription)
+            print(MovieMemoError.updateError.errorDescription)
         }
     }
     
@@ -84,7 +84,30 @@ final class MovieRepository {
                 movie.memo.replace(index: movie.memo.firstIndex(where: { $0.id == memo.id})!, object: origin)
             }
         } catch {
-            print(RepositoryError.updateError.errorDescription)
+            print(MovieMemoError.updateError.errorDescription)
+        }
+    }
+    
+    func removeMemoWithMovie(movie: Movie, memo: MovieMemo) {
+        // 무비를 받고, 메모를 받음
+        //
+        // 무비에 메모가 받은 메모 하나다 -> 메모 날리고 무비 지우기
+        // 무비에 메모가 여러개이다 -> 받은 메모 날리기
+        do {
+            try realm.write {
+                if let memos = findMovieWithMemos(movieId: movie.id) {
+                    if let memoToRemove = memos.first(where: { $0.id == memo.id }) {
+                        if memos.count == 1 {
+                            realm.delete(memoToRemove)
+                            realm.delete(movie)
+                        } else {
+                            realm.delete(memoToRemove)
+                        }
+                    }
+                }
+            }
+        } catch {
+            print(MovieMemoError.deleteError.errorDescription)
         }
     }
     
@@ -96,9 +119,16 @@ final class MovieRepository {
             return (false, nil)
         }
     }
-    
     func findMemo(memo: MovieMemo) -> MovieMemo? {
         let memo = realm.object(ofType: MovieMemo.self, forPrimaryKey: memo.id)
         return memo
+    }
+    func findMovieWithMemos(movieId: Int) -> [MovieMemo]? {
+        let movieWithMemos = realm.object(ofType: Movie.self, forPrimaryKey: movieId)?.memo
+        guard let movieWithMemos else {
+            print("Movie")
+            return []
+        }
+        return Array(movieWithMemos)
     }
 }

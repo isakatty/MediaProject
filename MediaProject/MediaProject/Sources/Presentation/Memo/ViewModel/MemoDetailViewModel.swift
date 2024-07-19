@@ -27,6 +27,7 @@ final class MemoDetailViewModel {
     var inputSearchMovieTrigger = Observable<Void>(())
     var inputSaveTrigger = Observable<(MovieMemo?, Movie?)>((nil, nil))
     var inputAlertTrigger = Observable<Void>(())
+    var inputRemoveTrigger = Observable<Void>(())
     
     private(set) var outputMovieMemo = Observable<MovieMemo?>(nil)
     private(set) var outputSearchMovie = Observable<Void>(())
@@ -39,6 +40,7 @@ final class MemoDetailViewModel {
     private(set) var outputDate = Observable<Date?>(nil)
     private(set) var outputDismissTrigger = Observable<Void?>(nil)
     private(set) var outputAlert = Observable<Void>(())
+    private(set) var outputMovieWithMemo = Observable<(Movie, MovieMemo)>((Movie(id: 0, title: "", poster: "", overview: "", releaseDate: "", voteAvg: 0.0, voteCount: 0), MovieMemo(title: "")))
     
     init(
         memoInfo: MovieMemo? = nil,
@@ -105,6 +107,15 @@ final class MemoDetailViewModel {
             guard let self else { return }
             
             self.outputAlert.value = ()
+        }
+        inputRemoveTrigger.bind { [weak self] _ in
+            guard let self,
+                  let memoInfo,
+                  let firstMovie = memoInfo.movie.first else { return }
+            
+            let (isMovieExist, existingMovie) = MovieRepository.shared.findMovie(movieId: firstMovie.id)
+            guard let existingMovie else { return }
+            self.outputMovieWithMemo.value = (existingMovie, memoInfo)
         }
     }
 }

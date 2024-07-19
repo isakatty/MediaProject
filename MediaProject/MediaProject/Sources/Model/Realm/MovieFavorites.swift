@@ -13,9 +13,7 @@ final class MovieFavorites: Object {
     
     @Persisted(primaryKey: true) var id: Int // PK - TMDB의 MovieId
     
-    convenience init(
-        id: Int
-    ) {
+    convenience init(id: Int) {
         self.init()
         self.id = id
     }
