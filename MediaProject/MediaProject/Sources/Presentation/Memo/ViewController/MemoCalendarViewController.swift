@@ -12,7 +12,6 @@ import FSCalendar
 final class MemoCalendarViewController: BaseViewController {
     private let viewModel = MemoCalendarViewModel()
     
-    private var events = [Date]()
     private lazy var fsCalendar: FSCalendar = {
         let calendar = FSCalendar(frame: .zero)
         calendar.scrollDirection = .horizontal
@@ -67,7 +66,10 @@ final class MemoCalendarViewController: BaseViewController {
             if movieMemoInfo != nil {
                 // 메모 유무에 따라 VC, DetailVM이 받을 데이터가 다를 듯.
                 let vc = MemoDetailViewController(
-                    viewModel: MemoDetailViewModel(memoInfo: movieMemoInfo, calendarSelected: viewModel.outputSelectedDate.value),
+                    viewModel: MemoDetailViewModel(
+                        memoInfo: movieMemoInfo,
+                        calendarSelected: viewModel.outputSelectedDate.value
+                    ),
                     viewTitle: movieMemoInfo?.movie.first?.title ?? ""
                 )
                 self.navigationController?.pushViewController(vc, animated: true)

@@ -11,10 +11,10 @@ final class MemoCalendarViewModel {
     // 오늘자 날짜
     private let today = Date()
     // viewDidLoad되면서 메모 fetch해서 메모를 VC에 전달해줘야함
-    var inputViewDidLoad = Observable<Void?>(nil)
-    var movieBtnTrigger = Observable<Void?>(nil) // 메모 label trigger
+    var inputViewDidLoad = Observable<Void>(())
+    var movieBtnTrigger = Observable<Void>(()) // 메모 label trigger
     var inputDateTrigger = Observable<Date?>(nil) // 캘린더 날짜 선택
-    var inputViewWillAppear = Observable<Void?>(nil)
+    var inputViewWillAppear = Observable<Void>(())
     
     private(set) var outputDates = Observable<[Date]?>(nil)
     private(set) var outputMovieMemo = Observable<MovieMemo?>(nil)

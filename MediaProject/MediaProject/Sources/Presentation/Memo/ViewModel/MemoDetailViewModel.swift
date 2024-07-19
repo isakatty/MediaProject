@@ -19,26 +19,26 @@ final class MemoDetailViewModel {
     var calendarSelectedDate: Date?
     
     // load되면서 메모 내용 넣어주기
-    var inputViewDidLoad = Observable<Void?>(nil)
+    var inputViewDidLoad = Observable<Void>(())
     
     // btn Trigger
-    var inputDateTrigger = Observable<Void?>(nil)
-    var inputTagTrigger = Observable<Void?>(nil)
-    var inputSearchMovieTrigger = Observable<Void?>(nil)
+    var inputDateTrigger = Observable<Void>(())
+    var inputTagTrigger = Observable<Void>(())
+    var inputSearchMovieTrigger = Observable<Void>(())
     var inputSaveTrigger = Observable<(MovieMemo?, Movie?)>((nil, nil))
-    var inputAlertTrigger = Observable<Void?>(nil)
+    var inputAlertTrigger = Observable<Void>(())
     
     private(set) var outputMovieMemo = Observable<MovieMemo?>(nil)
-    private(set) var outputSearchMovie = Observable<Void?>(nil)
+    private(set) var outputSearchMovie = Observable<Void>(())
     private(set) var selectedMovie = Observable<Movie?>(nil)
-    private(set) var outputSelectedDateBtn = Observable<Void?>(nil)
-    private(set) var outputSelectedTagBtn = Observable<Void?>(nil)
+    private(set) var outputSelectedDateBtn = Observable<Void>(())
+    private(set) var outputSelectedTagBtn = Observable<Void>(())
     
     // 이렇게 output이 많아져도 괜찮은가 ?
     private(set) var outputTagString = Observable<String?>(nil)
     private(set) var outputDate = Observable<Date?>(nil)
     private(set) var outputDismissTrigger = Observable<Void?>(nil)
-    private(set) var outputAlert = Observable<Void?>(nil)
+    private(set) var outputAlert = Observable<Void>(())
     
     init(
         memoInfo: MovieMemo? = nil,
@@ -70,10 +70,12 @@ final class MemoDetailViewModel {
             
             outputSelectedTagBtn.value = () // 화면 이동을 위한
         }
-        inputSearchMovieTrigger.bind { [weak self] _ in
-            guard let self else { return }
-            
-            self.outputSearchMovie.value = () // 화면 트리거
+        if memoInfo == nil {
+            inputSearchMovieTrigger.bind { [weak self] _ in
+                guard let self else { return }
+                
+                self.outputSearchMovie.value = () // 화면 트리거
+            }
         }
         inputSaveTrigger.onNext { [weak self] (memo, movie) in
             guard let self = self else { return }
