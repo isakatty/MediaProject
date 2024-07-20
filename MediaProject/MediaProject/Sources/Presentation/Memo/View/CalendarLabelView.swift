@@ -7,8 +7,6 @@
 
 import UIKit
 
-import Kingfisher
-
 final class CalendarLabelView: BaseView {
     private let posterImgView: UIImageView = {
         let view = UIImageView()
@@ -118,7 +116,11 @@ final class CalendarLabelView: BaseView {
         
         let totalURLStr = NetworkRequest.imageBaseURL + posterPath
         guard let url = URL(string: totalURLStr) else { return }
-        posterImgView.kf.setImage(with: url)
+        
+        NetworkService.shared.callImageData(url: url) { [weak self] image in
+            guard let self else { return }
+            self.posterImgView.image = image
+        }
     }
     
     func configureNoMemo() {

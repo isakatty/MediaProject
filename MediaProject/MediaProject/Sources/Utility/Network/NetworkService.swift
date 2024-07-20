@@ -5,7 +5,7 @@
 //  Created by Jisoo HAM on 6/24/24.
 //
 
-import Foundation
+import UIKit
 
 protocol NetworkServiceProtocol {
     func callRequest<T: Decodable>(
@@ -18,9 +18,9 @@ protocol NetworkServiceProtocol {
 final class NetworkService: NetworkServiceProtocol {
     
     static let shared = NetworkService()
-    private let session = URLSession.shared
     
-    private init() { }
+    private init() {
+    }
     
     func callRequest<T: Decodable>(
         endpoint: NetworkRequest,
@@ -31,6 +31,7 @@ final class NetworkService: NetworkServiceProtocol {
             print("URLRequest 오류")
             return
         }
+        let session = URLSession(configuration: endpoint.urlSessionConfig)
         
         let task = session.dataTask(with: urlRequest) { data, response, error in
             // error 있음
@@ -60,6 +61,20 @@ final class NetworkService: NetworkServiceProtocol {
         }
         
         // 통신 트리거
+        task.resume()
+    }
+    func callImageData(url: URL, completion: @escaping (UIImage?) -> Void) {
+        let session = URLSession(configuration: .ephemeral)
+        let urlRequest = URLRequest(url: url)
+        let task = session.dataTask(with: urlRequest) { data, response, error in
+            guard let data = data,
+                  response != nil,
+                  error == nil else { return }
+            DispatchQueue.main.async {
+                let image = UIImage(data: data)
+                completion(image)
+            }
+        }
         task.resume()
     }
 }

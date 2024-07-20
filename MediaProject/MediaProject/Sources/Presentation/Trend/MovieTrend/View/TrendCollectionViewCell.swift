@@ -7,8 +7,6 @@
 
 import UIKit
 
-import Kingfisher
-
 final class TrendCollectionViewCell: UICollectionViewCell {
     
     /// numbering
@@ -85,7 +83,12 @@ final class TrendCollectionViewCell: UICollectionViewCell {
             print("url 오류")
             return
         }
-        posterImage.kf.setImage(with: url)
+        NetworkService.shared.callImageData(url: url) { [weak self] data in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.posterImage.image = data
+            }
+        }
     }
     
     override func prepareForReuse() {

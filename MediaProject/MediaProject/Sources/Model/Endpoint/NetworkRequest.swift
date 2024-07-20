@@ -85,4 +85,12 @@ enum NetworkRequest: Endpoint {
     var method: String {
         _HTTPMethod.get.toString
     }
+    var urlSessionConfig: URLSessionConfiguration {
+        switch self {
+        case .trendingTV, .trendingMovie:
+                .default
+        default:
+                .ephemeral
+        }
+    }
 }

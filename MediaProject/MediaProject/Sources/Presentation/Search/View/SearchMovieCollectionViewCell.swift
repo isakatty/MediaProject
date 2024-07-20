@@ -40,7 +40,10 @@ final class SearchMovieCollectionViewCell: UICollectionViewCell {
         let baseURL = NetworkRequest.imageBaseURL
         guard let url = URL(string: baseURL + imageString) else { return }
         
-        movieImageView.kf.setImage(with: url)
+        NetworkService.shared.callImageData(url: url) { [weak self] image in
+            guard let self else { return }
+            movieImageView.image = image
+        }
     }
     
     override func prepareForReuse() {

@@ -7,8 +7,6 @@
 
 import UIKit
 
-import Kingfisher
-
 final class MoviePosterView: UIView {
     private let poster: UIImageView = {
         let view = UIImageView()
@@ -54,10 +52,13 @@ final class MoviePosterView: UIView {
     }
     
     func configureUI(posterPath: String) {
-        //이미지 kingfisher
         let baseURL = NetworkRequest.imageBaseURL + posterPath
         guard let url = URL(string: baseURL) else { return }
-        poster.kf.setImage(with: url)
         poster.contentMode = .scaleAspectFill
+        
+        NetworkService.shared.callImageData(url: url) { [weak self] image in
+            guard let self else { return }
+            self.poster.image = image
+        }
     }
 }

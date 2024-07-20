@@ -144,7 +144,6 @@ extension MemoCalendarViewController: FSCalendarDelegate, FSCalendarDataSource {
         print(date, "선택해제됨")
     }
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-//        let changedDate = DateFormatterManager.shared.changedDateFormat(date1: date)
         let changedDate = date.toString
         let memoTest = viewModel.outputDates.value.map { dates in
             dates.map { $0.toString }

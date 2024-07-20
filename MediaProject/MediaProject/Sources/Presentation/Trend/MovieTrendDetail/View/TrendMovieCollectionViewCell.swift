@@ -7,8 +7,6 @@
 
 import UIKit
 
-import Kingfisher
-
 final class TrendMovieCollectionViewCell: BaseCollectionViewCell {
     private let posterImage: UIImageView = {
         let image = UIImageView()
@@ -35,10 +33,13 @@ final class TrendMovieCollectionViewCell: BaseCollectionViewCell {
     }
     func configureUI(path: String?) {
         guard let path = path,
-              let imagURL = URL(string: NetworkRequest.imageBaseURL + path)
+              let imageURL = URL(string: NetworkRequest.imageBaseURL + path)
         else { return }
-//        posterImage.image = UIImage()
-        posterImage.kf.setImage(with: imagURL)
+        
+        NetworkService.shared.callImageData(url: imageURL) { [weak self] image in
+            guard let self else { return }
+            self.posterImage.image = image
+        }
     }
     override func prepareForReuse() {
         super.prepareForReuse()

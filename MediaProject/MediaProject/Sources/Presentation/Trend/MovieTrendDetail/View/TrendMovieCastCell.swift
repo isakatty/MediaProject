@@ -7,8 +7,6 @@
 
 import UIKit
 
-import Kingfisher
-
 final class TrendMovieCastCell: BaseCollectionViewCell {
     let profileImgView: UIImageView = {
         let image = UIImageView()
@@ -69,8 +67,12 @@ final class TrendMovieCastCell: BaseCollectionViewCell {
             print("이미지 url Error")
             return
         }
-        profileImgView.image = UIImage()
-        profileImgView.kf.setImage(with: imgURL)
+        
+        NetworkService.shared.callImageData(url: imgURL) { [weak self] image in
+            guard let self else { return }
+            self.profileImgView.image = image
+        }
+        
         actorName.text = cast.name
         castName.text = cast.character
     }

@@ -7,8 +7,6 @@
 
 import UIKit
 
-import Kingfisher
-
 final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
     private let backPosterImg: UIImageView = {
         let image = UIImageView()
@@ -155,8 +153,15 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
             return
         }
         
-        backPosterImg.kf.setImage(with: backImgURL)
-        posterImg.kf.setImage(with: posterImgURL)
+        NetworkService.shared.callImageData(url: backImgURL) { [weak self] image in
+            guard let self else { return }
+            self.backPosterImg.image = image
+        }
+        NetworkService.shared.callImageData(url: posterImgURL) { [weak self] image in
+            guard let self else { return }
+            self.posterImg.image = image
+        }
+        
         titleLabel.text = movieDetail.title
         dateLabel.text = movieDetail.releaseDate
         overviewLabel.text = movieDetail.overView
@@ -175,5 +180,6 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
         super.prepareForReuse()
         
         posterImg.image = nil
+        backPosterImg.image = nil
     }
 }
