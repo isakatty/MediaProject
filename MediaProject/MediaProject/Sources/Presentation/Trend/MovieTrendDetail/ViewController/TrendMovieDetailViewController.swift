@@ -244,7 +244,7 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
                 return UICollectionViewCell()
             }
             if viewModel.catchedDataFetch.value {
-                let castData = viewModel.outputSectionDatas.value.first(where: { $0.actorInfo != nil })?.actorInfo?[indexPath.item]
+                let castData = viewModel.outputCastData.value[indexPath.item]
                 cell.configureUI(cast: castData)
             }
             return cell
@@ -257,10 +257,8 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
                 return UICollectionViewCell()
             }
             if viewModel.catchedDataFetch.value {
-                let posterData = viewModel.outputSectionDatas.value.first(
-                    where: { $0.poster != nil }
-                )?.poster?[indexPath.item].file_path
-                cell.configureUI(path: posterData, indexPath: indexPath.item)
+                let posterData = viewModel.outputPosterData.value[indexPath.item].file_path
+                cell.configureUI(path: posterData)
             }
             return cell
 
@@ -272,10 +270,8 @@ extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollection
                 return UICollectionViewCell()
             }
             if viewModel.catchedDataFetch.value {
-                let similarData = viewModel.outputSectionDatas.value.first(
-                    where: { $0.similar != nil }
-                )?.similar?[indexPath.item].poster_path
-                cell.configureUI(path: similarData, indexPath: indexPath.item)
+                let similarData = viewModel.outputSimilarData.value[indexPath.item].poster_path
+                cell.configureUI(path: similarData)
             }
             return cell
         }

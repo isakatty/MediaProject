@@ -24,7 +24,9 @@ final class TrendDetailViewModel {
             count: TrendDetailSectionKind.allCases.count
         )
     )
-    private(set) var outputSectionDatas: Observable<[TrendCollection]> = Observable([])
+    private(set) var outputCastData = Observable<[CastResponseDTO]>([])
+    private(set) var outputPosterData = Observable<[PosterPathResponseDTO]>([])
+    private(set) var outputSimilarData = Observable<[TrendInfo]>([])
     private(set) var outputVideoInfo: Observable<(String?, String?)> = Observable((nil,nil))
     
     init(movieInfo: MovieResponseDTO) {
@@ -109,14 +111,9 @@ final class TrendDetailViewModel {
             DispatchQueue.main.async {
                 switch response {
                 case .success(let success):
-                    self.outputSectionDatas.value.append (
-                        TrendCollection(
-                            actorInfo: success.toDTO.cast,
-                            poster: nil,
-                            similar: nil
-                        )
-                    )
+                    self.outputCastData.value = success.toDTO.cast
                     self.outputSectionItems.value[1] = success.toDTO.cast.count
+                    
                 case .failure(let failure):
                     print(failure.errorDescription ?? "")
                 }
@@ -134,14 +131,8 @@ final class TrendDetailViewModel {
             DispatchQueue.main.async {
                 switch response {
                 case .success(let success):
-                    self.outputSectionDatas.value.append(
-                        TrendCollection(
-                            actorInfo: nil,
-                            poster: nil,
-                            similar: success.results
-                        )
-                    )
                     self.outputSectionItems.value[3] = success.results.count
+                    self.outputSimilarData.value = success.results
                 case .failure(let failure):
                     print(failure.errorDescription ?? "")
                 }
@@ -159,14 +150,8 @@ final class TrendDetailViewModel {
             DispatchQueue.main.async {
                 switch response {
                 case .success(let success):
-                    self.outputSectionDatas.value.append(
-                        TrendCollection(
-                            actorInfo: nil,
-                            poster: success.toDTO.backdrops,
-                            similar: nil
-                        )
-                    )
                     self.outputSectionItems.value[2] = success.toDTO.backdrops.count
+                    self.outputPosterData.value = success.toDTO.backdrops
                 case .failure(let failure):
                     print(failure.errorDescription ?? "")
                 }

@@ -33,7 +33,7 @@ final class TrendMovieCollectionViewCell: BaseCollectionViewCell {
             make.edges.equalToSuperview()
         }
     }
-    func configureUI(path: String?, indexPath: Int) {
+    func configureUI(path: String?) {
         guard let path = path,
               let imagURL = URL(string: NetworkRequest.imageBaseURL + path)
         else { return }

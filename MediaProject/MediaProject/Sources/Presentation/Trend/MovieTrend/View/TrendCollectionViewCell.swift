@@ -87,4 +87,10 @@ final class TrendCollectionViewCell: UICollectionViewCell {
         }
         posterImage.kf.setImage(with: url)
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        posterImage.image = nil
+    }
 }

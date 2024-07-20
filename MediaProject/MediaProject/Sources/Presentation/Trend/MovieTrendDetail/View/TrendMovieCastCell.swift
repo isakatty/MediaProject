@@ -85,6 +85,6 @@ final class TrendMovieCastCell: BaseCollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        profileImgView.image = UIImage(systemName: "star.fill")
+        profileImgView.image = nil
     }
 }

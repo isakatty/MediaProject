@@ -170,4 +170,10 @@ final class TrendMovieTitleCollectionViewCell: BaseCollectionViewCell {
         config?.image = UIImage(systemName: imageName)
         favBtn.configuration = config
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        posterImg.image = nil
+    }
 }
