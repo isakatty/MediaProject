@@ -26,7 +26,7 @@ final class TrendDetailViewModel {
     )
     private(set) var outputCastData = Observable<[CastResponseDTO]>([])
     private(set) var outputPosterData = Observable<[PosterPathResponseDTO]>([])
-    private(set) var outputSimilarData = Observable<[TrendInfo]>([])
+    private(set) var outputSimilarData = Observable<[SimilarDTO]>([])
     private(set) var outputVideoInfo: Observable<(String?, String?)> = Observable((nil,nil))
     
     init(movieInfo: MovieResponseDTO) {
@@ -74,8 +74,8 @@ final class TrendDetailViewModel {
             guard let self else { return }
             self.requestRecommends(movieId: movieId, dispatchGroup: group)
         }
-        group.notify(queue: .main) {
-            print("여기까지 옴")
+        group.notify(queue: .main) { [weak self] in
+            guard let self else { return }
             self.catchedDataFetch.value = true
         }
     }
@@ -124,15 +124,15 @@ final class TrendDetailViewModel {
     private func requestRecommends(movieId: Int, dispatchGroup: DispatchGroup) {
         NetworkService.shared.callRequest(
             endpoint: .recommends(movieId: String(movieId)),
-            type: TrendMovies.self
+            type: SimilarMoviesResponse.self
         ) { [weak self] response in
             guard let self else { return }
             
             DispatchQueue.main.async {
                 switch response {
                 case .success(let success):
-                    self.outputSectionItems.value[3] = success.results.count
-                    self.outputSimilarData.value = success.results
+                    self.outputSectionItems.value[3] = success.toDTO.results.count
+                    self.outputSimilarData.value = success.toDTO.results
                 case .failure(let failure):
                     print(failure.errorDescription ?? "")
                 }

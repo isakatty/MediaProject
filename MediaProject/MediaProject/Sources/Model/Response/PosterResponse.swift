@@ -8,7 +8,8 @@
 import Foundation
 
 struct PosterResponse: Decodable {
-    let backdrops: [PosterPathResponse]
+    let id: Int
+    let backdrops, logos, posters: [PosterPathResponse]
 }
 
 struct PosterPathResponse: Decodable {
