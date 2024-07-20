@@ -43,10 +43,7 @@ final class MovieRepository {
         let movies = readMovies()
         let memo = movies.flatMap { $0.memo }
             .filter {
-                DateFormatterManager.shared.isSameDate(
-                    date1: $0.regDate,
-                    date2: selectedDate
-                )
+                return DateChanger.yyyyMMdd.isSameDate(date1: $0.regDate, date2: selectedDate)
             }
         return memo
     }
@@ -89,10 +86,6 @@ final class MovieRepository {
     }
     
     func removeMemoWithMovie(movie: Movie, memo: MovieMemo) {
-        // 무비를 받고, 메모를 받음
-        //
-        // 무비에 메모가 받은 메모 하나다 -> 메모 날리고 무비 지우기
-        // 무비에 메모가 여러개이다 -> 받은 메모 날리기
         do {
             try realm.write {
                 if let memos = findMovieWithMemos(movieId: movie.id) {

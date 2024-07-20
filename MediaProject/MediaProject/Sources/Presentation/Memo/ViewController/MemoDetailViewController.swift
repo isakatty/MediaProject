@@ -118,7 +118,7 @@ final class MemoDetailViewController: BaseViewController {
         viewModel.outputDate.bind { [weak self] date in
             guard let self else { return }
             if let date {
-                self.dateButton.configureUI(detail: DateFormatterManager.shared.changedDateFormat(date1: date))
+                self.dateButton.configureUI(detail: date.toString)
             }
         }
         viewModel.outputDismissTrigger.bind { [weak self] _ in
@@ -199,7 +199,7 @@ final class MemoDetailViewController: BaseViewController {
     }
     private func configureMemo(poster: String, title: String, content: String?, date: Date?, tag: String?) {
         if date != nil, let date = date {
-            dateButton.configureUI(detail: DateFormatterManager.shared.changedDateFormat(date1: date))
+            dateButton.configureUI(detail: date.toString)
         }
         posterImgView.configureUI(posterPath: poster)
         titleTextField.text = title

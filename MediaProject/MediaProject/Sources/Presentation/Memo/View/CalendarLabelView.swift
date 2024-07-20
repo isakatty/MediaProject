@@ -113,7 +113,7 @@ final class CalendarLabelView: BaseView {
         movieTitleLabel.textAlignment = .left
         movieTitleLabel.text = movie
         memoTitleLabel.text = memoTitle
-        wroteDateLabel.text = DateFormatterManager.shared.changedDateFormat(date1: wroteDate)
+        wroteDateLabel.text = wroteDate.toString
         tagLabel.text = tag
         
         let totalURLStr = NetworkRequest.imageBaseURL + posterPath
