@@ -40,6 +40,7 @@ final class FavoriteRepository {
             try realm.write {
                 realm.add(movie)
             }
+            NotificationCenter.default.post(name: .favoritesUpdated, object: nil)
         } catch {
             print(MovieFavoritesError.createFavError.errorDescription)
         }
@@ -61,6 +62,7 @@ final class FavoriteRepository {
             try realm.write {
                 realm.delete(favMovie)
             }
+            NotificationCenter.default.post(name: .favoritesUpdated, object: nil)
         } catch {
             print(MovieFavoritesError.deleteFavError.errorDescription)
         }

@@ -31,6 +31,7 @@ final class NewTrendViewController: BaseViewController {
         configureBtn()
         bindData()
         createDataSource()
+        NotificationCenter.default.addObserver(self, selector: #selector(favoritesUpdated), name: .favoritesUpdated, object: nil)
     }
     private func bindData() {
         viewModel.inputViewDidLoad.value = ()
@@ -56,11 +57,11 @@ final class NewTrendViewController: BaseViewController {
         }
     }
     private func configureBtn() {
-        var first = UIAction(title: "오늘의 트렌드") { [weak self] action in
+        let first = UIAction(title: "오늘의 트렌드") { [weak self] action in
             guard let self else { return }
             self.viewModel.inputViewDidLoad.value = ()
         }
-        var second = UIAction(title: "즐겨찾기 목록") { [weak self] action in
+        let second = UIAction(title: "즐겨찾기 목록") { [weak self] action in
             guard let self else { return }
             self.viewModel.inputFilterFavsTrigger.value = ()
         }
@@ -126,6 +127,10 @@ final class NewTrendViewController: BaseViewController {
         snapshot.appendSections(Trends.allCases)
         snapshot.appendItems(viewModel.outputTrendMovie.value.media, toSection: .movie)
         dataSource.apply(snapshot)
+    }
+    
+    @objc private func favoritesUpdated() {
+        viewModel.changedFavsTrigger.value = ()
     }
 }
 

@@ -13,6 +13,7 @@ final class TrendViewModel {
     var inputViewDidLoad = Observable<Void>(())
     var inputFilterFavsTrigger = Observable<Void>(())
     var inputMovieSelectedTrigger = Observable<Int?>(nil)
+    var changedFavsTrigger = Observable<Void>(())
     
     private(set) var outputTrendMovie = Observable(TrendMovieResponseDTO(page: 1, media: []))
     private(set) var outputListCount = Observable(1)
@@ -20,7 +21,6 @@ final class TrendViewModel {
     private(set) var outputMovieResponse = Observable<MovieResponseDTO?>(nil)
     
     init() {
-        print(initFavList)
         transform()
     }
     
@@ -36,6 +36,10 @@ final class TrendViewModel {
         inputFilterFavsTrigger.bind { [weak self] _ in
             guard let self else { return }
             fetchRealmFav()
+        }
+        changedFavsTrigger.bind { [weak self] _ in
+            guard let self else { return }
+            checkAndUpdateFavorites()
         }
     }
     
@@ -76,5 +80,13 @@ final class TrendViewModel {
             }
         }
         outputListCount.value = outputTrendMovie.value.media.count
+    }
+    func checkAndUpdateFavorites() {
+        let recentFavList: [String] = FavoriteRepository.shared.readFavorites().map { String($0.id) }
+        print(recentFavList)
+        if initFavList != recentFavList {
+            fetchRealmFav()
+            initFavList = recentFavList
+        }
     }
 }
