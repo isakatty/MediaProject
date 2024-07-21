@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct PosterPathResponseDTO: Decodable {
+struct PosterPathResponseDTO: Hashable {
     var file_path: String
 }

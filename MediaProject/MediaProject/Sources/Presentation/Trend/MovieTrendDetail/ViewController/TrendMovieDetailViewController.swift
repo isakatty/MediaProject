@@ -7,8 +7,16 @@
 
 import UIKit
 
+enum TrendDetailSectionItem: Hashable {
+    case detail(MovieResponseDTO, Bool)
+    case cast(CastResponseDTO)
+    case poster(PosterPathResponseDTO)
+    case similar(SimilarDTO)
+}
+
 final class TrendMovieDetailViewController: BaseViewController {
     let viewModel: TrendDetailViewModel
+    private var dataSource: UICollectionViewDiffableDataSource<TrendDetailSectionKind, TrendDetailSectionItem>!
     
     private lazy var detailCollectionView: UICollectionView = {
         let collectionView = UICollectionView(
@@ -16,24 +24,11 @@ final class TrendMovieDetailViewController: BaseViewController {
             collectionViewLayout: collectionViewLayout()
         )
         collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(
-            TrendMovieCollectionViewCell.self,
-            forCellWithReuseIdentifier: TrendMovieCollectionViewCell.identifier
-        )
-        collectionView.register(
-            TrendMovieTitleCollectionViewCell.self,
-            forCellWithReuseIdentifier: TrendMovieTitleCollectionViewCell.identifier
-        )
-        collectionView.register(
-            TrendMovieCastCell.self,
-            forCellWithReuseIdentifier: TrendMovieCastCell.identifier
-        )
-        collectionView.register(
-            TrendTitleSupplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TrendTitleSupplementaryView.identifier
-        )
+//        collectionView.register(
+//            TrendTitleSupplementaryView.self,
+//            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+//            withReuseIdentifier: TrendTitleSupplementaryView.identifier
+//        )
         return collectionView
     }()
     
@@ -51,6 +46,8 @@ final class TrendMovieDetailViewController: BaseViewController {
         super.viewDidLoad()
         
         bindData()
+        createDataSource()
+        updateSnapshot()
     }
     
     private func bindData() {
@@ -58,7 +55,7 @@ final class TrendMovieDetailViewController: BaseViewController {
         viewModel.catchedDataFetch.bind { [weak self] isFinished in
             guard let self else { return }
             if isFinished {
-                self.detailCollectionView.reloadData()
+                self.updateSnapshot()
             }
         }
         viewModel.outputVideoInfo.bind { [weak self] videoName, urlString in
@@ -80,8 +77,75 @@ final class TrendMovieDetailViewController: BaseViewController {
         }
         viewModel.outputFavoriteMovie.bind { [weak self] _ in
             guard let self else { return }
-            self.detailCollectionView.reloadSections(IndexSet(integer: 0))
+            self.updateSnapshot()
         }
+    }
+    
+    private func createDataSource() {
+        let detailCell = UICollectionView.CellRegistration<TrendMovieTitleCollectionViewCell, (MovieResponseDTO, Bool)> { [weak self] cell, indexPath, itemIdentifier in
+            guard let self else { return }
+            cell.clearBtn.addTarget(
+                self,
+                action: #selector(videoBtnTapped),
+                for: .touchUpInside
+            )
+            cell.favBtn.addTarget(
+                self,
+                action: #selector(favBtnTapped),
+                for: .touchUpInside
+            )
+            cell.configureUI(
+                movieDetail: itemIdentifier.0,
+                isFav: itemIdentifier.1
+            )
+        }
+        let castCell = UICollectionView.CellRegistration<TrendMovieCastCell, CastResponseDTO> { [weak self] cell, indexPath, itemIdentifier in
+            guard let self else { return }
+            
+            if viewModel.catchedDataFetch.value {
+                cell.configureUI(cast: itemIdentifier)
+            }
+        }
+        let posterCell = UICollectionView.CellRegistration<TrendMovieCollectionViewCell,PosterPathResponseDTO> { [weak self] cell, indexPath, itemIdentifier in
+            guard let self else { return }
+            if viewModel.catchedDataFetch.value {
+                cell.configureUI(path: itemIdentifier.file_path)
+            }
+        }
+        let similarCell = UICollectionView.CellRegistration<TrendMovieCollectionViewCell,SimilarDTO> { [weak self] cell, indexPath, itemIdentifier in
+            guard let self else { return }
+            if viewModel.catchedDataFetch.value {
+                cell.configureUI(path: itemIdentifier.poster_path)
+            }
+        }
+        
+        dataSource = UICollectionViewDiffableDataSource<TrendDetailSectionKind, TrendDetailSectionItem>(
+            collectionView: detailCollectionView,
+            cellProvider: { (collectionView, indexPath, itemIdentifier) in
+                switch itemIdentifier {
+                case .detail(let movieDetail, let isFav):
+                    return collectionView.dequeueConfiguredReusableCell(using: detailCell, for: indexPath, item: (movieDetail, isFav))
+                case .cast(let castDetail):
+                    return collectionView.dequeueConfiguredReusableCell(using: castCell, for: indexPath, item: castDetail)
+                case .poster(let posterDetail):
+                    return collectionView.dequeueConfiguredReusableCell(using: posterCell, for: indexPath, item: posterDetail)
+                case .similar(let similarDetail):
+                    return collectionView.dequeueConfiguredReusableCell(using: similarCell, for: indexPath, item: similarDetail)
+                }
+            }
+        )
+    }
+    private func updateSnapshot() {
+        let castItems = viewModel.outputCastData.value.map { TrendDetailSectionItem.cast($0) }
+        let posterItems = viewModel.outputPosterData.value.map { TrendDetailSectionItem.poster($0) }
+        let similarItems = viewModel.outputSimilarData.value.map { TrendDetailSectionItem.similar($0) }
+        var snapshot = NSDiffableDataSourceSnapshot<TrendDetailSectionKind,TrendDetailSectionItem>()
+        snapshot.appendSections(TrendDetailSectionKind.allCases)
+        snapshot.appendItems([TrendDetailSectionItem.detail(viewModel.movieInfo, viewModel.outputFavoriteMovie.value)], toSection: .movieInfo)
+        snapshot.appendItems(castItems, toSection: .cast)
+        snapshot.appendItems(posterItems, toSection: .poster)
+        snapshot.appendItems(similarItems, toSection: .similar)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
     
     override func configureHierarchy() {
@@ -164,7 +228,7 @@ final class TrendMovieDetailViewController: BaseViewController {
         section.interGroupSpacing = 10
         section.orthogonalScrollingBehavior = .continuous
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
-        section.boundarySupplementaryItems = [createSupplementaryHeaderItem()]
+//        section.boundarySupplementaryItems = [createSupplementaryHeaderItem()]
         
         return section
     }
@@ -190,112 +254,27 @@ final class TrendMovieDetailViewController: BaseViewController {
     }
 }
 
-extension TrendMovieDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    /// section 4개
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return TrendDetailSectionKind.allCases.count
-    }
-    /// section - item의 개수
-    func collectionView(
-        _ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int
-    ) -> Int {
-        return viewModel.outputSectionItems.value[section]
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        guard let sectionKind = TrendDetailSectionKind(rawValue: indexPath.section) else {
-            return UICollectionViewCell()
-        }
-        switch sectionKind {
-        case .movieInfo:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: TrendMovieTitleCollectionViewCell.identifier,
-                for: indexPath
-            ) as? TrendMovieTitleCollectionViewCell else {
-                return UICollectionViewCell()
-            }
-            cell.clearBtn.addTarget(
-                self,
-                action: #selector(videoBtnTapped),
-                for: .touchUpInside
-            )
-            cell.favBtn.addTarget(
-                self,
-                action: #selector(favBtnTapped),
-                for: .touchUpInside
-            )
-            cell.configureUI(
-                movieDetail: viewModel.movieInfo,
-                isFav: viewModel.outputFavoriteMovie.value
-            )
-            return cell
-            
-            // TODO: SectionData로 묶어서 처리하지 않고, 각각의 output으로 둔다면 filter 처리하지 않아도 되지 않을까 ?
-            // output의 형태 변경
-        case .cast:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: TrendMovieCastCell.identifier,
-                for: indexPath
-            ) as? TrendMovieCastCell else {
-                return UICollectionViewCell()
-            }
-            if viewModel.catchedDataFetch.value {
-                let castData = viewModel.outputCastData.value[indexPath.item]
-                cell.configureUI(cast: castData)
-            }
-            return cell
-
-        case .poster:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: TrendMovieCollectionViewCell.identifier,
-                for: indexPath
-            ) as? TrendMovieCollectionViewCell else {
-                return UICollectionViewCell()
-            }
-            if viewModel.catchedDataFetch.value {
-                let posterData = viewModel.outputPosterData.value[indexPath.item].file_path
-                cell.configureUI(path: posterData)
-            }
-            return cell
-
-        case .similar:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: TrendMovieCollectionViewCell.identifier,
-                for: indexPath
-            ) as? TrendMovieCollectionViewCell else {
-                return UICollectionViewCell()
-            }
-            if viewModel.catchedDataFetch.value {
-                let similarData = viewModel.outputSimilarData.value[indexPath.item].poster_path
-                cell.configureUI(path: similarData)
-            }
-            return cell
-        }
-    }
-    func collectionView(
-        _ collectionView: UICollectionView,
-        viewForSupplementaryElementOfKind kind: String,
-        at indexPath: IndexPath
-    ) -> UICollectionReusableView {
-        guard let headerView = collectionView.dequeueReusableSupplementaryView(
-            ofKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TrendTitleSupplementaryView.identifier,
-            for: indexPath
-        ) as? TrendTitleSupplementaryView,
-              let sectionKind = TrendDetailSectionKind(rawValue: indexPath.section)
-        else { return UICollectionReusableView() }
-        
-        switch sectionKind {
-        case .movieInfo:
-            // 없애고 싶은데..
-            print("")
-        case .cast, .poster, .similar:
-            headerView.configureUI(headerTitle: sectionKind.toTitle)
-        }
-        return headerView
-    }
+extension TrendMovieDetailViewController: UICollectionViewDelegate {
+//    func collectionView(
+//        _ collectionView: UICollectionView,
+//        viewForSupplementaryElementOfKind kind: String,
+//        at indexPath: IndexPath
+//    ) -> UICollectionReusableView {
+//        guard let headerView = collectionView.dequeueReusableSupplementaryView(
+//            ofKind: UICollectionView.elementKindSectionHeader,
+//            withReuseIdentifier: TrendTitleSupplementaryView.identifier,
+//            for: indexPath
+//        ) as? TrendTitleSupplementaryView,
+//              let sectionKind = TrendDetailSectionKind(rawValue: indexPath.section)
+//        else { return UICollectionReusableView() }
+//        
+//        switch sectionKind {
+//        case .movieInfo:
+//            // 없애고 싶은데..
+//            print("")
+//        case .cast, .poster, .similar:
+//            headerView.configureUI(headerTitle: sectionKind.toTitle)
+//        }
+//        return headerView
+//    }
 }

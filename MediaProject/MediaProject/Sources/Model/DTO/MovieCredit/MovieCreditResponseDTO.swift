@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MovieCreditResponseDTO: Decodable {
+struct MovieCreditResponseDTO: Hashable {
     let id: Int
     let cast: [CastResponseDTO]
 }

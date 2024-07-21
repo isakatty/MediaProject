@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct SimilarMoviesDTO: Decodable {
+struct SimilarMoviesDTO: Hashable {
     let page: Int
     let results: [SimilarDTO]
     let total_pages, total_results: Int
 }
 
-struct SimilarDTO: Decodable {
+struct SimilarDTO: Hashable {
     let id: Int
     let poster_path: String
 }

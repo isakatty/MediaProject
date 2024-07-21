@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CastResponseDTO: Decodable {
+struct CastResponseDTO: Hashable {
     let adult: Bool
     let id: Int
     let name: String
