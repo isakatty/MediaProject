@@ -16,12 +16,13 @@ enum NetworkRequest: Endpoint {
     
     case trendingTV
     case trendingMovie
-    case trendDetail(movieId: String)
+    case trendCredits(movieId: String)
     case search(movieName: String, page: Int)
     case images(movieId: String)
     case recommends(movieId: String)
     case similarMovies(movieId: String)
     case movieVideo(movieId: Int)
+    case movieDetails(movieId: String)
     
     var scheme: Scheme {
         .https
@@ -47,17 +48,19 @@ enum NetworkRequest: Endpoint {
             "/3/movie/\(movieId)/recommendations"
         case .similarMovies(let movieId):
             "/3/movie/\(movieId)/similar"
-        case .trendDetail(let movieId):
+        case .trendCredits(let movieId):
             "/3/movie/\(movieId)/credits"
         case .movieVideo(let movieId):
             "/3/movie/\(movieId)/videos"
+        case .movieDetails(let movieId):
+            "/3/movie/\(movieId)"
         }
     }
     var query: [String : Any] {
         // TODO: language 공통 - 공통 묶어서 처리할 수 있게 변경해보기
         switch self {
-        case .trendingTV, .trendingMovie, .trendDetail,
-                .similarMovies, .recommends, .movieVideo:
+        case .trendingTV, .trendingMovie, .trendCredits,
+                .similarMovies, .recommends, .movieVideo, .movieDetails:
             return ["language": "ko-KR"]
         case .search(let movieName, let page):
             return [

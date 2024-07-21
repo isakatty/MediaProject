@@ -8,7 +8,10 @@
 import Foundation
 
 final class TrendViewModel {
+    private var initFavList: [String] = FavoriteRepository.shared.readFavorites().map { String($0.id) }
+    
     var inputViewDidLoad = Observable<Void>(())
+    var inputFilterFavsTrigger = Observable<Void>(())
     var inputMovieSelectedTrigger = Observable<Int?>(nil)
     
     private(set) var outputTrendMovie = Observable(TrendMovieResponseDTO(page: 1, media: []))
@@ -17,6 +20,7 @@ final class TrendViewModel {
     private(set) var outputMovieResponse = Observable<MovieResponseDTO?>(nil)
     
     init() {
+        print(initFavList)
         transform()
     }
     
@@ -28,6 +32,10 @@ final class TrendViewModel {
         inputMovieSelectedTrigger.bind { [weak self] movieId in
             guard let self, let movieId else { return }
             self.outputMovieResponse.value = self.outputTrendMovie.value.media[movieId]
+        }
+        inputFilterFavsTrigger.bind { [weak self] _ in
+            guard let self else { return }
+            fetchRealmFav()
         }
     }
     
@@ -47,5 +55,26 @@ final class TrendViewModel {
                 }
             }
         }
+    }
+    private func fetchRealmFav() {
+        outputTrendMovie.value.media.removeAll()
+        let favIds: [String] = FavoriteRepository.shared.readFavorites().map { String($0.id) }
+        for favId in favIds {
+            NetworkService.shared.callRequest(
+                endpoint: .movieDetails(movieId: favId),
+                type: MovieDetailResponse.self
+            ) { [weak self] response in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                    switch response {
+                    case .success(let success):
+                        self.outputTrendMovie.value.media.append(success.toDTO)
+                    case .failure(let failure):
+                        print(failure.errorDescription ?? "")
+                    }
+                }
+            }
+        }
+        outputListCount.value = outputTrendMovie.value.media.count
     }
 }

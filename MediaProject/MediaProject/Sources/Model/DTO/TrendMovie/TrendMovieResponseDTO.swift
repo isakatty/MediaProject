@@ -9,6 +9,6 @@ import Foundation
 
 struct TrendMovieResponseDTO: Hashable {
     let page: Int
-    let media: [MovieResponseDTO]
+    var media: [MovieResponseDTO]
 }
 

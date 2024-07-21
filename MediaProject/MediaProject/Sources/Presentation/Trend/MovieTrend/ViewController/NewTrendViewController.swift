@@ -25,13 +25,12 @@ final class NewTrendViewController: BaseViewController {
         collection.delegate = self
         return collection
     }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureBtn()
         bindData()
         createDataSource()
-        updateSnapshot()
     }
     private func bindData() {
         viewModel.inputViewDidLoad.value = ()
@@ -56,7 +55,18 @@ final class NewTrendViewController: BaseViewController {
             make.edges.equalTo(safeArea)
         }
     }
-    
+    private func configureBtn() {
+        var first = UIAction(title: "오늘의 트렌드") { [weak self] action in
+            guard let self else { return }
+            self.viewModel.inputViewDidLoad.value = ()
+        }
+        var second = UIAction(title: "즐겨찾기 목록") { [weak self] action in
+            guard let self else { return }
+            self.viewModel.inputFilterFavsTrigger.value = ()
+        }
+        let menus: UIMenu = UIMenu(title: "Sort", children: [first, second])
+        navigationItem.rightBarButtonItem = .init(title: "필터", menu: menus)
+    }
     private func configureCollectionLayout() -> UICollectionViewLayout {
         // item - item 자체를 뷰 꽉채움
         let itemSize = NSCollectionLayoutSize(

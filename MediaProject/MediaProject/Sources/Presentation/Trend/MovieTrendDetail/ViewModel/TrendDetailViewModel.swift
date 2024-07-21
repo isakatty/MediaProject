@@ -103,7 +103,7 @@ final class TrendDetailViewModel {
     }
     private func requestMovieDetail(movieId: Int, dispatchGroup: DispatchGroup) {
         NetworkService.shared.callRequest(
-            endpoint: .trendDetail(movieId: String(movieId)),
+            endpoint: .trendCredits(movieId: String(movieId)),
             type: MovieCreditResponse.self
         ) { [weak self] response in
             guard let self else { return }

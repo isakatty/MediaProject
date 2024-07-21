@@ -56,12 +56,12 @@ final class TrendCollectionViewCell: UICollectionViewCell {
         layer.cornerRadius = 3
         
         posterImage.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(4)
-            make.leading.trailing.equalToSuperview().inset(12)
+            make.top.equalToSuperview().inset(Constant.Spacing.four.toCGFloat)
+            make.leading.trailing.equalToSuperview().inset(Constant.Spacing.eight.toCGFloat)
             make.bottom.equalToSuperview().inset(30)
         }
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(posterImage.snp.bottom).offset(4)
+            make.top.equalTo(posterImage.snp.bottom).offset(Constant.Spacing.four.toCGFloat)
             make.leading.trailing.equalTo(posterImage)
             make.bottom.equalToSuperview()
         }
