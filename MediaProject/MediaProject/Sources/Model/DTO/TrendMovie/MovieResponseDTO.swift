@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MovieResponseDTO: Decodable {
+struct MovieResponseDTO: Hashable {
     let id: Int
     let title: String
     let poster_path: String

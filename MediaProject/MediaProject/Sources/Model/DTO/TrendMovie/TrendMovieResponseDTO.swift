@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TrendMovieResponseDTO: Decodable {
+struct TrendMovieResponseDTO: Hashable {
     let page: Int
     let media: [MovieResponseDTO]
 }

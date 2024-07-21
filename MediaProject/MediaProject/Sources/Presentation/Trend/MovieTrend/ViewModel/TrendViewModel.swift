@@ -8,11 +8,10 @@
 import Foundation
 
 final class TrendViewModel {
-    var inputSegTrigger: Observable<Int> = Observable(0)
+    var inputViewDidLoad = Observable<Void>(())
     var inputMovieSelectedTrigger = Observable<Int?>(nil)
     
     private(set) var outputTrendMovie = Observable(TrendMovieResponseDTO(page: 1, media: []))
-    private(set) var outputTrendTV = Observable(TrendTVResponseDTO(page: 1, media: []))
     private(set) var outputListCount = Observable(1)
     private(set) var outputIndex = Observable<Int>(0)
     private(set) var outputMovieResponse = Observable<MovieResponseDTO?>(nil)
@@ -22,9 +21,9 @@ final class TrendViewModel {
     }
     
     private func transform() {
-        inputSegTrigger.bind { [weak self] segIndex in
-            guard let self, let trend = Trends(rawValue: segIndex) else { return }
-            self.fetchTrendData(trend: trend)
+        inputViewDidLoad.bind { [weak self] _ in
+            guard let self else { return }
+            self.fetchTrendData()
         }
         inputMovieSelectedTrigger.bind { [weak self] movieId in
             guard let self, let movieId else { return }
@@ -32,38 +31,19 @@ final class TrendViewModel {
         }
     }
     
-    private func fetchTrendData(trend: Trends) {
-        switch trend {
-        case .movie:
-            NetworkService.shared.callRequest(
-                endpoint: .trendingMovie,
-                type: TrendMovieResponse.self
-            ) { [weak self] response in
-                guard let self else { return }
-                DispatchQueue.main.async {
-                    switch response {
-                    case .success(let success):
-                        self.outputTrendMovie.value = success.toDomain
-                        self.outputListCount.value = self.outputTrendMovie.value.media.count
-                    case .failure(let failure):
-                        print(failure.errorDescription ?? "")
-                    }
-                }
-            }
-        case .tv:
-            NetworkService.shared.callRequest(
-                endpoint: .trendingTV,
-                type: TrendTVResponse.self
-            ) { [weak self] response in
-                guard let self else { return }
-                DispatchQueue.main.async {
-                    switch response {
-                    case .success(let success):
-                        self.outputTrendTV.value = success.toDTO
-                        self.outputListCount.value = self.outputTrendTV.value.media.count
-                    case .failure(let failure):
-                        print(failure.errorDescription ?? "")
-                    }
+    private func fetchTrendData() {
+        NetworkService.shared.callRequest(
+            endpoint: .trendingMovie,
+            type: TrendMovieResponse.self
+        ) { [weak self] response in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                switch response {
+                case .success(let success):
+                    self.outputTrendMovie.value = success.toDomain
+                    self.outputListCount.value = self.outputTrendMovie.value.media.count
+                case .failure(let failure):
+                    print(failure.errorDescription ?? "")
                 }
             }
         }

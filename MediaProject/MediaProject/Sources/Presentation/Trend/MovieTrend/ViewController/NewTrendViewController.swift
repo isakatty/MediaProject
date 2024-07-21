@@ -9,41 +9,20 @@ import UIKit
 
 import SnapKit
 
-enum Trends: Int, CaseIterable {
-    case movie = 0
-    case tv
-    
-    var description: String {
-        switch self {
-        case .movie:
-            return "Movie"
-        case .tv:
-            return "TV"
-        }
-    }
+enum Trends: String, CaseIterable {
+    case movie = "Movie"
 }
 
 final class NewTrendViewController: BaseViewController {
     private let viewModel = TrendViewModel()
+    private var dataSource: UICollectionViewDiffableDataSource<Trends, MovieResponseDTO>!
     
-    private lazy var segments: UISegmentedControl = {
-        let segmentItems = Trends.allCases.map { $0.description }
-        let segments = UISegmentedControl(items: segmentItems)
-        segments.selectedSegmentIndex = Trends.movie.rawValue
-        segments.addTarget(self, action: #selector(segTapped), for: .valueChanged)
-        return segments
-    }()
     private lazy var trendCollectionView: UICollectionView = {
         let collection = UICollectionView(
             frame: .zero,
             collectionViewLayout: configureCollectionLayout()
         )
-        collection.dataSource = self
         collection.delegate = self
-        collection.register(
-            TrendCollectionViewCell.self,
-            forCellWithReuseIdentifier: TrendCollectionViewCell.identifier
-        )
         return collection
     }()
     
@@ -51,16 +30,14 @@ final class NewTrendViewController: BaseViewController {
         super.viewDidLoad()
         
         bindData()
+        createDataSource()
+        updateSnapshot()
     }
     private func bindData() {
-        viewModel.inputSegTrigger.value = segments.selectedSegmentIndex
+        viewModel.inputViewDidLoad.value = ()
         viewModel.outputTrendMovie.bind { [weak self] _ in
             guard let self else { return }
-            self.trendCollectionView.reloadData()
-        }
-        viewModel.outputTrendTV.bind { [weak self] _ in
-            guard let self else { return }
-            self.trendCollectionView.reloadData()
+            self.updateSnapshot()
         }
         viewModel.outputMovieResponse.bind { [weak self] movieInfo in
             guard let self, let movieInfo else { return }
@@ -69,20 +46,14 @@ final class NewTrendViewController: BaseViewController {
         }
     }
     override func configureHierarchy() {
-        [segments, trendCollectionView]
+        [trendCollectionView]
             .forEach { view.addSubview($0) }
     }
     override func configureLayout() {
         super.configureLayout()
         let safeArea = view.safeAreaLayoutGuide
-        segments.snp.makeConstraints { make in
-            make.top.centerX.equalTo(safeArea)
-            make.width.equalTo(200)
-            make.height.equalTo(30)
-        }
         trendCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(segments.snp.bottom).offset(20)
-            make.horizontalEdges.bottom.equalTo(safeArea)
+            make.edges.equalTo(safeArea)
         }
     }
     
@@ -116,65 +87,43 @@ final class NewTrendViewController: BaseViewController {
         
         return layout
     }
-    /// segmentedController에 사용자 액션이 일어나 값이 변할 때 불리는 함수
-    @objc func segTapped(sender: UISegmentedControl) {
-        viewModel.inputSegTrigger.value = sender.selectedSegmentIndex
+    private func createDataSource() {
+        let movieRegistration = UICollectionView.CellRegistration<
+            TrendCollectionViewCell,
+            MovieResponseDTO
+        > { cell, indexPath, itemIdentifier in
+            cell.configureUI(
+                posterPath: itemIdentifier.poster_path,
+                numberIndex: indexPath.item + 1,
+                titleName: itemIdentifier.title
+            )
+        }
+        dataSource = .init(
+            collectionView: trendCollectionView,
+            cellProvider: { (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell in
+                let cell = collectionView.dequeueConfiguredReusableCell(
+                    using: movieRegistration,
+                    for: indexPath,
+                    item: itemIdentifier
+                ) as TrendCollectionViewCell
+                
+                return cell
+            }
+        )
+    }
+    private func updateSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Trends, MovieResponseDTO>()
+        snapshot.appendSections(Trends.allCases)
+        snapshot.appendItems(viewModel.outputTrendMovie.value.media, toSection: .movie)
+        dataSource.apply(snapshot)
     }
 }
 
-extension NewTrendViewController
-: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int
-    ) -> Int {
-        return viewModel.outputListCount.value
-    }
-    func collectionView(
-        _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TrendCollectionViewCell.identifier,
-            for: indexPath
-        ) as? TrendCollectionViewCell,
-              let trend = Trends(rawValue: viewModel.inputSegTrigger.value)
-        else { return UICollectionViewCell() }
-        
-        switch trend {
-        case .movie:
-            if viewModel.outputTrendMovie.value.media.count > 1 {
-                let movies = viewModel.outputTrendMovie.value.media[indexPath.item]
-                cell.configureUI(
-                    posterPath: movies.poster_path,
-                    numberIndex: indexPath.item + 1,
-                    titleName: movies.title
-                )
-            }
-        case .tv:
-            if viewModel.outputTrendTV.value.media.count > 1 {
-                let tvs = viewModel.outputTrendTV.value.media[indexPath.item]
-                cell.configureUI(
-                    posterPath: tvs.poster_path,
-                    numberIndex: indexPath.item + 1,
-                    titleName: tvs.name
-                )
-            }
-        }
-        
-        return cell
-    }
+extension NewTrendViewController: UICollectionViewDelegate {
     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        guard let trend = Trends(rawValue: segments.selectedSegmentIndex) else { return }
-        
-        switch trend {
-        case .movie:
-            viewModel.inputMovieSelectedTrigger.value = indexPath.item
-        case .tv:
-            print("아무일도 일어나지 않음")
-        }
+        viewModel.inputMovieSelectedTrigger.value = indexPath.item
     }
 }

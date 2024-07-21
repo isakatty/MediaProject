@@ -113,7 +113,7 @@ final class MemoDetailViewModel {
                   let memoInfo,
                   let firstMovie = memoInfo.movie.first else { return }
             
-            let (isMovieExist, existingMovie) = MovieRepository.shared.findMovie(movieId: firstMovie.id)
+            let (_, existingMovie) = MovieRepository.shared.findMovie(movieId: firstMovie.id)
             guard let existingMovie else { return }
             self.outputMovieWithMemo.value = (existingMovie, memoInfo)
         }
