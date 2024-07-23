@@ -24,11 +24,6 @@ final class TrendMovieDetailViewController: BaseViewController {
             collectionViewLayout: collectionViewLayout()
         )
         collectionView.delegate = self
-//        collectionView.register(
-//            TrendTitleSupplementaryView.self,
-//            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-//            withReuseIdentifier: TrendTitleSupplementaryView.identifier
-//        )
         return collectionView
     }()
     
@@ -118,6 +113,9 @@ final class TrendMovieDetailViewController: BaseViewController {
                 cell.configureUI(path: itemIdentifier.poster_path)
             }
         }
+        let sectionHeader = UICollectionView.SupplementaryRegistration<TrendTitleSupplementaryView> (elementKind: UICollectionView.elementKindSectionHeader) { supplementaryView, elementKind, indexPath in
+            supplementaryView.configureUI(headerTitle: TrendDetailSectionKind.allCases[indexPath.section].toTitle)
+        }
         
         dataSource = UICollectionViewDiffableDataSource<TrendDetailSectionKind, TrendDetailSectionItem>(
             collectionView: detailCollectionView,
@@ -134,6 +132,13 @@ final class TrendMovieDetailViewController: BaseViewController {
                 }
             }
         )
+        dataSource.supplementaryViewProvider = { [weak self] view, elementKind, indexPath in
+            guard let self else { return UICollectionReusableView() }
+            return self.detailCollectionView.dequeueConfiguredReusableSupplementary(
+                using: sectionHeader,
+                for: indexPath
+            )
+        }
     }
     private func updateSnapshot() {
         let castItems = viewModel.outputCastData.value.map { TrendDetailSectionItem.cast($0) }
@@ -228,7 +233,7 @@ final class TrendMovieDetailViewController: BaseViewController {
         section.interGroupSpacing = 10
         section.orthogonalScrollingBehavior = .continuous
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
-//        section.boundarySupplementaryItems = [createSupplementaryHeaderItem()]
+        section.boundarySupplementaryItems = [createSupplementaryHeaderItem()]
         
         return section
     }
@@ -255,26 +260,5 @@ final class TrendMovieDetailViewController: BaseViewController {
 }
 
 extension TrendMovieDetailViewController: UICollectionViewDelegate {
-//    func collectionView(
-//        _ collectionView: UICollectionView,
-//        viewForSupplementaryElementOfKind kind: String,
-//        at indexPath: IndexPath
-//    ) -> UICollectionReusableView {
-//        guard let headerView = collectionView.dequeueReusableSupplementaryView(
-//            ofKind: UICollectionView.elementKindSectionHeader,
-//            withReuseIdentifier: TrendTitleSupplementaryView.identifier,
-//            for: indexPath
-//        ) as? TrendTitleSupplementaryView,
-//              let sectionKind = TrendDetailSectionKind(rawValue: indexPath.section)
-//        else { return UICollectionReusableView() }
-//        
-//        switch sectionKind {
-//        case .movieInfo:
-//            // 없애고 싶은데..
-//            print("")
-//        case .cast, .poster, .similar:
-//            headerView.configureUI(headerTitle: sectionKind.toTitle)
-//        }
-//        return headerView
-//    }
+    
 }
