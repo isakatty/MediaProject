@@ -19,8 +19,7 @@ final class NetworkService: NetworkServiceProtocol {
     
     static let shared = NetworkService()
     
-    private init() {
-    }
+    private init() { }
     
     func callRequest<T: Decodable>(
         endpoint: NetworkRequest,
