@@ -58,7 +58,7 @@ URLSession, Realm, SnapKit
 
     <div style="display: flex; justify-content: space-between;">
     <img width="40%" alt="스크린샷 2024-10-22 오전 1 29 38" src="https://github.com/user-attachments/assets/720fefea-64cf-4bb7-b211-07f9ca16a9da">
-    <img width="70%" alt="스크린샷 2024-10-22 오전 1 30 28" src="https://github.com/user-attachments/assets/4e8ae76c-f3e7-4b3c-ac72-d03d5a17b175">
+    <img width="60%" alt="스크린샷 2024-10-22 오전 1 30 28" src="https://github.com/user-attachments/assets/4e8ae76c-f3e7-4b3c-ac72-d03d5a17b175">
     </div>
 
 - 해결
