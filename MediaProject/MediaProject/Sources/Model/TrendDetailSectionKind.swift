@@ -13,6 +13,24 @@ enum TrendDetailSectionKind: Int, CaseIterable {
     case poster
     case similar
     
+    var width: CGFloat {
+        switch self {
+        case .movieInfo: return 1.0
+        case .cast: return 2 / 9
+        case .poster: return 1 / 3
+        case .similar: return 1 / 4
+        }
+    }
+        
+    var height: CGFloat {
+        switch self {
+        case .movieInfo: return 0.5
+        case .cast: return 0.2
+        case .poster: return 0.13
+        case .similar: return 0.25
+        }
+    }
+    
     var groupSize: [String: CGFloat] {
         switch self {
         case .movieInfo:

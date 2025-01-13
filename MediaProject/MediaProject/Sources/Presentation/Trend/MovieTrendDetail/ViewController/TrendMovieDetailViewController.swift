@@ -173,13 +173,13 @@ final class TrendMovieDetailViewController: BaseViewController {
             switch sectionKind {
             case .movieInfo:
                 return self.createVerticalSection(
-                    widthRatio: sectionKind.groupSize["wid"]!,
-                    heightRatio: sectionKind.groupSize["hght"]!
+                    widthRatio: sectionKind.width,
+                    heightRatio: sectionKind.height
                 )
             case .cast, .poster, .similar:
                 return self.createHorizontalSection(
-                    widthRatio: sectionKind.groupSize["wid"]!,
-                    heightRatio: sectionKind.groupSize["hght"]!
+                    widthRatio: sectionKind.width,
+                    heightRatio: sectionKind.height
                 )
             }
         })
@@ -191,9 +191,7 @@ final class TrendMovieDetailViewController: BaseViewController {
         heightRatio: CGFloat
     ) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(
-                1.0
-            ),
+            widthDimension: .fractionalWidth(1.0),
             heightDimension: .fractionalHeight(1.0)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -217,9 +215,7 @@ final class TrendMovieDetailViewController: BaseViewController {
     ) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(
-                1.0
-            )
+            heightDimension: .fractionalHeight(1.0)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
