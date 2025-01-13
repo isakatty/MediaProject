@@ -13,22 +13,26 @@ enum TrendDetailSectionKind: Int, CaseIterable {
     case poster
     case similar
     
+    static let widthValues: [TrendDetailSectionKind: CGFloat] = [
+        .movieInfo: 1.0,
+        .cast: 2 / 9,
+        .poster: 1 / 3,
+        .similar: 1 / 4
+    ]
+    
+    static let heightValues: [TrendDetailSectionKind: CGFloat] = [
+        .movieInfo: 0.5,
+        .cast: 0.2,
+        .poster: 0.13,
+        .similar: 0.25
+    ]
+    
     var width: CGFloat {
-        switch self {
-        case .movieInfo: return 1.0
-        case .cast: return 2 / 9
-        case .poster: return 1 / 3
-        case .similar: return 1 / 4
-        }
+        return Self.widthValues[self] ?? 0
     }
-        
+    
     var height: CGFloat {
-        switch self {
-        case .movieInfo: return 0.5
-        case .cast: return 0.2
-        case .poster: return 0.13
-        case .similar: return 0.25
-        }
+        return Self.heightValues[self] ?? 0
     }
     
     var toTitle: String {

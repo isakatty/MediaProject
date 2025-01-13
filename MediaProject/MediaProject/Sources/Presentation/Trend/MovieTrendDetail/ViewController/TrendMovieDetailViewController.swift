@@ -21,7 +21,7 @@ final class TrendMovieDetailViewController: BaseViewController {
     private lazy var detailCollectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
-            collectionViewLayout: collectionViewLayout()
+            collectionViewLayout: configureCollectionViewLayout()
         )
         collectionView.delegate = self
         return collectionView
@@ -165,22 +165,16 @@ final class TrendMovieDetailViewController: BaseViewController {
         }
     }
     
-    private func collectionViewLayout() -> UICollectionViewLayout {
+    private func configureCollectionViewLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout(sectionProvider: { [weak self]
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             guard let self = self else { return nil }
             guard let sectionKind = TrendDetailSectionKind(rawValue: sectionIndex) else { return nil }
             switch sectionKind {
             case .movieInfo:
-                return self.createVerticalSection(
-                    widthRatio: sectionKind.width,
-                    heightRatio: sectionKind.height
-                )
+                return self.createVerticalSection(widthRatio: sectionKind.width, heightRatio: sectionKind.height)
             case .cast, .poster, .similar:
-                return self.createHorizontalSection(
-                    widthRatio: sectionKind.width,
-                    heightRatio: sectionKind.height
-                )
+                return self.createHorizontalSection(widthRatio: sectionKind.width, heightRatio: sectionKind.height)
             }
         })
         
@@ -233,6 +227,10 @@ final class TrendMovieDetailViewController: BaseViewController {
         
         return section
     }
+    
+    
+    
+    
     private func createSupplementaryHeaderItem() -> NSCollectionLayoutBoundarySupplementaryItem {
         return NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: .init(
@@ -243,6 +241,7 @@ final class TrendMovieDetailViewController: BaseViewController {
             alignment: .top
         )
     }
+    
     @objc private func videoBtnTapped(_ sender: UIButton) {
         print(sender.tag)
         // webView load
