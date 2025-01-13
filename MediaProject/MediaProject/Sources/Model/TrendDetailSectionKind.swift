@@ -31,18 +31,6 @@ enum TrendDetailSectionKind: Int, CaseIterable {
         }
     }
     
-    var groupSize: [String: CGFloat] {
-        switch self {
-        case .movieInfo:
-            return ["wid": 1.0, "hght": 0.5]
-        case .cast:
-            return ["wid": 2 / 9, "hght": 0.2]
-        case .poster:
-            return ["wid": 1 / 3 , "hght": 0.13]
-        case .similar:
-            return ["wid": 1 / 4 , "hght": 0.25]
-        }
-    }
     var toTitle: String {
         switch self {
         case .movieInfo:
